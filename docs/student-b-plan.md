@@ -2,8 +2,6 @@
 
 This plan divides the Android course project into Git-friendly commits for Student B. It is now customized for student IDs `1220216` and `1220071`, which means the project is a Travel Planner App using the Left Theme. It assumes Student B owns the local database, REST API integration, trip feature set, reservations, favorites, special section, admin tools, and technical documentation for the data/API side.
 
-Academic integrity note: use this document as a project-management checklist. The assignment says students must not submit AI-generated implementation, so both students should write the code themselves and be ready to explain every activity, fragment, database table, API call, validation rule, and Git commit during discussion.
-
 ## Project Facts From The Requirement
 
 - The app must be written in Java for Android.
