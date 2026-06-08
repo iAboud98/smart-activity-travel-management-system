@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">1220216_1220071_CourseProject</string>
+    <string name="placeholder_status">Placeholder screen</string>
+    <string name="home_title">Home</string>
+    <string name="home_placeholder_description">Placeholder for the Travel Planner overview and Left Theme description.</string>
+    <string name="trips_title">Trips</string>
+    <string name="trips_placeholder_description">TODO Student B: replace this placeholder with the RecyclerView trip list.</string>
+    <string name="my_reservations_title">My Reservations</string>
+    <string name="my_reservations_placeholder_description">TODO Student B: replace this placeholder with the user\'s trip reservations.</string>
+    <string name="favorites_title">Favorites</string>
+    <string name="favorites_placeholder_description">TODO Student B: replace this placeholder with favorite trips.</string>
+    <string name="special_section_title">Special Section</string>
+    <string name="special_section_placeholder_description">TODO Student B: replace this placeholder with travel offers, popular destinations, and recommended trips.</string>
+    <string name="profile_management_title">Profile Management</string>
+    <string name="profile_management_placeholder_description">Placeholder for the profile management screen.</string>
+    <string name="contact_us_title">Contact Us</string>
+    <string name="contact_us_placeholder_description">Placeholder for the contact intents screen.</string>
+</resources>
