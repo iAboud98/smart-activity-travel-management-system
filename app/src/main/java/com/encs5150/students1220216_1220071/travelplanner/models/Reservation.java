@@ -4,19 +4,17 @@ public class Reservation {
     private int ID;
     private int userID;
     private int tripID;
-    private String tripName;
     private int quantity;
     private String reservationType;
     private String reservationDate;
     private String status;
     private String additionalInfo;
 
-    public Reservation(int id, int userId, int tripId, String tripName, int quantity, String reservationType,
+    public Reservation(int id, int userId, int tripId, int quantity, String reservationType,
                        String reservationDate, String status, String additionalInfo) {
         this.ID = id;
         this.userID = userId;
         this.tripID = tripId;
-        this.tripName = tripName;
         this.quantity = quantity;
         this.reservationType = reservationType;
         this.reservationDate = reservationDate;
@@ -36,10 +34,6 @@ public class Reservation {
 
     public int getTripId() {
         return tripID;
-    }
-
-    public String getTripName() {
-        return tripName;
     }
 
     public int getQuantity() {
@@ -72,10 +66,6 @@ public class Reservation {
 
     public void setTripId(int tripId) {
         this.tripID = tripId;
-    }
-
-    public void setTripName(String tripName) {
-        this.tripName = tripName;
     }
 
     public void setQuantity(int quantity) {

@@ -11,9 +11,10 @@ public class User {
     private String phone;
     private String profilePicturePath;
     private String role; // "user" or "admin"
+    private int isActive; // 1 = active, 0 = deleted (data is kept but treated as deleted)
 
     public User(int id, String email, String firstName, String lastName, String password, String gender,
-                String category, String phone, String profilePicturePath, String role) {
+                String category, String phone, String profilePicturePath, String role, int isActive) {
         this.ID = id;
         this.email = email;
         this.firstName = firstName;
@@ -24,6 +25,7 @@ public class User {
         this.phone = phone;
         this.profilePicturePath = profilePicturePath;
         this.role = role;
+        this.isActive = isActive;
     }
 
     public User() {
@@ -69,6 +71,10 @@ public class User {
         return role;
     }
 
+    public int getIsActive() {
+        return isActive;
+    }
+
     public void setId(int id) {
         this.ID = id;
     }
@@ -107,5 +113,9 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
     }
 }

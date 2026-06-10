@@ -10,12 +10,13 @@ public class Trip {
     private double rating;
     private String description;
     private String imageUrl;
+    private int isActive; // 1 = active, 0 = deleted
 
     public Trip() {
     }
 
     public Trip(int ID, int apiID, String destination, String country, int durationDays, double price,
-                double rating, String description, String imageUrl) {
+                double rating, String description, String imageUrl, int isActive) {
         this.ID = ID;
         this.apiID = apiID;
         this.destination = destination;
@@ -25,6 +26,7 @@ public class Trip {
         this.rating = rating;
         this.description = description;
         this.imageUrl = imageUrl;
+        this.isActive = isActive;
     }
 
     public int getID() {
@@ -63,6 +65,10 @@ public class Trip {
         return imageUrl;
     }
 
+    public int getIsActive() {
+        return isActive;
+    }
+
     public void setID(int ID) {
         this.ID = ID;
     }
@@ -97,5 +103,9 @@ public class Trip {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
     }
 }
