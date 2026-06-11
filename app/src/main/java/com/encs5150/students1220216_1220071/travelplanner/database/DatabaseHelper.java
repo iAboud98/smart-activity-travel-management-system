@@ -1,10 +1,8 @@
 package com.encs5150.students1220216_1220071.travelplanner.database;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -50,7 +48,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "id integer primary key autoincrement, " +
                 "user_id integer not null, " +
                 "trip_id integer not null, " +
-                "created_date text, " +
                 "unique(user_id, trip_id)" +  ")");// unique to prevent duplicate favorites
 
         // creating reservations table
