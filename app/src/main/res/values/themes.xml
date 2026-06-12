@@ -1,9 +1,97 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme._1220216_1220071_CourseProject" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorOnPrimary">@color/color_text_inverse</item>
+        <item name="colorPrimaryContainer">@color/color_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/color_text_primary</item>
+        <item name="colorSecondary">@color/color_secondary</item>
+        <item name="colorOnSecondary">@color/color_text_inverse</item>
+        <item name="colorSecondaryContainer">@color/color_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/color_text_primary</item>
+        <item name="colorError">@color/color_error</item>
+        <item name="colorOnError">@color/color_text_inverse</item>
+        <item name="colorSurface">@color/color_surface</item>
+        <item name="colorOnSurface">@color/color_text_primary</item>
+        <item name="colorSurfaceVariant">@color/color_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/color_text_secondary</item>
+        <item name="android:windowBackground">@color/color_background</item>
+        <item name="android:fontFamily">sans</item>
+        <item name="android:statusBarColor">@color/color_primary_dark</item>
+        <item name="android:navigationBarColor">@color/color_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <item name="materialButtonStyle">@style/Widget.TravelPlanner.Button.Primary</item>
+        <item name="textInputStyle">@style/Widget.TravelPlanner.TextInputLayout</item>
+        <item name="toolbarStyle">@style/Widget.TravelPlanner.Toolbar</item>
     </style>
 
     <style name="Theme._1220216_1220071_CourseProject" parent="Base.Theme._1220216_1220071_CourseProject" />
+
+    <style name="TextAppearance.TravelPlanner.Eyebrow" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/color_primary</item>
+        <item name="android:letterSpacing">0.08</item>
+    </style>
+
+    <style name="TextAppearance.TravelPlanner.Headline" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textColor">@color/color_text_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.TravelPlanner.Body" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">@color/color_text_secondary</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+    </style>
+
+    <style name="Widget.TravelPlanner.Button.Primary" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/color_primary</item>
+        <item name="android:textColor">@color/color_text_inverse</item>
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="android:paddingStart">@dimen/button_horizontal_padding</item>
+        <item name="android:paddingEnd">@dimen/button_horizontal_padding</item>
+    </style>
+
+    <style name="Widget.TravelPlanner.Button.Secondary" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">@color/color_primary</item>
+        <item name="android:textColor">@color/color_primary</item>
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="android:paddingStart">@dimen/button_horizontal_padding</item>
+        <item name="android:paddingEnd">@dimen/button_horizontal_padding</item>
+    </style>
+
+    <style name="Widget.TravelPlanner.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/color_primary</item>
+        <item name="boxStrokeErrorColor">@color/color_error</item>
+        <item name="hintTextColor">@color/color_primary</item>
+        <item name="boxCornerRadiusTopStart">@dimen/input_corner_radius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/input_corner_radius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/input_corner_radius</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/input_corner_radius</item>
+    </style>
+
+    <style name="Widget.TravelPlanner.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/color_surface</item>
+        <item name="cardCornerRadius">@dimen/card_corner_radius</item>
+        <item name="strokeColor">@color/color_divider</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <style name="Widget.TravelPlanner.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/color_primary</item>
+        <item name="titleTextColor">@color/color_text_inverse</item>
+        <item name="navigationIconTint">@color/color_text_inverse</item>
+    </style>
+
+    <style name="Widget.TravelPlanner" parent="@android:style/Widget" />
+
+    <style name="Widget.TravelPlanner.DrawerItem">
+        <item name="itemIconTint">@color/drawer_item_icon</item>
+        <item name="itemTextColor">@color/drawer_item_text</item>
+        <item name="itemBackground">@drawable/bg_drawer_item</item>
+        <item name="itemHorizontalPadding">@dimen/drawer_item_horizontal_padding</item>
+        <item name="itemVerticalPadding">@dimen/drawer_item_vertical_padding</item>
+        <item name="itemIconPadding">@dimen/drawer_item_icon_padding</item>
+    </style>
 </resources>

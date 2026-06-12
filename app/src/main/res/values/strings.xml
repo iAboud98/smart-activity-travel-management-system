@@ -1,5 +1,41 @@
 <resources>
     <string name="app_name">1220216_1220071_CourseProject</string>
+
+    <string name="app_logo_content_description">Travel Planner app logo</string>
+    <string name="travel_planner_title">Travel Planner</string>
+    <string name="travel_planner_intro">Plan trips, compare destinations, reserve travel experiences, and save favorites in one place.</string>
+
+    <string name="label_trip">Trip</string>
+    <string name="label_trips">Trips</string>
+    <string name="label_reserve">Reserve</string>
+    <string name="label_destination">Destination</string>
+    <string name="label_country">Country</string>
+    <string name="label_duration_days">Duration Days</string>
+    <string name="label_price">Price</string>
+    <string name="label_rating">Rating</string>
+    <string name="label_favorites">Favorites</string>
+    <string name="label_travel_offers">Travel Offers</string>
+    <string name="label_popular_destinations">Popular Destinations</string>
+    <string name="label_recommended_trips">Recommended Trips</string>
+
+    <string name="action_connect">Connect</string>
+    <string name="action_login">Login</string>
+    <string name="action_register">Register</string>
+    <string name="action_logout">Logout</string>
+    <string name="action_save">Save</string>
+    <string name="action_cancel">Cancel</string>
+
+    <string name="drawer_header_title">Travel Planner App</string>
+    <string name="drawer_header_subtitle">Left Theme navigation</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_trips">Trips</string>
+    <string name="nav_my_reservations">My Reservations</string>
+    <string name="nav_favorites">Favorites</string>
+    <string name="nav_special_section">Special Section</string>
+    <string name="nav_profile_management">Profile Management</string>
+    <string name="nav_contact_us">Contact Us</string>
+    <string name="nav_logout">Logout</string>
+
     <string name="placeholder_status">Placeholder screen</string>
     <string name="home_title">Home</string>
     <string name="home_placeholder_description">Placeholder for the Travel Planner overview and Left Theme description.</string>

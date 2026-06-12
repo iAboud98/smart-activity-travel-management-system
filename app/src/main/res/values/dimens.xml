@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="space_xsmall">8dp</dimen>
+    <dimen name="space_small">12dp</dimen>
+    <dimen name="space_medium">16dp</dimen>
+    <dimen name="space_large">24dp</dimen>
+    <dimen name="space_xlarge">32dp</dimen>
+
+    <dimen name="screen_margin">24dp</dimen>
+    <dimen name="screen_margin_compact">16dp</dimen>
+    <dimen name="content_max_width">520dp</dimen>
+    <dimen name="left_theme_accent_width">8dp</dimen>
+
+    <dimen name="button_min_height">48dp</dimen>
+    <dimen name="button_corner_radius">12dp</dimen>
+    <dimen name="button_horizontal_padding">20dp</dimen>
+    <dimen name="input_corner_radius">12dp</dimen>
+    <dimen name="card_corner_radius">8dp</dimen>
+    <dimen name="list_item_min_height">64dp</dimen>
+    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="drawer_width">304dp</dimen>
+    <dimen name="drawer_item_horizontal_padding">16dp</dimen>
+    <dimen name="drawer_item_vertical_padding">10dp</dimen>
+    <dimen name="drawer_item_icon_padding">16dp</dimen>
+    <dimen name="icon_touch_target">48dp</dimen>
+    <dimen name="app_logo_size">96dp</dimen>
+</resources>
