@@ -13,6 +13,12 @@
         android:theme="@style/Theme._1220216_1220071_CourseProject">
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.IntroductionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -4,6 +4,11 @@
     <string name="app_logo_content_description">Travel Planner app logo</string>
     <string name="travel_planner_title">Travel Planner</string>
     <string name="travel_planner_intro">Plan trips, compare destinations, reserve travel experiences, and save favorites in one place.</string>
+    <string name="introduction_eyebrow">Travel Planner App</string>
+    <string name="connect_required_status">Connect to the trip API before continuing.</string>
+    <string name="connect_loading_status">Connecting to the trip API...</string>
+    <string name="connect_not_implemented_status">API import is not ready yet. This placeholder will be replaced in A06.</string>
+    <string name="connect_not_implemented_toast">Connect is not implemented until the API import is ready.</string>
 
     <string name="label_trip">Trip</string>
     <string name="label_trips">Trips</string>
