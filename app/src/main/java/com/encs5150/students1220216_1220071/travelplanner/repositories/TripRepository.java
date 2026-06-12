@@ -201,5 +201,18 @@ public class TripRepository {
         trip.setIsActive(cursor.getInt(9));
         return trip;
     }
+
+    // imports a list of trips from the API into the database
+    // skips duplicates using api_id, returns number of successfully inserted trips
+    public int importTrips(List<Trip> trips) {
+        int insertedCount = 0;
+        for (int i = 0; i < trips.size(); i++) {
+            boolean inserted = insertTrip(trips.get(i));
+            if (inserted) {
+                insertedCount++;
+            }
+        }
+        return insertedCount;
+    }
 }
 
