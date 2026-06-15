@@ -40,8 +40,22 @@
     <string name="login_loading_status">Checking login details...</string>
     <string name="login_auth_pending_status">Login database integration is completed in A10.</string>
     <string name="login_auth_pending_toast">Login authentication will be connected in A10.</string>
-    <string name="registration_placeholder_title">Create Account</string>
-    <string name="registration_placeholder_description">Registration form layout is completed in A08.</string>
+    <string name="registration_eyebrow">New traveler</string>
+    <string name="registration_title">Create Account</string>
+    <string name="registration_description">Set up your travel profile before reserving trips.</string>
+    <string name="registration_email_hint">Email</string>
+    <string name="registration_first_name_hint">First Name</string>
+    <string name="registration_last_name_hint">Last Name</string>
+    <string name="registration_password_hint">Password</string>
+    <string name="registration_confirm_password_hint">Confirm Password</string>
+    <string name="registration_gender_label">Gender</string>
+    <string name="registration_trip_category_label">Trip Category</string>
+    <string name="registration_phone_hint">Phone Number</string>
+    <string name="registration_status_ready">Complete the form to create your account.</string>
+    <string name="registration_pending_status">Registration validation is completed in A09.</string>
+    <string name="registration_pending_toast">Registration will be connected after validation is added.</string>
+    <string name="registration_spinner_error_placeholder">Selection error appears here.</string>
+    <string name="action_back_to_login">Back to Login</string>
     <string name="action_logout">Logout</string>
     <string name="action_save">Save</string>
     <string name="action_cancel">Cancel</string>
@@ -72,4 +86,21 @@
     <string name="profile_management_placeholder_description">Placeholder for the profile management screen.</string>
     <string name="contact_us_title">Contact Us</string>
     <string name="contact_us_placeholder_description">Placeholder for the contact intents screen.</string>
+
+    <string-array name="gender_options">
+        <item>Select gender</item>
+        <item>Female</item>
+        <item>Male</item>
+    </string-array>
+
+    <string-array name="trip_category_options">
+        <item>Select trip category</item>
+        <item>Beach trips</item>
+        <item>Mountain adventures</item>
+        <item>City breaks</item>
+        <item>Cultural tours</item>
+        <item>Family travel</item>
+        <item>Budget travel</item>
+        <item>Luxury travel</item>
+    </string-array>
 </resources>
