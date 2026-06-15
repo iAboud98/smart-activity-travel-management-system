@@ -33,8 +33,11 @@ public class TripRepository {
         values.put("description", trip.getDescription());
         values.put("image_url", trip.getImageUrl());
         values.put("is_active", 1);
-        long result = db.insert("trips", null, values);
-        // insert returns -1 if it fails (duplicate api_id)
+        long result = db.insertWithOnConflict("trips", null, values, SQLiteDatabase.CONFLICT_IGNORE);
+        if (result == -1) {
+            updateTripByApiId(trip);
+        }
+        // insert returns -1 if the trip already exists by api_id
         return result != -1;
     }
 
@@ -50,6 +53,21 @@ public class TripRepository {
         values.put("description", trip.getDescription());
         values.put("image_url", trip.getImageUrl());
         int rows = db.update("trips", values, "id = " + trip.getID(), null);
+        return rows > 0;
+    }
+
+    private boolean updateTripByApiId(Trip trip) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("destination", trip.getDestination());
+        values.put("country", trip.getCountry());
+        values.put("duration_days", trip.getDurationDays());
+        values.put("price", trip.getPrice());
+        values.put("rating", trip.getRating());
+        values.put("description", trip.getDescription());
+        values.put("image_url", trip.getImageUrl());
+        values.put("is_active", 1);
+        int rows = db.update("trips", values, "api_id = ?", new String[]{String.valueOf(trip.getApiID())});
         return rows > 0;
     }
 
@@ -215,4 +233,3 @@ public class TripRepository {
         return insertedCount;
     }
 }
-

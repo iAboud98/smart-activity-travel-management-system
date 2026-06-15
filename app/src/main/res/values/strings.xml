@@ -7,8 +7,11 @@
     <string name="introduction_eyebrow">Travel Planner App</string>
     <string name="connect_required_status">Connect to the trip API before continuing.</string>
     <string name="connect_loading_status">Connecting to the trip API...</string>
-    <string name="connect_not_implemented_status">API import is not ready yet. This placeholder will be replaced in A06.</string>
-    <string name="connect_not_implemented_toast">Connect is not implemented until the API import is ready.</string>
+    <string name="connect_success_status">Trips imported successfully. Opening login...</string>
+    <string name="connect_success_toast">Trip API connected successfully.</string>
+    <string name="connect_failure_status">Could not import trips. Check your connection and try again.</string>
+    <string name="connect_failure_toast">Failed to fetch trips. Please check your connection.</string>
+    <string name="connect_invalid_data_status">The API did not return at least 10 usable trips. Please try again later.</string>
 
     <string name="label_trip">Trip</string>
     <string name="label_trips">Trips</string>
@@ -26,6 +29,8 @@
     <string name="action_connect">Connect</string>
     <string name="action_login">Login</string>
     <string name="action_register">Register</string>
+    <string name="login_entry_title">Login / Register</string>
+    <string name="login_entry_description">Trip data is ready. The full login and registration form is completed in the next step.</string>
     <string name="action_logout">Logout</string>
     <string name="action_save">Save</string>
     <string name="action_cancel">Cancel</string>
