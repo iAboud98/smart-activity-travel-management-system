@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="screen_margin">32dp</dimen>
+    <dimen name="content_max_width">680dp</dimen>
+    <dimen name="left_theme_accent_width">10dp</dimen>
+</resources>
