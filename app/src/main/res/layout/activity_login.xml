@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen_left_theme"
+    tools:context=".activities.LoginActivity">
+
+    <ScrollView
+        android:id="@+id/login_scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|start"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/screen_margin"
+            android:paddingTop="@dimen/screen_margin"
+            android:paddingEnd="@dimen/screen_margin"
+            android:paddingBottom="@dimen/screen_margin">
+
+            <ImageView
+                android:id="@+id/login_logo"
+                android:layout_width="@dimen/app_logo_size"
+                android:layout_height="@dimen/app_logo_size"
+                android:contentDescription="@string/app_logo_content_description"
+                android:src="@drawable/ic_app_logo" />
+
+            <TextView
+                android:id="@+id/login_eyebrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_large"
+                android:text="@string/login_eyebrow"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Eyebrow" />
+
+            <TextView
+                android:id="@+id/login_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_small"
+                android:maxWidth="@dimen/content_max_width"
+                android:text="@string/login_title"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Headline" />
+
+            <TextView
+                android:id="@+id/login_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_small"
+                android:maxWidth="@dimen/content_max_width"
+                android:text="@string/login_description"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_email_input_layout"
+                style="@style/Widget.TravelPlanner.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xlarge"
+                android:maxWidth="@dimen/content_max_width"
+                android:hint="@string/login_email_hint"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/login_email_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_password_input_layout"
+                style="@style/Widget.TravelPlanner.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_medium"
+                android:maxWidth="@dimen/content_max_width"
+                android:hint="@string/login_password_hint"
+                app:endIconMode="password_toggle"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/login_password_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/remember_me_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_small"
+                android:text="@string/login_remember_me"
+                android:textColor="@color/color_text_primary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_medium"
+                android:gravity="center_vertical|start"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/login_button"
+                    style="@style/Widget.TravelPlanner.Button.Primary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/action_login" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sign_up_button"
+                    style="@style/Widget.TravelPlanner.Button.Secondary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_small"
+                    android:layout_weight="1"
+                    android:text="@string/action_sign_up" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/login_progress"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_medium"
+                android:indeterminate="true"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/login_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_small"
+                android:maxWidth="@dimen/content_max_width"
+                android:text="@string/login_status_ready"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
