@@ -37,6 +37,7 @@
     <string name="login_password_hint">Password</string>
     <string name="login_remember_me">Remember Me</string>
     <string name="login_status_ready">Enter your email and password to continue.</string>
+    <string name="login_validation_error_status">Fix the highlighted login details to continue.</string>
     <string name="login_loading_status">Checking login details...</string>
     <string name="login_auth_pending_status">Login database integration is completed in A10.</string>
     <string name="login_auth_pending_toast">Login authentication will be connected in A10.</string>
@@ -52,8 +53,9 @@
     <string name="registration_trip_category_label">Trip Category</string>
     <string name="registration_phone_hint">Phone Number</string>
     <string name="registration_status_ready">Complete the form to create your account.</string>
-    <string name="registration_pending_status">Registration validation is completed in A09.</string>
-    <string name="registration_pending_toast">Registration will be connected after validation is added.</string>
+    <string name="registration_validation_error_status">Fix the highlighted registration details to continue.</string>
+    <string name="registration_pending_status">Registration details are valid. Account creation is completed in A10.</string>
+    <string name="registration_pending_toast">All fields are valid. Registration database integration will be connected in A10.</string>
     <string name="registration_spinner_error_placeholder">Selection error appears here.</string>
     <string name="action_back_to_login">Back to Login</string>
     <string name="action_logout">Logout</string>
@@ -86,6 +88,19 @@
     <string name="profile_management_placeholder_description">Placeholder for the profile management screen.</string>
     <string name="contact_us_title">Contact Us</string>
     <string name="contact_us_placeholder_description">Placeholder for the contact intents screen.</string>
+
+    <string name="validation_email_required">Email is required.</string>
+    <string name="validation_email_format">Enter a valid email address.</string>
+    <string name="validation_password_required">Password is required.</string>
+    <string name="validation_first_name_length">First name must be at least 3 characters.</string>
+    <string name="validation_last_name_length">Last name must be at least 3 characters.</string>
+    <string name="validation_password_rules">Password must be at least 6 characters and include at least one letter and one number.</string>
+    <string name="validation_confirm_password_required">Confirm your password.</string>
+    <string name="validation_password_match">Passwords must match.</string>
+    <string name="validation_gender_required">Select a gender.</string>
+    <string name="validation_trip_category_required">Select a trip category.</string>
+    <string name="validation_phone_required">Phone number is required.</string>
+    <string name="validation_phone_format">Use 7 to 15 digits, with an optional + country code.</string>
 
     <string-array name="gender_options">
         <item>Select gender</item>

@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.encs5150.students1220216_1220071.travelplanner.R;
+import com.encs5150.students1220216_1220071.travelplanner.utils.ValidationUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
@@ -31,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout emailInputLayout;
     private TextInputLayout passwordInputLayout;
     private TextInputEditText emailInput;
+    private TextInputEditText passwordInput;
     private MaterialCheckBox rememberMeCheckBox;
     private ProgressBar loginProgress;
     private MaterialButton loginButton;
@@ -59,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         emailInputLayout = findViewById(R.id.login_email_input_layout);
         passwordInputLayout = findViewById(R.id.login_password_input_layout);
         emailInput = findViewById(R.id.login_email_input);
+        passwordInput = findViewById(R.id.login_password_input);
         rememberMeCheckBox = findViewById(R.id.remember_me_checkbox);
         loginProgress = findViewById(R.id.login_progress);
         loginButton = findViewById(R.id.login_button);
@@ -67,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
         prefillRememberedEmail();
 
-        loginButton.setOnClickListener(v -> showTemporaryLoginLoading());
+        loginButton.setOnClickListener(v -> validateAndShowTemporaryLoginLoading());
         signUpButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, RegistrationActivity.class);
             startActivity(intent);
@@ -81,16 +84,57 @@ public class LoginActivity extends AppCompatActivity {
         rememberMeCheckBox.setChecked(!rememberedEmail.isEmpty());
     }
 
-    private void showTemporaryLoginLoading() {
+    private void validateAndShowTemporaryLoginLoading() {
         if (loginInProgress) {
             return;
         }
 
-        emailInputLayout.setError(null);
-        passwordInputLayout.setError(null);
+        if (!validateLoginForm()) {
+            loginStatus.setText(R.string.login_validation_error_status);
+            return;
+        }
+
         loginStatus.setText(R.string.login_loading_status);
         setLoginLoading(true);
         loginHandler.postDelayed(temporaryLoginResult, TEMPORARY_LOGIN_DELAY_MS);
+    }
+
+    private boolean validateLoginForm() {
+        emailInputLayout.setError(null);
+        passwordInputLayout.setError(null);
+
+        String email = getText(emailInput);
+        String password = getText(passwordInput);
+        View firstInvalidView = null;
+        boolean valid = true;
+
+        if (ValidationUtils.isBlank(email)) {
+            emailInputLayout.setError(getString(R.string.validation_email_required));
+            firstInvalidView = emailInput;
+            valid = false;
+        } else if (!ValidationUtils.isValidEmail(email)) {
+            emailInputLayout.setError(getString(R.string.validation_email_format));
+            firstInvalidView = emailInput;
+            valid = false;
+        }
+
+        if (ValidationUtils.isBlank(password)) {
+            passwordInputLayout.setError(getString(R.string.validation_password_required));
+            if (firstInvalidView == null) {
+                firstInvalidView = passwordInput;
+            }
+            valid = false;
+        }
+
+        if (!valid && firstInvalidView != null) {
+            firstInvalidView.requestFocus();
+        }
+
+        return valid;
+    }
+
+    private String getText(TextInputEditText input) {
+        return input.getText() == null ? "" : input.getText().toString();
     }
 
     private void setLoginLoading(boolean loading) {
