@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/admin_home_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen_left_theme"
+    tools:context=".activities.AdminHomeActivity">
+
+    <ScrollView
+        android:id="@+id/admin_home_scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|start"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/screen_margin"
+            android:paddingTop="@dimen/screen_margin"
+            android:paddingEnd="@dimen/screen_margin"
+            android:paddingBottom="@dimen/screen_margin">
+
+            <ImageView
+                android:id="@+id/admin_home_logo"
+                android:layout_width="@dimen/app_logo_size"
+                android:layout_height="@dimen/app_logo_size"
+                android:contentDescription="@string/app_logo_content_description"
+                android:src="@drawable/ic_app_logo" />
+
+            <TextView
+                android:id="@+id/admin_home_eyebrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_large"
+                android:text="@string/admin_home_eyebrow"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Eyebrow" />
+
+            <TextView
+                android:id="@+id/admin_home_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_small"
+                android:maxWidth="@dimen/content_max_width"
+                android:text="@string/admin_home_title"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Headline" />
+
+            <TextView
+                android:id="@+id/admin_home_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_small"
+                android:maxWidth="@dimen/content_max_width"
+                android:text="@string/admin_home_description"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+            <TextView
+                android:id="@+id/admin_session_summary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_large"
+                android:background="@drawable/bg_surface_card"
+                android:maxWidth="@dimen/content_max_width"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Body"
+                tools:text="Signed in as admin@admin.com." />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

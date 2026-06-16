@@ -3,8 +3,6 @@ package com.encs5150.students1220216_1220071.travelplanner.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -15,7 +13,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.encs5150.students1220216_1220071.travelplanner.MainActivity;
 import com.encs5150.students1220216_1220071.travelplanner.R;
+import com.encs5150.students1220216_1220071.travelplanner.models.User;
+import com.encs5150.students1220216_1220071.travelplanner.repositories.UserRepository;
+import com.encs5150.students1220216_1220071.travelplanner.utils.SessionManager;
 import com.encs5150.students1220216_1220071.travelplanner.utils.ValidationUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -23,12 +25,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class LoginActivity extends AppCompatActivity {
+    public static final String EXTRA_PREFILL_EMAIL = "com.encs5150.travelplanner.PREFILL_EMAIL";
 
     private static final String AUTH_PREFS_NAME = "travel_planner_auth";
     private static final String KEY_REMEMBERED_EMAIL = "remembered_email";
-    private static final long TEMPORARY_LOGIN_DELAY_MS = 800L;
 
-    private final Handler loginHandler = new Handler(Looper.getMainLooper());
     private TextInputLayout emailInputLayout;
     private TextInputLayout passwordInputLayout;
     private TextInputEditText emailInput;
@@ -38,13 +39,8 @@ public class LoginActivity extends AppCompatActivity {
     private MaterialButton loginButton;
     private MaterialButton signUpButton;
     private TextView loginStatus;
+    private UserRepository userRepository;
     private boolean loginInProgress;
-
-    private final Runnable temporaryLoginResult = () -> {
-        setLoginLoading(false);
-        loginStatus.setText(R.string.login_auth_pending_status);
-        Toast.makeText(this, R.string.login_auth_pending_toast, Toast.LENGTH_LONG).show();
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +63,11 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.login_button);
         signUpButton = findViewById(R.id.sign_up_button);
         loginStatus = findViewById(R.id.login_status);
+        userRepository = new UserRepository(this);
 
         prefillRememberedEmail();
 
-        loginButton.setOnClickListener(v -> validateAndShowTemporaryLoginLoading());
+        loginButton.setOnClickListener(v -> validateAndLogin());
         signUpButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, RegistrationActivity.class);
             startActivity(intent);
@@ -78,13 +75,20 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void prefillRememberedEmail() {
+        String prefillEmail = getIntent().getStringExtra(EXTRA_PREFILL_EMAIL);
+        if (!ValidationUtils.isBlank(prefillEmail)) {
+            emailInput.setText(prefillEmail);
+            rememberMeCheckBox.setChecked(false);
+            return;
+        }
+
         SharedPreferences preferences = getSharedPreferences(AUTH_PREFS_NAME, MODE_PRIVATE);
         String rememberedEmail = preferences.getString(KEY_REMEMBERED_EMAIL, "");
         emailInput.setText(rememberedEmail);
         rememberMeCheckBox.setChecked(!rememberedEmail.isEmpty());
     }
 
-    private void validateAndShowTemporaryLoginLoading() {
+    private void validateAndLogin() {
         if (loginInProgress) {
             return;
         }
@@ -96,7 +100,21 @@ public class LoginActivity extends AppCompatActivity {
 
         loginStatus.setText(R.string.login_loading_status);
         setLoginLoading(true);
-        loginHandler.postDelayed(temporaryLoginResult, TEMPORARY_LOGIN_DELAY_MS);
+        String email = ValidationUtils.normalizeEmail(getText(emailInput));
+        String password = getText(passwordInput);
+        User user = userRepository.loginUser(email, password);
+        setLoginLoading(false);
+
+        if (user == null) {
+            SessionManager.clearSession(this);
+            loginStatus.setText(R.string.login_invalid_credentials_status);
+            Toast.makeText(this, R.string.login_invalid_credentials_toast, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        updateRememberedEmail(email);
+        SessionManager.saveSession(this, user);
+        routeAfterLogin(user);
     }
 
     private boolean validateLoginForm() {
@@ -137,6 +155,33 @@ public class LoginActivity extends AppCompatActivity {
         return input.getText() == null ? "" : input.getText().toString();
     }
 
+    private void updateRememberedEmail(String email) {
+        SharedPreferences.Editor editor = getSharedPreferences(AUTH_PREFS_NAME, MODE_PRIVATE).edit();
+        if (rememberMeCheckBox.isChecked()) {
+            editor.putString(KEY_REMEMBERED_EMAIL, email);
+        } else {
+            editor.remove(KEY_REMEMBERED_EMAIL);
+        }
+        editor.apply();
+    }
+
+    private void routeAfterLogin(User user) {
+        Intent intent;
+        if (SessionManager.ROLE_ADMIN.equalsIgnoreCase(user.getRole())) {
+            loginStatus.setText(R.string.login_admin_success_status);
+            Toast.makeText(this, R.string.login_admin_success_toast, Toast.LENGTH_SHORT).show();
+            intent = new Intent(this, AdminHomeActivity.class);
+        } else {
+            loginStatus.setText(R.string.login_user_success_status);
+            Toast.makeText(this, R.string.login_user_success_toast, Toast.LENGTH_SHORT).show();
+            intent = new Intent(this, MainActivity.class);
+        }
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
     private void setLoginLoading(boolean loading) {
         loginInProgress = loading;
         loginProgress.setVisibility(loading ? View.VISIBLE : View.GONE);
@@ -144,9 +189,4 @@ public class LoginActivity extends AppCompatActivity {
         signUpButton.setEnabled(!loading);
     }
 
-    @Override
-    protected void onDestroy() {
-        loginHandler.removeCallbacks(temporaryLoginResult);
-        super.onDestroy();
-    }
 }

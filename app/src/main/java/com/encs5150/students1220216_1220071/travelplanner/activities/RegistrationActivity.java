@@ -1,5 +1,6 @@
 package com.encs5150.students1220216_1220071.travelplanner.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -13,6 +14,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.encs5150.students1220216_1220071.travelplanner.R;
+import com.encs5150.students1220216_1220071.travelplanner.models.User;
+import com.encs5150.students1220216_1220071.travelplanner.repositories.UserRepository;
+import com.encs5150.students1220216_1220071.travelplanner.utils.SessionManager;
 import com.encs5150.students1220216_1220071.travelplanner.utils.ValidationUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -36,6 +40,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView genderError;
     private TextView tripCategoryError;
     private TextView registrationStatus;
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,7 @@ public class RegistrationActivity extends AppCompatActivity {
         genderError = findViewById(R.id.gender_error);
         tripCategoryError = findViewById(R.id.trip_category_error);
         registrationStatus = findViewById(R.id.registration_status);
+        userRepository = new UserRepository(this);
 
         setupSpinner(genderSpinner, R.array.gender_options);
         setupSpinner(tripCategorySpinner, R.array.trip_category_options);
@@ -75,8 +81,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         registerButton.setOnClickListener(v -> {
             if (validateRegistrationForm()) {
-                registrationStatus.setText(R.string.registration_pending_status);
-                Toast.makeText(this, R.string.registration_pending_toast, Toast.LENGTH_LONG).show();
+                registerUser();
             } else {
                 registrationStatus.setText(R.string.registration_validation_error_status);
             }
@@ -92,6 +97,42 @@ public class RegistrationActivity extends AppCompatActivity {
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+    }
+
+    private void registerUser() {
+        String email = ValidationUtils.normalizeEmail(getText(emailInput));
+        if (userRepository.emailExists(email)) {
+            emailInputLayout.setError(getString(R.string.registration_duplicate_email_error));
+            emailInput.requestFocus();
+            registrationStatus.setText(R.string.registration_validation_error_status);
+            return;
+        }
+
+        User user = new User();
+        user.setEmail(email);
+        user.setFirstName(ValidationUtils.cleanInput(getText(firstNameInput)));
+        user.setLastName(ValidationUtils.cleanInput(getText(lastNameInput)));
+        user.setPassword(getText(passwordInput));
+        user.setGender(genderSpinner.getSelectedItem().toString());
+        user.setCategory(tripCategorySpinner.getSelectedItem().toString());
+        user.setPhone(ValidationUtils.normalizePhone(getText(phoneInput)));
+        user.setProfilePicturePath("");
+        user.setRole(SessionManager.ROLE_USER);
+        user.setIsActive(1);
+
+        if (!userRepository.registerUser(user)) {
+            registrationStatus.setText(R.string.registration_failure_status);
+            Toast.makeText(this, R.string.registration_failure_toast, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        registrationStatus.setText(R.string.registration_success_status);
+        Toast.makeText(this, R.string.registration_success_toast, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra(LoginActivity.EXTRA_PREFILL_EMAIL, email);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
     private boolean validateRegistrationForm() {

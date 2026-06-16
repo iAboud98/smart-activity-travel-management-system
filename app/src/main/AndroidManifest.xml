@@ -17,6 +17,9 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.AdminHomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.LoginActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />

@@ -1,5 +1,6 @@
 package com.encs5150.students1220216_1220071.travelplanner.utils;
 
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public final class ValidationUtils {
@@ -24,6 +25,10 @@ public final class ValidationUtils {
 
     public static boolean isValidEmail(String email) {
         return EMAIL_PATTERN.matcher(cleanInput(email)).matches();
+    }
+
+    public static String normalizeEmail(String email) {
+        return cleanInput(email).toLowerCase(Locale.US);
     }
 
     public static boolean isValidName(String name) {

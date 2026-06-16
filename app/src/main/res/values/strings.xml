@@ -39,8 +39,12 @@
     <string name="login_status_ready">Enter your email and password to continue.</string>
     <string name="login_validation_error_status">Fix the highlighted login details to continue.</string>
     <string name="login_loading_status">Checking login details...</string>
-    <string name="login_auth_pending_status">Login database integration is completed in A10.</string>
-    <string name="login_auth_pending_toast">Login authentication will be connected in A10.</string>
+    <string name="login_invalid_credentials_status">Email or password is incorrect.</string>
+    <string name="login_invalid_credentials_toast">Login failed. Check your email and password.</string>
+    <string name="login_user_success_status">Login successful. Opening home...</string>
+    <string name="login_user_success_toast">Welcome back.</string>
+    <string name="login_admin_success_status">Admin login successful. Opening admin home...</string>
+    <string name="login_admin_success_toast">Admin access granted.</string>
     <string name="registration_eyebrow">New traveler</string>
     <string name="registration_title">Create Account</string>
     <string name="registration_description">Set up your travel profile before reserving trips.</string>
@@ -54,8 +58,11 @@
     <string name="registration_phone_hint">Phone Number</string>
     <string name="registration_status_ready">Complete the form to create your account.</string>
     <string name="registration_validation_error_status">Fix the highlighted registration details to continue.</string>
-    <string name="registration_pending_status">Registration details are valid. Account creation is completed in A10.</string>
-    <string name="registration_pending_toast">All fields are valid. Registration database integration will be connected in A10.</string>
+    <string name="registration_success_status">Account created. Return to login.</string>
+    <string name="registration_success_toast">Account created successfully. Please log in.</string>
+    <string name="registration_failure_status">Registration failed. Please try again.</string>
+    <string name="registration_failure_toast">Could not create the account.</string>
+    <string name="registration_duplicate_email_error">This email is already registered.</string>
     <string name="registration_spinner_error_placeholder">Selection error appears here.</string>
     <string name="action_back_to_login">Back to Login</string>
     <string name="action_logout">Logout</string>
@@ -88,6 +95,11 @@
     <string name="profile_management_placeholder_description">Placeholder for the profile management screen.</string>
     <string name="contact_us_title">Contact Us</string>
     <string name="contact_us_placeholder_description">Placeholder for the contact intents screen.</string>
+    <string name="admin_access_denied_toast">Admin access requires an admin session.</string>
+    <string name="admin_home_eyebrow">Admin Area</string>
+    <string name="admin_home_title">Admin Home</string>
+    <string name="admin_home_description">Temporary admin destination until Student B connects the admin drawer and management screens.</string>
+    <string name="admin_home_session_summary">Signed in as %1$s.</string>
 
     <string name="validation_email_required">Email is required.</string>
     <string name="validation_email_format">Enter a valid email address.</string>
