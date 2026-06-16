@@ -29,8 +29,42 @@
     <string name="action_connect">Connect</string>
     <string name="action_login">Login</string>
     <string name="action_register">Register</string>
-    <string name="login_entry_title">Login / Register</string>
-    <string name="login_entry_description">Trip data is ready. The full login and registration form is completed in the next step.</string>
+    <string name="action_sign_up">Sign Up</string>
+    <string name="login_eyebrow">Welcome back</string>
+    <string name="login_title">Login</string>
+    <string name="login_description">Access your saved trips, reservations, and favorite destinations.</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_remember_me">Remember Me</string>
+    <string name="login_status_ready">Enter your email and password to continue.</string>
+    <string name="login_validation_error_status">Fix the highlighted login details to continue.</string>
+    <string name="login_loading_status">Checking login details...</string>
+    <string name="login_invalid_credentials_status">Email or password is incorrect.</string>
+    <string name="login_invalid_credentials_toast">Login failed. Check your email and password.</string>
+    <string name="login_user_success_status">Login successful. Opening home...</string>
+    <string name="login_user_success_toast">Welcome back.</string>
+    <string name="login_admin_success_status">Admin login successful. Opening admin home...</string>
+    <string name="login_admin_success_toast">Admin access granted.</string>
+    <string name="registration_eyebrow">New traveler</string>
+    <string name="registration_title">Create Account</string>
+    <string name="registration_description">Set up your travel profile before reserving trips.</string>
+    <string name="registration_email_hint">Email</string>
+    <string name="registration_first_name_hint">First Name</string>
+    <string name="registration_last_name_hint">Last Name</string>
+    <string name="registration_password_hint">Password</string>
+    <string name="registration_confirm_password_hint">Confirm Password</string>
+    <string name="registration_gender_label">Gender</string>
+    <string name="registration_trip_category_label">Trip Category</string>
+    <string name="registration_phone_hint">Phone Number</string>
+    <string name="registration_status_ready">Complete the form to create your account.</string>
+    <string name="registration_validation_error_status">Fix the highlighted registration details to continue.</string>
+    <string name="registration_success_status">Account created. Return to login.</string>
+    <string name="registration_success_toast">Account created successfully. Please log in.</string>
+    <string name="registration_failure_status">Registration failed. Please try again.</string>
+    <string name="registration_failure_toast">Could not create the account.</string>
+    <string name="registration_duplicate_email_error">This email is already registered.</string>
+    <string name="registration_spinner_error_placeholder">Selection error appears here.</string>
+    <string name="action_back_to_login">Back to Login</string>
     <string name="action_logout">Logout</string>
     <string name="action_save">Save</string>
     <string name="action_cancel">Cancel</string>
@@ -61,4 +95,39 @@
     <string name="profile_management_placeholder_description">Placeholder for the profile management screen.</string>
     <string name="contact_us_title">Contact Us</string>
     <string name="contact_us_placeholder_description">Placeholder for the contact intents screen.</string>
+    <string name="admin_access_denied_toast">Admin access requires an admin session.</string>
+    <string name="admin_home_eyebrow">Admin Area</string>
+    <string name="admin_home_title">Admin Home</string>
+    <string name="admin_home_description">Temporary admin destination until Student B connects the admin drawer and management screens.</string>
+    <string name="admin_home_session_summary">Signed in as %1$s.</string>
+
+    <string name="validation_email_required">Email is required.</string>
+    <string name="validation_email_format">Enter a valid email address.</string>
+    <string name="validation_password_required">Password is required.</string>
+    <string name="validation_first_name_length">First name must be at least 3 characters.</string>
+    <string name="validation_last_name_length">Last name must be at least 3 characters.</string>
+    <string name="validation_password_rules">Password must be at least 6 characters and include at least one letter and one number.</string>
+    <string name="validation_confirm_password_required">Confirm your password.</string>
+    <string name="validation_password_match">Passwords must match.</string>
+    <string name="validation_gender_required">Select a gender.</string>
+    <string name="validation_trip_category_required">Select a trip category.</string>
+    <string name="validation_phone_required">Phone number is required.</string>
+    <string name="validation_phone_format">Use 7 to 15 digits, with an optional + country code.</string>
+
+    <string-array name="gender_options">
+        <item>Select gender</item>
+        <item>Female</item>
+        <item>Male</item>
+    </string-array>
+
+    <string-array name="trip_category_options">
+        <item>Select trip category</item>
+        <item>Beach trips</item>
+        <item>Mountain adventures</item>
+        <item>City breaks</item>
+        <item>Cultural tours</item>
+        <item>Family travel</item>
+        <item>Budget travel</item>
+        <item>Luxury travel</item>
+    </string-array>
 </resources>

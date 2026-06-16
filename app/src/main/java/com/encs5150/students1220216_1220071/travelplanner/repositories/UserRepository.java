@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository {
-    private DatabaseHelper dbHelper;
+    private final DatabaseHelper dbHelper;
 
     public UserRepository(Context context) {
         dbHelper = new DatabaseHelper(context, "travel_planner.db", null, 1);
@@ -41,10 +41,34 @@ public class UserRepository {
         }
     }
 
+    public boolean emailExists(String email) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(
+                "users",
+                new String[]{"id"},
+                "email = ?",
+                new String[]{email},
+                null,
+                null,
+                null
+        );
+        boolean exists = cursor.moveToFirst();
+        cursor.close();
+        return exists;
+    }
+
     // find a user by email, returns the user object or null if not found
     public User findUserByEmail(String email) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from users where email = '" + email + "' and is_active = 1", null);
+        Cursor cursor = db.query(
+                "users",
+                null,
+                "email = ? and is_active = 1",
+                new String[]{email},
+                null,
+                null,
+                null
+        );
         if (cursor.moveToFirst()) {
             User user = cursorToUser(cursor);
             cursor.close();
@@ -60,7 +84,15 @@ public class UserRepository {
         try {
             SQLiteDatabase db = dbHelper.getReadableDatabase();
             String hashedPassword = DatabaseHelper.hashPassword(password);
-            Cursor cursor = db.rawQuery("select * from users where email = '" + email + "' and password = '" + hashedPassword + "' and is_active = 1", null);
+            Cursor cursor = db.query(
+                    "users",
+                    null,
+                    "email = ? and password = ? and is_active = 1",
+                    new String[]{email, hashedPassword},
+                    null,
+                    null,
+                    null
+            );
             if (cursor.moveToFirst()) {
                 User user = cursorToUser(cursor);
                 cursor.close();
