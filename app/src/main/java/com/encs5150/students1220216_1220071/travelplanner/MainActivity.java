@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,9 +64,10 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.main_toolbar);
 
         setupDrawer();
+        setupBackBehavior();
 
         if (savedInstanceState == null) {
-            showDrawerDestination(R.id.nav_home, new HomeFragment());
+            navigateToDrawerDestination(R.id.nav_home);
         } else {
             selectedDrawerItemId = savedInstanceState.getInt(KEY_SELECTED_DRAWER_ITEM, R.id.nav_home);
             navigationView.setCheckedItem(selectedDrawerItemId);
@@ -101,24 +103,44 @@ public class MainActivity extends AppCompatActivity {
         headerTitle.setText(R.string.app_name);
         headerSubtitle.setText(displayName);
 
-        navigationView.setNavigationItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.nav_logout) {
-                drawerLayout.closeDrawer(GravityCompat.START);
-                Toast.makeText(this, R.string.logout_placeholder_toast, Toast.LENGTH_SHORT).show();
-                navigationView.setCheckedItem(selectedDrawerItemId);
-                return false;
-            }
+        navigationView.setNavigationItemSelectedListener(item -> handleDrawerItemSelected(item.getItemId()));
+    }
 
-            Fragment fragment = createFragmentForItem(itemId);
-            if (fragment == null) {
-                return false;
-            }
+    private void setupBackBehavior() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    return;
+                }
 
-            showDrawerDestination(itemId, fragment);
+                if (selectedDrawerItemId != R.id.nav_home) {
+                    navigateToDrawerDestination(R.id.nav_home);
+                    return;
+                }
+
+                setEnabled(false);
+                getOnBackPressedDispatcher().onBackPressed();
+            }
+        });
+    }
+
+    private boolean handleDrawerItemSelected(int itemId) {
+        if (itemId == R.id.nav_logout) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+            logout();
+            return false;
+        }
+
+        if (itemId == selectedDrawerItemId) {
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
-        });
+        }
+
+        boolean didNavigate = navigateToDrawerDestination(itemId);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return didNavigate;
     }
 
     private Fragment createFragmentForItem(int itemId) {
@@ -140,6 +162,24 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
+    private boolean navigateToDrawerDestination(int itemId) {
+        Fragment fragment = createFragmentForItem(itemId);
+        if (fragment == null) {
+            Toast.makeText(this, R.string.navigation_unavailable_toast, Toast.LENGTH_SHORT).show();
+            navigationView.setCheckedItem(selectedDrawerItemId);
+            return false;
+        }
+
+        try {
+            showDrawerDestination(itemId, fragment);
+            return true;
+        } catch (RuntimeException exception) {
+            Toast.makeText(this, R.string.navigation_error_toast, Toast.LENGTH_SHORT).show();
+            navigationView.setCheckedItem(selectedDrawerItemId);
+            return false;
+        }
+    }
+
     private void showDrawerDestination(int itemId, Fragment fragment) {
         selectedDrawerItemId = itemId;
         navigationView.setCheckedItem(itemId);
@@ -147,6 +187,12 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.main_fragment_container, fragment)
                 .commit();
+    }
+
+    private void logout() {
+        SessionManager.clearSession(this);
+        Toast.makeText(this, R.string.logout_success_toast, Toast.LENGTH_SHORT).show();
+        routeToLogin();
     }
 
     private String resolveCurrentUserDisplayName() {

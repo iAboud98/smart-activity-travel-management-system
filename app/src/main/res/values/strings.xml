@@ -93,7 +93,9 @@
     <string name="home_feature_trips">Trips: browse imported destinations with country, duration, price, and rating details.</string>
     <string name="home_feature_reservations">My Reservations: review reserved trips after Student B connects the reservation workflow.</string>
     <string name="home_feature_favorites">Favorites: save preferred destinations and return to them quickly from the drawer.</string>
-    <string name="logout_placeholder_toast">Logout will be connected in the navigation pass.</string>
+    <string name="logout_success_toast">Logged out successfully.</string>
+    <string name="navigation_unavailable_toast">This screen is not available yet.</string>
+    <string name="navigation_error_toast">Could not open that screen. Please try again.</string>
     <string name="trips_title">Trips</string>
     <string name="trips_placeholder_description">TODO Student B: replace this placeholder with the RecyclerView trip list.</string>
     <string name="my_reservations_title">My Reservations</string>
