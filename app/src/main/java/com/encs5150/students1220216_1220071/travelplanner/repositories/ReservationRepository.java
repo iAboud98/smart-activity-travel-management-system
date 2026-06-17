@@ -40,45 +40,45 @@ public class ReservationRepository {
         }
     }
 
-    // list all reservations for a specific user
+    // list all reservations for a specific user with trip destination name
     public List<Reservation> getReservationsByUser(int userId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         List<Reservation> reservations = new ArrayList<>();
-        Cursor cursor = db.rawQuery("select * from reservations where user_id = " + userId, null);
+        Cursor cursor = db.rawQuery("select reservations.*, trips.destination from reservations " +
+                        "join trips on reservations.trip_id = trips.id " +
+                        "where reservations.user_id = " + userId, null);
         while (cursor.moveToNext()) {
-            Reservation reservation = new Reservation();
-            reservation.setId(cursor.getInt(0));
-            reservation.setUserId(cursor.getInt(1));
-            reservation.setTripId(cursor.getInt(2));
-            reservation.setQuantity(cursor.getInt(3));
-            reservation.setReservationType(cursor.getString(4));
-            reservation.setReservationDate(cursor.getString(5));
-            reservation.setStatus(cursor.getString(6));
-            reservation.setAdditionalInfo(cursor.getString(7));
-            reservations.add(reservation);
+            reservations.add(cursorToReservation(cursor));
         }
         cursor.close();
         return reservations;
     }
 
-    // list all reservations for admin view
+    // list all reservations for admin view with trip destination name
     public List<Reservation> getAllReservations() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         List<Reservation> reservations = new ArrayList<>();
-        Cursor cursor = db.rawQuery("select * from reservations", null);
+        Cursor cursor = db.rawQuery("select reservations.*, trips.destination from reservations " +
+                        "join trips on reservations.trip_id = trips.id", null);
         while (cursor.moveToNext()) {
-            Reservation reservation = new Reservation();
-            reservation.setId(cursor.getInt(0));
-            reservation.setUserId(cursor.getInt(1));
-            reservation.setTripId(cursor.getInt(2));
-            reservation.setQuantity(cursor.getInt(3));
-            reservation.setReservationType(cursor.getString(4));
-            reservation.setReservationDate(cursor.getString(5));
-            reservation.setStatus(cursor.getString(6));
-            reservation.setAdditionalInfo(cursor.getString(7));
-            reservations.add(reservation);
+            reservations.add(cursorToReservation(cursor));
         }
         cursor.close();
         return reservations;
+    }
+
+    // helper to convert a cursor row to a reservation object
+    private Reservation cursorToReservation(Cursor cursor) {
+        Reservation reservation = new Reservation();
+        reservation.setId(cursor.getInt(0));
+        reservation.setUserId(cursor.getInt(1));
+        reservation.setTripId(cursor.getInt(2));
+        reservation.setQuantity(cursor.getInt(3));
+        reservation.setReservationType(cursor.getString(4));
+        reservation.setReservationDate(cursor.getString(5));
+        reservation.setStatus(cursor.getString(6));
+        reservation.setAdditionalInfo(cursor.getString(7));
+        reservation.setTripName(cursor.getString(8)); // from join with trips
+        return reservation;
     }
 }
