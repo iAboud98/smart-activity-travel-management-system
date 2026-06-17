@@ -172,6 +172,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_medium"
+                android:labelFor="@id/gender_spinner"
                 android:maxWidth="@dimen/content_max_width"
                 android:text="@string/registration_gender_label"
                 android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
@@ -202,6 +203,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_medium"
+                android:labelFor="@id/trip_category_spinner"
                 android:maxWidth="@dimen/content_max_width"
                 android:text="@string/registration_trip_category_label"
                 android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />

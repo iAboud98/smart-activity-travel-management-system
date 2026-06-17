@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/home_logo"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="@dimen/app_logo_size"
+            android:layout_height="@dimen/app_logo_size"
             android:contentDescription="@string/app_logo_content_description"
             android:src="@drawable/ic_app_logo" />
 
@@ -71,9 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/home_left_theme_title"
-                    android:textColor="@color/color_text_primary"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textAppearance="@style/TextAppearance.TravelPlanner.SectionTitle" />
 
                 <TextView
                     android:id="@+id/home_left_theme_body"
@@ -106,6 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_surface_card"
+                android:minHeight="@dimen/list_item_min_height"
                 android:text="@string/home_feature_trips"
                 android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
 
@@ -115,6 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_small"
                 android:background="@drawable/bg_surface_card"
+                android:minHeight="@dimen/list_item_min_height"
                 android:text="@string/home_feature_reservations"
                 android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
 
@@ -124,6 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_small"
                 android:background="@drawable/bg_surface_card"
+                android:minHeight="@dimen/list_item_min_height"
                 android:text="@string/home_feature_favorites"
                 android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
 

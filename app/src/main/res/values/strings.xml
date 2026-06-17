@@ -7,6 +7,7 @@
     <string name="introduction_eyebrow">Travel Planner App</string>
     <string name="connect_required_status">Connect to the trip API before continuing.</string>
     <string name="connect_loading_status">Connecting to the trip API...</string>
+    <string name="connect_progress_content_description">Connecting to the trip API</string>
     <string name="connect_success_status">Trips imported successfully. Opening login...</string>
     <string name="connect_success_toast">Trip API connected successfully.</string>
     <string name="connect_failure_status">Could not import trips. Check your connection and try again.</string>
@@ -39,6 +40,7 @@
     <string name="login_status_ready">Enter your email and password to continue.</string>
     <string name="login_validation_error_status">Fix the highlighted login details to continue.</string>
     <string name="login_loading_status">Checking login details...</string>
+    <string name="login_progress_content_description">Checking login details</string>
     <string name="login_invalid_credentials_status">Email or password is incorrect.</string>
     <string name="login_invalid_credentials_toast">Login failed. Check your email and password.</string>
     <string name="login_user_success_status">Login successful. Opening home...</string>

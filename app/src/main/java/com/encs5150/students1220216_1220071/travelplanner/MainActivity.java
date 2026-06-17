@@ -185,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setCheckedItem(itemId);
         getSupportFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(R.anim.drawer_fragment_enter, R.anim.drawer_fragment_exit)
                 .replace(R.id.main_fragment_container, fragment)
                 .commit();
     }
