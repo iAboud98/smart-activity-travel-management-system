@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- trip image -->
+        <ImageView
+            android:id="@+id/details_image"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:contentDescription="@string/label_trip"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/screen_margin">
+
+            <!-- destination -->
+            <TextView
+                android:id="@+id/details_destination"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Headline" />
+
+            <!-- country -->
+            <TextView
+                android:id="@+id/details_country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Eyebrow" />
+
+            <!-- duration, price, rating -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_medium"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/details_duration"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+                <TextView
+                    android:id="@+id/details_price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+                <TextView
+                    android:id="@+id/details_rating"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:textColor="@color/color_primary"
+                    android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+            </LinearLayout>
+
+            <!-- description -->
+            <TextView
+                android:id="@+id/details_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_medium"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+            <!-- favorite button -->
+            <Button
+                android:id="@+id/details_favorite_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_large"
+                android:text="Add to Favorites" />
+
+            <!-- reserve button -->
+            <Button
+                android:id="@+id/details_reserve_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_small"
+                android:text="Reserve" />
+
+            <!-- error message shown if trip not found -->
+            <TextView
+                android:id="@+id/details_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_medium"
+                android:gravity="center"
+                android:text="Trip not found."
+                android:textColor="@color/color_error"
+                android:visibility="gone" />
+
+            <!-- back button shown when trip is not found -->
+            <Button
+                android:id="@+id/details_back_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_medium"
+                android:text="Go Back"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -35,24 +35,24 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        tripRepository = new TripRepository(requireContext());
-        emptyState = view.findViewById(R.id.trips_empty_state);
+        tripRepository = new TripRepository(getActivity());
+        emptyState = getActivity().findViewById(R.id.trips_empty_state);
 
         // setup RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.trips_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        tripAdapter = new TripAdapter(requireContext(), this);
+        RecyclerView recyclerView = getActivity().findViewById(R.id.trips_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        tripAdapter = new TripAdapter(getActivity(), this);
         recyclerView.setAdapter(tripAdapter);
 
         // load all trips initially
         loadTrips(tripRepository.getAllTrips());
 
         // setup search
-        EditText searchInput = view.findViewById(R.id.trips_search_input);
-        Button searchButton = view.findViewById(R.id.trips_search_button);
+        EditText searchInput = getActivity().findViewById(R.id.trips_search_input);
+        Button searchButton = getActivity().findViewById(R.id.trips_search_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,14 +66,14 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
         });
 
         // setup filter buttons
-        Button filterAll = view.findViewById(R.id.filter_all);
-        Button filterShort = view.findViewById(R.id.filter_duration_short);
-        Button filterMedium = view.findViewById(R.id.filter_duration_medium);
-        Button filterLong = view.findViewById(R.id.filter_duration_long);
-        Button filterPriceLow = view.findViewById(R.id.filter_price_low);
-        Button filterPriceMedium = view.findViewById(R.id.filter_price_medium);
-        Button filterPriceHigh = view.findViewById(R.id.filter_price_high);
-        Button filterRating = view.findViewById(R.id.filter_rating);
+        Button filterAll = getActivity().findViewById(R.id.filter_all);
+        Button filterShort = getActivity().findViewById(R.id.filter_duration_short);
+        Button filterMedium = getActivity().findViewById(R.id.filter_duration_medium);
+        Button filterLong = getActivity().findViewById(R.id.filter_duration_long);
+        Button filterPriceLow = getActivity().findViewById(R.id.filter_price_low);
+        Button filterPriceMedium = getActivity().findViewById(R.id.filter_price_medium);
+        Button filterPriceHigh = getActivity().findViewById(R.id.filter_price_high);
+        Button filterRating = getActivity().findViewById(R.id.filter_rating);
 
         filterAll.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,7 +146,7 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
     @Override
     public void onTripClick(Trip trip) {
         TripDetailsFragment detailsFragment = TripDetailsFragment.newInstance(trip.getID());
-        requireActivity().getSupportFragmentManager()
+        getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_fragment_container, detailsFragment)
                 .addToBackStack(null)
