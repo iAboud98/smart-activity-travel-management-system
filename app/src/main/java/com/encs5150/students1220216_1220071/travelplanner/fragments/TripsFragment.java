@@ -26,6 +26,14 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
     private TripRepository tripRepository;
     private TripAdapter tripAdapter;
     private TextView emptyState;
+    private EditText searchInput;
+
+    // tracks current search query and active filter
+    private String currentQuery = "";
+    private String currentFilterType = null;
+    private double currentFilterValue = 0;
+    private int currentFilterMin = 0;
+    private int currentFilterMax = 0;
 
     @NonNull
     @Override
@@ -40,6 +48,7 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
 
         tripRepository = new TripRepository(getActivity());
         emptyState = getActivity().findViewById(R.id.trips_empty_state);
+        searchInput = getActivity().findViewById(R.id.trips_search_input);
 
         // setup RecyclerView
         RecyclerView recyclerView = getActivity().findViewById(R.id.trips_recycler_view);
@@ -48,88 +57,135 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
         recyclerView.setAdapter(tripAdapter);
 
         // load all trips initially
-        loadTrips(tripRepository.getAllTrips());
+        applyFilters();
 
-        // setup search
-        EditText searchInput = getActivity().findViewById(R.id.trips_search_input);
+        // search button
         Button searchButton = getActivity().findViewById(R.id.trips_search_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String query = searchInput.getText().toString();
-                if (query.isEmpty()) {
-                    loadTrips(tripRepository.getAllTrips());
-                } else {
-                    loadTrips(tripRepository.searchTrips(query));
-                }
+                currentQuery = searchInput.getText().toString();
+                applyFilters();
             }
         });
 
-        // setup filter buttons
+        // filter all, clears everything and shows full list
         Button filterAll = getActivity().findViewById(R.id.filter_all);
-        Button filterShort = getActivity().findViewById(R.id.filter_duration_short);
-        Button filterMedium = getActivity().findViewById(R.id.filter_duration_medium);
-        Button filterLong = getActivity().findViewById(R.id.filter_duration_long);
-        Button filterPriceLow = getActivity().findViewById(R.id.filter_price_low);
-        Button filterPriceMedium = getActivity().findViewById(R.id.filter_price_medium);
-        Button filterPriceHigh = getActivity().findViewById(R.id.filter_price_high);
-        Button filterRating = getActivity().findViewById(R.id.filter_rating);
-
         filterAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadTrips(tripRepository.getAllTrips());
+                currentQuery = "";
+                currentFilterType = null;
+                currentFilterValue = 0;
+                currentFilterMin = 0;
+                currentFilterMax = 0;
+                searchInput.setText("");
+                applyFilters();
             }
         });
 
-        filterShort.setOnClickListener(new View.OnClickListener() {
+        // duration filters
+        Button filterShortDuration = getActivity().findViewById(R.id.filter_duration_short);
+        filterShortDuration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadTrips(tripRepository.filterByDuration(1, 3));
+                currentFilterType = "duration";
+                currentFilterMin = 1;
+                currentFilterMax = 3;
+                applyFilters();
             }
         });
 
-        filterMedium.setOnClickListener(new View.OnClickListener() {
+        Button filterMediumDuration = getActivity().findViewById(R.id.filter_duration_medium);
+        filterMediumDuration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadTrips(tripRepository.filterByDuration(4, 7));
+                currentFilterType = "duration";
+                currentFilterMin = 4;
+                currentFilterMax = 7;
+                applyFilters();
             }
         });
 
-        filterLong.setOnClickListener(new View.OnClickListener() {
+        Button filterLongDuration = getActivity().findViewById(R.id.filter_duration_long);
+        filterLongDuration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadTrips(tripRepository.filterByDuration(8, 100));
+                currentFilterType = "duration";
+                currentFilterMin = 8;
+                currentFilterMax = 100;
+                applyFilters();
             }
         });
 
+        // price filters
+        Button filterPriceLow = getActivity().findViewById(R.id.filter_price_low);
         filterPriceLow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadTrips(tripRepository.filterByPrice(500));
+                currentFilterType = "price";
+                currentFilterValue = 500;
+                applyFilters();
             }
         });
 
+        Button filterPriceMedium = getActivity().findViewById(R.id.filter_price_medium);
         filterPriceMedium.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadTrips(tripRepository.filterByPrice(1000));
+                currentFilterType = "price";
+                currentFilterValue = 1000;
+                applyFilters();
             }
         });
 
+        Button filterPriceHigh = getActivity().findViewById(R.id.filter_price_high);
         filterPriceHigh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadTrips(tripRepository.filterByPrice(2000));
+                currentFilterType = "price";
+                currentFilterValue = 2000;
+                applyFilters();
             }
         });
 
-        filterRating.setOnClickListener(new View.OnClickListener() {
+        // rating filter
+        Button filterRatingHigh = getActivity().findViewById(R.id.filter_rating_high);
+        filterRatingHigh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadTrips(tripRepository.filterByRating(4.5));
+                currentFilterType = "rating";
+                currentFilterValue = 4.5;
+                applyFilters();
             }
         });
+
+        Button filterRatingMedium = getActivity().findViewById(R.id.filter_rating_medium);
+        filterRatingMedium.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentFilterType = "rating";
+                currentFilterValue = 4.0;
+                applyFilters();
+            }
+        });
+
+        Button filterRatingLow = getActivity().findViewById(R.id.filter_rating_low);
+        filterRatingLow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentFilterType = "rating";
+                currentFilterValue = 3.5;
+                applyFilters();
+            }
+        });
+    }
+
+    // applies current search query and filter together
+    private void applyFilters() {
+        List<Trip> trips = tripRepository.searchWithFilter(
+                currentQuery, currentFilterType, currentFilterValue, currentFilterMin, currentFilterMax);
+        loadTrips(trips);
     }
 
     // loads trips into the adapter and handles empty state
