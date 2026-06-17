@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.encs5150.students1220216_1220071.travelplanner.R;
 import com.encs5150.students1220216_1220071.travelplanner.models.Trip;
+import com.encs5150.students1220216_1220071.travelplanner.repositories.FavoriteRepository;
+import com.encs5150.students1220216_1220071.travelplanner.utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +72,30 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             @Override
             public void onClick(View v) {
                 listener.onTripClick(trip);
+            }
+        });
+
+        ImageButton favoriteButton = holder.itemView.findViewById(R.id.trip_favorite_button);
+        FavoriteRepository favoriteRepository = new FavoriteRepository(context);
+        int currentUserId = SessionManager.getCurrentUserId(context);
+
+        // set initial tint based on favorite state
+        if (favoriteRepository.isFavorite(currentUserId, trip.getID())) {
+            favoriteButton.setColorFilter(context.getResources().getColor(R.color.color_primary));
+        } else {
+            favoriteButton.setColorFilter(context.getResources().getColor(android.R.color.white));
+        }
+
+        favoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (favoriteRepository.isFavorite(currentUserId, trip.getID())) {
+                    favoriteRepository.removeFavorite(currentUserId, trip.getID());
+                    favoriteButton.setColorFilter(context.getResources().getColor(android.R.color.white));
+                } else {
+                    favoriteRepository.addFavorite(currentUserId, trip.getID());
+                    favoriteButton.setColorFilter(context.getResources().getColor(R.color.color_primary));
+                }
             }
         });
     }
