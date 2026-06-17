@@ -30,17 +30,23 @@
     <style name="TextAppearance.TravelPlanner.Eyebrow" parent="TextAppearance.Material3.LabelMedium">
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/color_primary</item>
-        <item name="android:letterSpacing">0.08</item>
+        <item name="android:letterSpacing">0</item>
     </style>
 
     <style name="TextAppearance.TravelPlanner.Headline" parent="TextAppearance.Material3.HeadlineMedium">
         <item name="android:textColor">@color/color_text_primary</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingExtra">2dp</item>
     </style>
 
     <style name="TextAppearance.TravelPlanner.Body" parent="TextAppearance.Material3.BodyLarge">
         <item name="android:textColor">@color/color_text_secondary</item>
         <item name="android:lineSpacingExtra">4dp</item>
+    </style>
+
+    <style name="TextAppearance.TravelPlanner.SectionTitle" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">@color/color_text_primary</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Widget.TravelPlanner.Button.Primary" parent="Widget.Material3.Button">

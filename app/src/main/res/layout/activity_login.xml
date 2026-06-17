@@ -142,6 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_medium"
+                android:contentDescription="@string/login_progress_content_description"
                 android:indeterminate="true"
                 android:visibility="gone" />
 

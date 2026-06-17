@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen_left_theme"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|start"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/screen_margin"
+        android:paddingTop="@dimen/screen_margin"
+        android:paddingEnd="@dimen/screen_margin"
+        android:paddingBottom="@dimen/screen_margin">
+
+        <ImageView
+            android:id="@+id/home_logo"
+            android:layout_width="@dimen/app_logo_size"
+            android:layout_height="@dimen/app_logo_size"
+            android:contentDescription="@string/app_logo_content_description"
+            android:src="@drawable/ic_app_logo" />
+
+        <TextView
+            android:id="@+id/home_eyebrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_large"
+            android:text="@string/home_eyebrow"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Eyebrow" />
+
+        <TextView
+            android:id="@+id/home_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_small"
+            android:maxWidth="@dimen/content_max_width"
+            android:text="@string/home_title"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Headline" />
+
+        <TextView
+            android:id="@+id/home_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_small"
+            android:maxWidth="@dimen/content_max_width"
+            android:text="@string/home_overview"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/home_theme_card"
+            style="@style/Widget.TravelPlanner.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_large"
+            app:cardBackgroundColor="@color/color_surface"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:strokeColor="@color/color_divider"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/space_medium">
+
+                <TextView
+                    android:id="@+id/home_left_theme_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_left_theme_title"
+                    android:textAppearance="@style/TextAppearance.TravelPlanner.SectionTitle" />
+
+                <TextView
+                    android:id="@+id/home_left_theme_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_xsmall"
+                    android:text="@string/home_left_theme_body"
+                    android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/home_sections_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_large"
+            android:text="@string/home_sections_label"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Eyebrow" />
+
+        <LinearLayout
+            android:id="@+id/home_feature_stack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_small"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/home_feature_trips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_surface_card"
+                android:minHeight="@dimen/list_item_min_height"
+                android:text="@string/home_feature_trips"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+            <TextView
+                android:id="@+id/home_feature_reservations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_small"
+                android:background="@drawable/bg_surface_card"
+                android:minHeight="@dimen/list_item_min_height"
+                android:text="@string/home_feature_reservations"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+            <TextView
+                android:id="@+id/home_feature_favorites"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_small"
+                android:background="@drawable/bg_surface_card"
+                android:minHeight="@dimen/list_item_min_height"
+                android:text="@string/home_feature_favorites"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

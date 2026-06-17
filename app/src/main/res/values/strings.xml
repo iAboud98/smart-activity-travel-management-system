@@ -7,6 +7,7 @@
     <string name="introduction_eyebrow">Travel Planner App</string>
     <string name="connect_required_status">Connect to the trip API before continuing.</string>
     <string name="connect_loading_status">Connecting to the trip API...</string>
+    <string name="connect_progress_content_description">Connecting to the trip API</string>
     <string name="connect_success_status">Trips imported successfully. Opening login...</string>
     <string name="connect_success_toast">Trip API connected successfully.</string>
     <string name="connect_failure_status">Could not import trips. Check your connection and try again.</string>
@@ -39,6 +40,7 @@
     <string name="login_status_ready">Enter your email and password to continue.</string>
     <string name="login_validation_error_status">Fix the highlighted login details to continue.</string>
     <string name="login_loading_status">Checking login details...</string>
+    <string name="login_progress_content_description">Checking login details</string>
     <string name="login_invalid_credentials_status">Email or password is incorrect.</string>
     <string name="login_invalid_credentials_toast">Login failed. Check your email and password.</string>
     <string name="login_user_success_status">Login successful. Opening home...</string>
@@ -71,6 +73,9 @@
 
     <string name="drawer_header_title">Travel Planner App</string>
     <string name="drawer_header_subtitle">Left Theme navigation</string>
+    <string name="drawer_guest_user">Traveler</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
     <string name="nav_home">Home</string>
     <string name="nav_trips">Trips</string>
     <string name="nav_my_reservations">My Reservations</string>
@@ -81,8 +86,18 @@
     <string name="nav_logout">Logout</string>
 
     <string name="placeholder_status">Placeholder screen</string>
-    <string name="home_title">Home</string>
-    <string name="home_placeholder_description">Placeholder for the Travel Planner overview and Left Theme description.</string>
+    <string name="home_eyebrow">Traveler Dashboard</string>
+    <string name="home_title">Travel Planner Home</string>
+    <string name="home_overview">Plan trips, compare destinations, reserve travel experiences, and save favorite places from one consistent user home.</string>
+    <string name="home_left_theme_title">Left Theme</string>
+    <string name="home_left_theme_body">The app keeps navigation and visual weight on the left with a drawer, start-aligned content, and a clear accent rail across the main traveler screens.</string>
+    <string name="home_sections_label">Main Trip Areas</string>
+    <string name="home_feature_trips">Trips: browse imported destinations with country, duration, price, and rating details.</string>
+    <string name="home_feature_reservations">My Reservations: review reserved trips after Student B connects the reservation workflow.</string>
+    <string name="home_feature_favorites">Favorites: save preferred destinations and return to them quickly from the drawer.</string>
+    <string name="logout_success_toast">Logged out successfully.</string>
+    <string name="navigation_unavailable_toast">This screen is not available yet.</string>
+    <string name="navigation_error_toast">Could not open that screen. Please try again.</string>
     <string name="trips_title">Trips</string>
     <string name="trips_placeholder_description">TODO Student B: replace this placeholder with the RecyclerView trip list.</string>
     <string name="my_reservations_title">My Reservations</string>

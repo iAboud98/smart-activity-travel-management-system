@@ -48,7 +48,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_small"
+                android:autoSizeMaxTextSize="28sp"
+                android:autoSizeMinTextSize="20sp"
+                android:autoSizeStepGranularity="1sp"
+                android:autoSizeTextType="uniform"
                 android:maxWidth="@dimen/content_max_width"
+                android:maxLines="2"
                 android:text="@string/app_name"
                 android:textAppearance="@style/TextAppearance.TravelPlanner.Headline" />
 
@@ -76,6 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_medium"
+                android:contentDescription="@string/connect_progress_content_description"
                 android:indeterminate="true"
                 android:visibility="gone" />
 
