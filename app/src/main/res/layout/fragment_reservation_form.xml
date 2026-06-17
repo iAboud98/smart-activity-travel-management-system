@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/screen_margin">
+
+        <TextView
+            android:id="@+id/reservation_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reserve Trip"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Headline" />
+
+        <TextView
+            android:id="@+id/reservation_trip_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_small"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Eyebrow" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_large"
+            android:text="Number of Travelers"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+        <EditText
+            android:id="@+id/reservation_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xsmall"
+            android:hint="Enter number of travelers"
+            android:inputType="number"
+            android:background="@color/color_surface"
+            android:padding="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_medium"
+            android:text="Reservation Type"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+        <Spinner
+            android:id="@+id/reservation_type_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xsmall"
+            android:background="@drawable/bg_surface_card"
+            android:minHeight="@dimen/button_min_height"
+            android:paddingStart="@dimen/space_medium"
+            android:paddingEnd="@dimen/space_medium"
+            android:spinnerMode="dropdown" />
+
+        <TextView
+            android:id="@+id/reservation_type_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xsmall"
+            android:text="Please select a reservation type."
+            android:textColor="@color/color_error"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_medium"
+            android:text="Additional Notes (optional)"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+        <EditText
+            android:id="@+id/reservation_additional_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xsmall"
+            android:hint="Any special requests or notes..."
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:background="@color/color_surface"
+            android:padding="8dp" />
+
+        <Button
+            android:id="@+id/reservation_confirm_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_large"
+            android:text="Confirm Reservation" />
+
+        <Button
+            android:id="@+id/reservation_cancel_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_small"
+            android:text="Cancel" />
+
+        <TextView
+            android:id="@+id/reservation_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_small"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Body"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</ScrollView>

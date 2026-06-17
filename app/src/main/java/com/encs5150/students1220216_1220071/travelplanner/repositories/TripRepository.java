@@ -154,6 +154,37 @@ public class TripRepository {
         return trips;
     }
 
+    // search with optional filter combined
+    public List<Trip> searchWithFilter(String searchQuery, String filterType, double filterValue, int filterMin, int filterMax) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        List<Trip> trips = new ArrayList<>();
+
+        String sql = "select * from trips where is_active = 1";
+
+        // add search condition
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            sql += " and (destination like '%" + searchQuery + "%' or country like '%" + searchQuery + "%' or description like '%" + searchQuery + "%')";
+        }
+
+        // add filter condition
+        if (filterType != null) {
+            if (filterType.equals("duration")) {
+                sql += " and duration_days >= " + filterMin + " and duration_days <= " + filterMax;
+            } else if (filterType.equals("price")) {
+                sql += " and price <= " + filterValue;
+            } else if (filterType.equals("rating")) {
+                sql += " and rating >= " + filterValue;
+            }
+        }
+
+        Cursor cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext()) {
+            trips.add(cursorToTrip(cursor));
+        }
+        cursor.close();
+        return trips;
+    }
+
     // special section
     // list popular trips based on number of reservations (5 or more reservations)
     public List<Trip> getPopularTrips() {

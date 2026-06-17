@@ -145,4 +145,12 @@
         <item>Budget travel</item>
         <item>Luxury travel</item>
     </string-array>
+
+    <string-array name="reservation_type_options">
+        <item>Select reservation type</item>
+        <item>Solo</item>
+        <item>Couple</item>
+        <item>Family</item>
+        <item>Group</item>
+    </string-array>
 </resources>
