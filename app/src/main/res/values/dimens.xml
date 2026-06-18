@@ -24,4 +24,6 @@
     <dimen name="drawer_item_icon_padding">16dp</dimen>
     <dimen name="icon_touch_target">48dp</dimen>
     <dimen name="app_logo_size">96dp</dimen>
+    <dimen name="profile_avatar_size">88dp</dimen>
+    <dimen name="profile_summary_min_height">120dp</dimen>
 </resources>
