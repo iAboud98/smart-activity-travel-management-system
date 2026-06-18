@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/screen_margin">
+
+        <!-- top rated section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Top Rated Trips"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.SectionTitle" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Trips with rating 4.5 and above"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+        <TextView
+            android:id="@+id/top_rated_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_small"
+            android:text="No top rated trips available."
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Body"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/top_rated_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_small"
+            android:nestedScrollingEnabled="false" />
+
+        <!-- popular section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_large"
+            android:text="Popular Destinations"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.SectionTitle" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Most reserved trips"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+        <TextView
+            android:id="@+id/popular_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_small"
+            android:text="No popular destinations yet."
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Body"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/popular_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_small"
+            android:nestedScrollingEnabled="false" />
+
+        <!-- trending section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_large"
+            android:text="Trending This Week"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.SectionTitle" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Trips with most reservations in the last 7 days"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+        <TextView
+            android:id="@+id/trending_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_small"
+            android:text="No trending trips this week."
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Body"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trending_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_small"
+            android:nestedScrollingEnabled="false" />
+
+    </LinearLayout>
+</ScrollView>

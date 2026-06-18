@@ -9,6 +9,7 @@ public class Reservation {
     private String reservationDate;
     private String status;
     private String additionalInfo;
+    private String tripName; // for display only (not stored in database, fetched with join)
 
     public Reservation(int id, int userId, int tripId, int quantity, String reservationType,
                        String reservationDate, String status, String additionalInfo) {
@@ -56,6 +57,8 @@ public class Reservation {
         return additionalInfo;
     }
 
+    public String getTripName() { return tripName; }
+
     public void setUserId(int userId) {
         this.userID = userId;
     }
@@ -72,13 +75,9 @@ public class Reservation {
         this.quantity = quantity;
     }
 
-    public void setReservationType(String reservationType) {
-        this.reservationType = reservationType;
-    }
+    public void setReservationType(String reservationType) { this.reservationType = reservationType; }
 
-    public void setReservationDate(String reservationDate) {
-        this.reservationDate = reservationDate;
-    }
+    public void setReservationDate(String reservationDate) { this.reservationDate = reservationDate; }
 
     public void setStatus(String status) {
         this.status = status;
@@ -87,4 +86,6 @@ public class Reservation {
     public void setAdditionalInfo(String additionalInfo) {
         this.additionalInfo = additionalInfo;
     }
+
+    public void setTripName(String tripName) { this.tripName = tripName; }
 }

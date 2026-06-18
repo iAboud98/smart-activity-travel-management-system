@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.encs5150.students1220216_1220071.travelplanner.database.DatabaseHelper;
 import com.encs5150.students1220216_1220071.travelplanner.models.Favorite;
+import com.encs5150.students1220216_1220071.travelplanner.models.Trip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,33 @@ public class FavoriteRepository {
         }
         cursor.close();
         return favorites;
+    }
+
+    // get all favorited trips for a user as Trip objects
+    public List<Trip> getFavoriteTripsByUser(int userId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        List<Trip> trips = new ArrayList<>();
+        Cursor cursor = db.rawQuery(
+                "select trips.* from trips " +
+                        "join favorites on trips.id = favorites.trip_id " +
+                        "where favorites.user_id = " + userId +
+                        " and trips.is_active = 1", null);
+        while (cursor.moveToNext()) {
+            Trip trip = new Trip();
+            trip.setID(cursor.getInt(0));
+            trip.setApiID(cursor.getInt(1));
+            trip.setDestination(cursor.getString(2));
+            trip.setCountry(cursor.getString(3));
+            trip.setDurationDays(cursor.getInt(4));
+            trip.setPrice(cursor.getDouble(5));
+            trip.setRating(cursor.getDouble(6));
+            trip.setDescription(cursor.getString(7));
+            trip.setImageUrl(cursor.getString(8));
+            trip.setIsActive(cursor.getInt(9));
+            trips.add(trip);
+        }
+        cursor.close();
+        return trips;
     }
 
 }
