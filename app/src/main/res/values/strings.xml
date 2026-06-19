@@ -132,7 +132,21 @@
     <string name="profile_image_content_description">Profile picture</string>
     <string name="profile_default_image_content_description">Default profile picture</string>
     <string name="contact_us_title">Contact Us</string>
-    <string name="contact_us_placeholder_description">Placeholder for the contact intents screen.</string>
+    <string name="contact_eyebrow">Travel Support</string>
+    <string name="contact_description">Need help planning your next trip? Reach our team by phone, map, or email.</string>
+    <string name="contact_action_label">Choose a contact method</string>
+    <string name="contact_external_app_note">Your choice opens a compatible app on this device. Calls are never placed automatically.</string>
+    <string name="action_call_us">Call Us</string>
+    <string name="action_locate_us">Locate Us</string>
+    <string name="action_email_us">Email Us</string>
+    <string name="contact_phone_number" translatable="false">+970 59 912 3456</string>
+    <string name="contact_location_query" translatable="false">Birzeit University, Ramallah, Palestine</string>
+    <string name="contact_email_address" translatable="false">travelplanner@example.com</string>
+    <string name="contact_email_subject">Travel Planner support request</string>
+    <string name="contact_email_body">Hello Travel Planner team,\n\nI need help with:</string>
+    <string name="contact_no_dialer_toast">No phone app is available on this device.</string>
+    <string name="contact_no_map_toast">No map app is available on this device.</string>
+    <string name="contact_no_email_app_toast">No email app is available on this device.</string>
     <string name="admin_access_denied_toast">Admin access requires an admin session.</string>
     <string name="admin_home_eyebrow">Admin Area</string>
     <string name="admin_home_title">Admin Home</string>
