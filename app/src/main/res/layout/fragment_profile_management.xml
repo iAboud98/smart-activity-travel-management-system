@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_screen_left_theme"
@@ -92,6 +93,14 @@
 
             </LinearLayout>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/select_profile_picture_button"
+                style="@style/Widget.TravelPlanner.Button.Secondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_medium"
+                android:text="@string/action_select_profile_picture" />
+
             <TextView
                 android:id="@+id/profile_details_label"
                 android:layout_width="wrap_content"
@@ -117,54 +126,6 @@
 
                 <TextView
                     android:id="@+id/profile_email_value"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_xsmall"
-                    android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_small"
-                android:background="@drawable/bg_surface_card"
-                android:minHeight="@dimen/list_item_min_height"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/profile_first_name_label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/profile_first_name_label"
-                    android:textAppearance="@style/TextAppearance.TravelPlanner.Eyebrow" />
-
-                <TextView
-                    android:id="@+id/profile_first_name_value"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_xsmall"
-                    android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_small"
-                android:background="@drawable/bg_surface_card"
-                android:minHeight="@dimen/list_item_min_height"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/profile_last_name_label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/profile_last_name_label"
-                    android:textAppearance="@style/TextAppearance.TravelPlanner.Eyebrow" />
-
-                <TextView
-                    android:id="@+id/profile_last_name_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_xsmall"
@@ -220,29 +181,118 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/profile_edit_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_large"
+                android:text="@string/profile_edit_label"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Eyebrow" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profile_first_name_input_layout"
+                style="@style/Widget.TravelPlanner.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_small"
-                android:background="@drawable/bg_surface_card"
-                android:minHeight="@dimen/list_item_min_height"
-                android:orientation="vertical">
+                android:hint="@string/profile_first_name_label"
+                app:errorEnabled="true">
 
-                <TextView
-                    android:id="@+id/profile_phone_label"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profile_first_name_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/profile_phone_label"
-                    android:textAppearance="@style/TextAppearance.TravelPlanner.Eyebrow" />
+                    android:imeOptions="actionNext"
+                    android:inputType="textPersonName"
+                    android:singleLine="true" />
 
-                <TextView
-                    android:id="@+id/profile_phone_value"
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profile_last_name_input_layout"
+                style="@style/Widget.TravelPlanner.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_medium"
+                android:hint="@string/profile_last_name_label"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profile_last_name_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_xsmall"
-                    android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+                    android:imeOptions="actionNext"
+                    android:inputType="textPersonName"
+                    android:singleLine="true" />
 
-            </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profile_phone_input_layout"
+                style="@style/Widget.TravelPlanner.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_medium"
+                android:hint="@string/profile_phone_label"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profile_phone_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="phone"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profile_password_input_layout"
+                style="@style/Widget.TravelPlanner.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_medium"
+                android:hint="@string/profile_new_password_label"
+                app:endIconMode="password_toggle"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profile_password_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profile_confirm_password_input_layout"
+                style="@style/Widget.TravelPlanner.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_medium"
+                android:hint="@string/profile_confirm_password_label"
+                app:endIconMode="password_toggle"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profile_confirm_password_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/save_profile_button"
+                style="@style/Widget.TravelPlanner.Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_large"
+                android:text="@string/action_save" />
 
         </LinearLayout>
 

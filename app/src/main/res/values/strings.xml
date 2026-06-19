@@ -70,6 +70,7 @@
     <string name="action_logout">Logout</string>
     <string name="action_save">Save</string>
     <string name="action_cancel">Cancel</string>
+    <string name="action_select_profile_picture">Select Profile Picture</string>
 
     <string name="drawer_header_title">Travel Planner App</string>
     <string name="drawer_header_subtitle">Left Theme navigation</string>
@@ -116,9 +117,18 @@
     <string name="profile_gender_label">Gender</string>
     <string name="profile_preference_label">Travel Preference</string>
     <string name="profile_phone_label">Phone Number</string>
+    <string name="profile_edit_label">Editable Details</string>
+    <string name="profile_new_password_label">New Password</string>
+    <string name="profile_confirm_password_label">Confirm New Password</string>
     <string name="profile_unknown_traveler">Traveler</string>
     <string name="profile_value_not_provided">Not provided</string>
     <string name="profile_load_error">Could not load your profile information.</string>
+    <string name="profile_validation_error_status">Fix the highlighted profile details to continue.</string>
+    <string name="profile_update_success_status">Profile updated successfully.</string>
+    <string name="profile_update_success_toast">Profile updated successfully.</string>
+    <string name="profile_update_failure_status">Could not update your profile. Please try again.</string>
+    <string name="profile_update_failure_toast">Profile update failed.</string>
+    <string name="profile_picture_selected_status">Profile picture selected. Save to keep it.</string>
     <string name="profile_image_content_description">Profile picture</string>
     <string name="profile_default_image_content_description">Default profile picture</string>
     <string name="contact_us_title">Contact Us</string>
