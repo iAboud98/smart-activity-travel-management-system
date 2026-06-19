@@ -18,6 +18,8 @@ import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminA
 import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminDeleteTripsFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminEditTripsFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminHomeFragment;
+import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminTripFormFragment;
+import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminTripsFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminViewReservationsFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminViewUsersFragment;
 import com.encs5150.students1220216_1220071.travelplanner.utils.SessionManager;
@@ -52,15 +54,13 @@ public class AdminHomeActivity extends AppCompatActivity {
         toolbar.setTitle("Admin Panel");
 
         // setup drawer toggle
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar,
-                R.string.drawer_open, R.string.drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                                                R.string.drawer_open, R.string.drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
         // set admin email in drawer header
-        TextView headerSubtitle = navigationView.getHeaderView(0)
-                .findViewById(R.id.admin_drawer_header_subtitle);
+        TextView headerSubtitle = navigationView.getHeaderView(0).findViewById(R.id.admin_drawer_header_subtitle);
         headerSubtitle.setText(SessionManager.getCurrentUserEmail(this));
 
         // load admin home fragment by default
@@ -102,11 +102,11 @@ public class AdminHomeActivity extends AppCompatActivity {
         } else if (itemId == R.id.admin_nav_view_users) {
             return new AdminViewUsersFragment();
         } else if (itemId == R.id.admin_nav_add_trip) {
-            return new AdminAddTripFragment();
+            return AdminTripFormFragment.newInstance(); // add mode
         } else if (itemId == R.id.admin_nav_edit_trips) {
-            return new AdminEditTripsFragment();
+            return new AdminTripsFragment(); // shows list with edit buttons
         } else if (itemId == R.id.admin_nav_delete_trips) {
-            return new AdminDeleteTripsFragment();
+            return new AdminTripsFragment(); // same list, delete buttons active in B20
         } else if (itemId == R.id.admin_nav_view_reservations) {
             return new AdminViewReservationsFragment();
         }
