@@ -4,25 +4,38 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.encs5150.students1220216_1220071.travelplanner.R;
 import com.encs5150.students1220216_1220071.travelplanner.models.User;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.UserViewHolder> {
 
+    // interface for delete button click
+    public interface OnUserDeleteListener {
+        void onDeleteClick(User user);
+    }
+
     private List<User> users;
     private Context context;
+    private OnUserDeleteListener deleteListener;
 
+    // constructor without delete listener used in view users screen
     public AdminUserAdapter(Context context) {
         this.context = context;
         this.users = new ArrayList<>();
+        this.deleteListener = null;  // no delete btn shown
+    }
+
+    // constructor with delete listener used in delete users screen
+    public AdminUserAdapter(Context context, OnUserDeleteListener deleteListener) {
+        this.context = context;
+        this.users = new ArrayList<>();
+        this.deleteListener = deleteListener;
     }
 
     public void setUsers(List<User> users) {
@@ -30,7 +43,6 @@ public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.User
         notifyDataSetChanged();
     }
 
-    // creates a new row
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -48,6 +60,19 @@ public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.User
         holder.phone.setText("Phone: " + user.getPhone());
         holder.gender.setText("Gender: " + user.getGender());
         holder.category.setText("Category: " + user.getCategory());
+
+        // show delete button only if a delete listener is provided
+        if (deleteListener != null) {
+            holder.deleteButton.setVisibility(View.VISIBLE);
+            holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteListener.onDeleteClick(user);
+                }
+            });
+        } else {
+            holder.deleteButton.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -62,6 +87,7 @@ public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.User
         TextView phone;
         TextView gender;
         TextView category;
+        Button deleteButton;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -70,6 +96,7 @@ public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.User
             phone = itemView.findViewById(R.id.user_phone);
             gender = itemView.findViewById(R.id.user_gender);
             category = itemView.findViewById(R.id.user_category);
+            deleteButton = itemView.findViewById(R.id.user_delete_button);
         }
     }
 }

@@ -14,10 +14,6 @@
             android:icon="@drawable/ic_nav_profile"
             android:title="View Users" />
         <item
-            android:id="@+id/admin_nav_delete_users"
-            android:icon="@drawable/ic_nav_logout"
-            android:title="Delete Users" />
-        <item
             android:id="@+id/admin_nav_add_trip"
             android:icon="@drawable/ic_nav_trips"
             android:title="Add New Trip" />

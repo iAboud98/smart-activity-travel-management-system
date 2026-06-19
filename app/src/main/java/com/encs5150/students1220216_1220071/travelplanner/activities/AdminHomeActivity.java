@@ -2,6 +2,7 @@ package com.encs5150.students1220216_1220071.travelplanner.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,7 +16,6 @@ import com.encs5150.students1220216_1220071.travelplanner.R;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminAddAdminFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminAddTripFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminDeleteTripsFragment;
-import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminDeleteUsersFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminEditTripsFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminHomeFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminViewReservationsFragment;
@@ -34,7 +34,7 @@ public class AdminHomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // block non-admins
+        // block non admins
         if (!SessionManager.isAdmin(this)) {
             SessionManager.clearSession(this);
             Toast.makeText(this, R.string.admin_access_denied_toast, Toast.LENGTH_LONG).show();
@@ -70,24 +70,27 @@ public class AdminHomeActivity extends AppCompatActivity {
         }
 
         // handle drawer item clicks
-        navigationView.setNavigationItemSelectedListener(item -> {
-            int itemId = item.getItemId();
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                int itemId = item.getItemId();
 
-            if (itemId == R.id.admin_nav_logout) {
-                SessionManager.clearSession(this);
-                Toast.makeText(this, "Logged out.", Toast.LENGTH_SHORT).show();
-                routeToLogin();
+                if (itemId == R.id.admin_nav_logout) {
+                    SessionManager.clearSession(AdminHomeActivity.this);
+                    Toast.makeText(AdminHomeActivity.this, "Logged out.", Toast.LENGTH_SHORT).show();
+                    routeToLogin();
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    return true;
+                }
+
+                Fragment fragment = createFragmentForItem(itemId);
+                if (fragment != null) {
+                    showFragment(fragment);
+                }
+
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             }
-
-            Fragment fragment = createFragmentForItem(itemId);
-            if (fragment != null) {
-                showFragment(fragment);
-            }
-
-            drawerLayout.closeDrawer(GravityCompat.START);
-            return true;
         });
     }
 
@@ -98,8 +101,6 @@ public class AdminHomeActivity extends AppCompatActivity {
             return new AdminAddAdminFragment();
         } else if (itemId == R.id.admin_nav_view_users) {
             return new AdminViewUsersFragment();
-        } else if (itemId == R.id.admin_nav_delete_users) {
-            return new AdminDeleteUsersFragment();
         } else if (itemId == R.id.admin_nav_add_trip) {
             return new AdminAddTripFragment();
         } else if (itemId == R.id.admin_nav_edit_trips) {
