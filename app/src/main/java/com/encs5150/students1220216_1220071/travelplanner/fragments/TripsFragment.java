@@ -1,5 +1,6 @@
 package com.encs5150.students1220216_1220071.travelplanner.fragments;
 
+import android.graphics.ColorFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,12 +30,18 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
     private TextView emptyState;
     private EditText searchInput;
 
-    // tracks current search query and active filter
-    private String currentQuery = "";
-    private String currentFilterType = null;
-    private double currentFilterValue = 0;
-    private int currentFilterMin = 0;
-    private int currentFilterMax = 0;
+    private String currentQuery = ""; // tracks current search query
+
+    // tracks one active filter per category, 0 means no filter
+    private int currentDurationMin = 0;
+    private int currentDurationMax = 0;
+    private double currentMaxPrice = 0;
+    private double currentMinRating = 0;
+
+    // keeping references to filter buttons to toggle their appearance
+    private Button activeDurationButton = null;
+    private Button activePriceButton = null;
+    private Button activeRatingButton = null;
 
     @NonNull
     @Override
@@ -70,17 +77,21 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
             }
         });
 
-        // filter all, clears everything and shows full list
+        // all button clears all filters and keeps search query
         Button filterAll = getActivity().findViewById(R.id.filter_all);
         filterAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentQuery = "";
-                currentFilterType = null;
-                currentFilterValue = 0;
-                currentFilterMin = 0;
-                currentFilterMax = 0;
-                searchInput.setText("");
+                deactivateButton(activeDurationButton);
+                deactivateButton(activePriceButton);
+                deactivateButton(activeRatingButton);
+                activeDurationButton = null;
+                activePriceButton = null;
+                activeRatingButton = null;
+                currentDurationMin = 0;
+                currentDurationMax = 0;
+                currentMaxPrice = 0;
+                currentMinRating = 0;
                 applyFilters();
             }
         });
@@ -90,9 +101,19 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
         filterShortDuration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentFilterType = "duration";
-                currentFilterMin = 1;
-                currentFilterMax = 3;
+                if (activeDurationButton == filterShortDuration) {
+                    // clicking active button again deactivates it
+                    deactivateButton(filterShortDuration);
+                    activeDurationButton = null;
+                    currentDurationMin = 0;
+                    currentDurationMax = 0;
+                } else {
+                    deactivateButton(activeDurationButton);
+                    activateButton(filterShortDuration);
+                    activeDurationButton = filterShortDuration;
+                    currentDurationMin = 1;
+                    currentDurationMax = 3;
+                }
                 applyFilters();
             }
         });
@@ -101,9 +122,18 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
         filterMediumDuration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentFilterType = "duration";
-                currentFilterMin = 4;
-                currentFilterMax = 7;
+                if (activeDurationButton == filterMediumDuration) {
+                    deactivateButton(filterMediumDuration);
+                    activeDurationButton = null;
+                    currentDurationMin = 0;
+                    currentDurationMax = 0;
+                } else {
+                    deactivateButton(activeDurationButton);
+                    activateButton(filterMediumDuration);
+                    activeDurationButton = filterMediumDuration;
+                    currentDurationMin = 4;
+                    currentDurationMax = 7;
+                }
                 applyFilters();
             }
         });
@@ -112,9 +142,18 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
         filterLongDuration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentFilterType = "duration";
-                currentFilterMin = 8;
-                currentFilterMax = 100;
+                if (activeDurationButton == filterLongDuration) {
+                    deactivateButton(filterLongDuration);
+                    activeDurationButton = null;
+                    currentDurationMin = 0;
+                    currentDurationMax = 0;
+                } else {
+                    deactivateButton(activeDurationButton);
+                    activateButton(filterLongDuration);
+                    activeDurationButton = filterLongDuration;
+                    currentDurationMin = 8;
+                    currentDurationMax = 100;
+                }
                 applyFilters();
             }
         });
@@ -124,8 +163,16 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
         filterPriceLow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentFilterType = "price";
-                currentFilterValue = 500;
+                if (activePriceButton == filterPriceLow) {
+                    deactivateButton(filterPriceLow);
+                    activePriceButton = null;
+                    currentMaxPrice = 0;
+                } else {
+                    deactivateButton(activePriceButton);
+                    activateButton(filterPriceLow);
+                    activePriceButton = filterPriceLow;
+                    currentMaxPrice = 500;
+                }
                 applyFilters();
             }
         });
@@ -134,8 +181,16 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
         filterPriceMedium.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentFilterType = "price";
-                currentFilterValue = 1000;
+                if (activePriceButton == filterPriceMedium) {
+                    deactivateButton(filterPriceMedium);
+                    activePriceButton = null;
+                    currentMaxPrice = 0;
+                } else {
+                    deactivateButton(activePriceButton);
+                    activateButton(filterPriceMedium);
+                    activePriceButton = filterPriceMedium;
+                    currentMaxPrice = 1000;
+                }
                 applyFilters();
             }
         });
@@ -144,19 +199,35 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
         filterPriceHigh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentFilterType = "price";
-                currentFilterValue = 2000;
+                if (activePriceButton == filterPriceHigh) {
+                    deactivateButton(filterPriceHigh);
+                    activePriceButton = null;
+                    currentMaxPrice = 0;
+                } else {
+                    deactivateButton(activePriceButton);
+                    activateButton(filterPriceHigh);
+                    activePriceButton = filterPriceHigh;
+                    currentMaxPrice = 2000;
+                }
                 applyFilters();
             }
         });
 
-        // rating filter
+        // rating filters
         Button filterRatingHigh = getActivity().findViewById(R.id.filter_rating_high);
         filterRatingHigh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentFilterType = "rating";
-                currentFilterValue = 4.5;
+                if (activeRatingButton == filterRatingHigh) {
+                    deactivateButton(filterRatingHigh);
+                    activeRatingButton = null;
+                    currentMinRating = 0;
+                } else {
+                    deactivateButton(activeRatingButton);
+                    activateButton(filterRatingHigh);
+                    activeRatingButton = filterRatingHigh;
+                    currentMinRating = 4.5;
+                }
                 applyFilters();
             }
         });
@@ -165,8 +236,16 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
         filterRatingMedium.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentFilterType = "rating";
-                currentFilterValue = 4.0;
+                if (activeRatingButton == filterRatingMedium) {
+                    deactivateButton(filterRatingMedium);
+                    activeRatingButton = null;
+                    currentMinRating = 0;
+                } else {
+                    deactivateButton(activeRatingButton);
+                    activateButton(filterRatingMedium);
+                    activeRatingButton = filterRatingMedium;
+                    currentMinRating = 4.0;
+                }
                 applyFilters();
             }
         });
@@ -175,22 +254,52 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
         filterRatingLow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentFilterType = "rating";
-                currentFilterValue = 3.5;
+                if (activeRatingButton == filterRatingLow) {
+                    deactivateButton(filterRatingLow);
+                    activeRatingButton = null;
+                    currentMinRating = 0;
+                } else {
+                    deactivateButton(activeRatingButton);
+                    activateButton(filterRatingLow);
+                    activeRatingButton = filterRatingLow;
+                    currentMinRating = 3.5;
+                }
                 applyFilters();
             }
         });
     }
 
-    // applies current search query and filter together
+    // visually marks a button as active by reducing opacity
+    private void activateButton(Button button) {
+        if (button != null) {
+            button.setBackgroundTintList(
+                    android.content.res.ColorStateList.valueOf(
+                            getActivity().getResources().getColor(R.color.color_secondary)
+                    )
+            );
+        }
+    }
+
+    // restores button to its default appearance
+    private void deactivateButton(Button button) {
+        if (button != null) {
+            button.setBackgroundTintList(
+                    android.content.res.ColorStateList.valueOf(
+                            getActivity().getResources().getColor(R.color.color_primary)
+                    )
+            );
+        }
+    }
+
+    // applies all active filters and search query together
     private void applyFilters() {
         try {
             List<Trip> trips = tripRepository.searchWithFilter(
                     currentQuery,
-                    currentFilterType,
-                    currentFilterValue,
-                    currentFilterMin,
-                    currentFilterMax
+                    currentDurationMin,
+                    currentDurationMax,
+                    currentMaxPrice,
+                    currentMinRating
             );
             emptyState.setText(R.string.trips_empty_state);
             loadTrips(trips);
@@ -211,7 +320,7 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
         }
     }
 
-    // opens trip details fragment when a trip is tapped
+    // opens trip details when a trip is tapped
     @Override
     public void onTripClick(Trip trip) {
         ((MainActivity) requireActivity()).openTripDetails(

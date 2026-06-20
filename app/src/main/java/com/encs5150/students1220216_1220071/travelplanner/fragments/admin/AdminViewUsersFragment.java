@@ -70,24 +70,13 @@ public class AdminViewUsersFragment extends Fragment implements AdminUserAdapter
             return;
         }
 
-        // show confirmation dialog before deleting
-        new AlertDialog.Builder(getActivity())
-                .setTitle("Delete User")
-                .setMessage("Are you sure you want to delete " + user.getFirstName() + " " + user.getLastName() + "?")
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // delete sets is_active to 0, data is kept
-                        boolean success = userRepository.deleteUser(user.getId());
-                        if (success) {
-                            Toast.makeText(getActivity(), "User deleted.", Toast.LENGTH_SHORT).show();
-                            loadUsers();
-                        } else {
-                            Toast.makeText(getActivity(), "Failed to delete user.", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
+        // soft delete - sets is_active to 0, data is kept
+        boolean success = userRepository.deleteUser(user.getId());
+        if (success) {
+            Toast.makeText(getActivity(), "User deleted.", Toast.LENGTH_SHORT).show();
+            loadUsers();
+        } else {
+            Toast.makeText(getActivity(), "Failed to delete user.", Toast.LENGTH_LONG).show();
+        }
     }
 }
