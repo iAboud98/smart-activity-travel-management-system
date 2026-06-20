@@ -8,11 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import com.encs5150.students1220216_1220071.travelplanner.R;
 import com.encs5150.students1220216_1220071.travelplanner.models.Trip;
 import com.encs5150.students1220216_1220071.travelplanner.repositories.TripRepository;
@@ -25,16 +23,7 @@ public class AdminTripFormFragment extends Fragment {
     private int tripId = -1;
     private TripRepository tripRepository;
 
-    // creates instance for adding a new trip
-    public static AdminTripFormFragment newInstance() {
-        AdminTripFormFragment fragment = new AdminTripFormFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_TRIP_ID, -1);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    // creates instance for editing an existing trip
+    // creates instance — pass -1 for add mode, trip id for edit mode
     public static AdminTripFormFragment newInstance(int tripId) {
         AdminTripFormFragment fragment = new AdminTripFormFragment();
         Bundle args = new Bundle();
@@ -90,7 +79,7 @@ public class AdminTripFormFragment extends Fragment {
             }
         }
 
-        // cancel button goes back to the trips list
+        // cancel goes back to trips list
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,7 +87,7 @@ public class AdminTripFormFragment extends Fragment {
             }
         });
 
-        // save button validates and saves the trip
+        // save validates and saves the trip
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,7 +148,7 @@ public class AdminTripFormFragment extends Fragment {
                     return;
                 }
 
-                // build trip object
+                // build trip object from form values
                 Trip trip = new Trip();
                 trip.setDestination(destination);
                 trip.setCountry(country);
@@ -172,7 +161,8 @@ public class AdminTripFormFragment extends Fragment {
 
                 boolean success;
                 if (tripId == -1) {
-                    // add mode — insert new trip with no api_id since it was created by admin
+                    // add mode — insert new trip
+                    // api_id set to 0 since this trip was created by admin not imported from API
                     trip.setApiID(0);
                     success = tripRepository.insertTrip(trip);
                 } else {
@@ -182,11 +172,13 @@ public class AdminTripFormFragment extends Fragment {
                 }
 
                 if (success) {
-                    Toast.makeText(getActivity(), tripId == -1 ? "Trip added." : "Trip updated.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),
+                            tripId == -1 ? "Trip added successfully." : "Trip updated successfully.",
+                            Toast.LENGTH_SHORT).show();
                     // go back to trips list
                     getActivity().getSupportFragmentManager().popBackStack();
                 } else {
-                    Toast.makeText(getActivity(), "Failed to save trip.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Failed to save trip. Please try again.", Toast.LENGTH_LONG).show();
                 }
             }
         });

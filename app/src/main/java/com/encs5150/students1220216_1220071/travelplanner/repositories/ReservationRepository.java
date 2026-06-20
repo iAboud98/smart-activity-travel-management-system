@@ -54,14 +54,27 @@ public class ReservationRepository {
         return reservations;
     }
 
-    // list all reservations for admin view with trip destination name
+    // list all reservations for admin view with trip name and user email
     public List<Reservation> getAllReservations() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         List<Reservation> reservations = new ArrayList<>();
-        Cursor cursor = db.rawQuery("select reservations.*, trips.destination from reservations " +
-                        "join trips on reservations.trip_id = trips.id", null);
+        Cursor cursor = db.rawQuery(
+                "select reservations.*, trips.destination, users.email from reservations " +
+                        "join trips on reservations.trip_id = trips.id " +
+                        "join users on reservations.user_id = users.id", null);
         while (cursor.moveToNext()) {
-            reservations.add(cursorToReservation(cursor));
+            Reservation reservation = new Reservation();
+            reservation.setId(cursor.getInt(0));
+            reservation.setUserId(cursor.getInt(1));
+            reservation.setTripId(cursor.getInt(2));
+            reservation.setQuantity(cursor.getInt(3));
+            reservation.setReservationType(cursor.getString(4));
+            reservation.setReservationDate(cursor.getString(5));
+            reservation.setStatus(cursor.getString(6));
+            reservation.setAdditionalInfo(cursor.getString(7));
+            reservation.setTripName(cursor.getString(8)); // from join with trips
+            reservation.setUserEmail(cursor.getString(9)); // from join with users
+            reservations.add(reservation);
         }
         cursor.close();
         return reservations;

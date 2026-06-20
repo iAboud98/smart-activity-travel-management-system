@@ -9,6 +9,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.encs5150.students1220216_1220071.travelplanner.R;
+import com.encs5150.students1220216_1220071.travelplanner.adapters.AdminReservationAdapter;
+import com.encs5150.students1220216_1220071.travelplanner.models.Reservation;
+import com.encs5150.students1220216_1220071.travelplanner.repositories.ReservationRepository;
+
+import java.util.List;
 
 public class AdminViewReservationsFragment extends Fragment {
 
@@ -16,9 +25,30 @@ public class AdminViewReservationsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        TextView textView = new TextView(getActivity());
-        textView.setText("View Reservations");
-        textView.setPadding(32, 32, 32, 32);
-        return textView;
+        return inflater.inflate(R.layout.fragment_admin_view_reservations, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        ReservationRepository reservationRepository = new ReservationRepository(getActivity());
+        TextView emptyState = getActivity().findViewById(R.id.admin_reservations_empty_state);
+
+        // setup RecyclerView
+        RecyclerView recyclerView = getActivity().findViewById(R.id.admin_reservations_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        AdminReservationAdapter adapter = new AdminReservationAdapter(getActivity());
+        recyclerView.setAdapter(adapter);
+
+        // load all reservations across all users
+        List<Reservation> reservations = reservationRepository.getAllReservations();
+        adapter.setReservations(reservations);
+
+        if (reservations.isEmpty()) {
+            emptyState.setVisibility(View.VISIBLE);
+        } else {
+            emptyState.setVisibility(View.GONE);
+        }
     }
 }

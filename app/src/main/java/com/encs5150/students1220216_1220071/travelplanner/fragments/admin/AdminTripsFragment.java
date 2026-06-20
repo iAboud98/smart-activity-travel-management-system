@@ -4,23 +4,26 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.encs5150.students1220216_1220071.travelplanner.R;
-import com.encs5150.students1220216_1220071.travelplanner.adapters.AdminTripAdapter;
+import com.encs5150.students1220216_1220071.travelplanner.adapters.TripAdapter;
 import com.encs5150.students1220216_1220071.travelplanner.models.Trip;
 import com.encs5150.students1220216_1220071.travelplanner.repositories.TripRepository;
+
 import java.util.List;
 
-public class AdminTripsFragment extends Fragment implements AdminTripAdapter.OnAdminTripActionListener {
+public class AdminTripsFragment extends Fragment implements TripAdapter.OnTripClickListener {
 
     private TripRepository tripRepository;
-    private AdminTripAdapter adapter;
+    private TripAdapter tripAdapter;
     private TextView emptyState;
 
     @NonNull
@@ -37,20 +40,32 @@ public class AdminTripsFragment extends Fragment implements AdminTripAdapter.OnA
         tripRepository = new TripRepository(getActivity());
         emptyState = getActivity().findViewById(R.id.admin_trips_empty_state);
 
-        // setup RecyclerView
+        // reuse TripAdapter, same as user trips list
         RecyclerView recyclerView = getActivity().findViewById(R.id.admin_trips_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new AdminTripAdapter(getActivity(), this);
-        recyclerView.setAdapter(adapter);
+        tripAdapter = new TripAdapter(getActivity(), this);
+        recyclerView.setAdapter(tripAdapter);
 
-        // load all active trips
         loadTrips();
+
+        // add trip button opens form in add mode
+        Button addTripButton = getActivity().findViewById(R.id.admin_add_trip_button);
+        addTripButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AdminTripFormFragment addForm = AdminTripFormFragment.newInstance(-1);
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.admin_fragment_container, addForm)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
     }
 
-    // loads all trips from database into the list
     private void loadTrips() {
         List<Trip> trips = tripRepository.getAllTrips();
-        adapter.setTrips(trips);
+        tripAdapter.setTrips(trips);
         if (trips.isEmpty()) {
             emptyState.setVisibility(View.VISIBLE);
         } else {
@@ -58,20 +73,14 @@ public class AdminTripsFragment extends Fragment implements AdminTripAdapter.OnA
         }
     }
 
-    // opens edit form with the selected trip's data
+    // tapping a trip opens admin trip details instead of user trip details
     @Override
-    public void onEditClick(Trip trip) {
-        AdminTripFormFragment editForm = AdminTripFormFragment.newInstance(trip.getID());
+    public void onTripClick(Trip trip) {
+        AdminTripDetailsFragment detailsFragment = AdminTripDetailsFragment.newInstance(trip.getID());
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.admin_fragment_container, editForm)
+                .replace(R.id.admin_fragment_container, detailsFragment)
                 .addToBackStack(null)
                 .commit();
-    }
-
-    // placeholder for delete - will be implemented in B20
-    @Override
-    public void onDeleteClick(Trip trip) {
-        Toast.makeText(getActivity(), "Delete coming in next update.", Toast.LENGTH_SHORT).show();
     }
 }

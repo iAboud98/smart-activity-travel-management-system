@@ -14,11 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.encs5150.students1220216_1220071.travelplanner.R;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminAddAdminFragment;
-import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminAddTripFragment;
-import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminDeleteTripsFragment;
-import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminEditTripsFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminHomeFragment;
-import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminTripFormFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminTripsFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminViewReservationsFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminViewUsersFragment;
@@ -102,11 +98,11 @@ public class AdminHomeActivity extends AppCompatActivity {
         } else if (itemId == R.id.admin_nav_view_users) {
             return new AdminViewUsersFragment();
         } else if (itemId == R.id.admin_nav_add_trip) {
-            return AdminTripFormFragment.newInstance(); // add mode
+            return new AdminTripsFragment(); // shows list with add btn at top
         } else if (itemId == R.id.admin_nav_edit_trips) {
-            return new AdminTripsFragment(); // shows list with edit buttons
+            return new AdminTripsFragment(); // same list with edit btns
         } else if (itemId == R.id.admin_nav_delete_trips) {
-            return new AdminTripsFragment(); // same list, delete buttons active in B20
+            return new AdminTripsFragment(); // same list, delete enabled in B20
         } else if (itemId == R.id.admin_nav_view_reservations) {
             return new AdminViewReservationsFragment();
         }

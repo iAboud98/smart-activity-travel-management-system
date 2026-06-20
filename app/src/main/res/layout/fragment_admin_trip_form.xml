@@ -10,7 +10,7 @@
         android:orientation="vertical"
         android:padding="@dimen/screen_margin">
 
-        <!-- title changes between Add Trip and Edit Trip -->
+        <!-- title shows Add Trip or Edit Trip depending on mode -->
         <TextView
             android:id="@+id/trip_form_title"
             android:layout_width="match_parent"

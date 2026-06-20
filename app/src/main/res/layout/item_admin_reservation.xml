@@ -12,13 +12,20 @@
         android:padding="@dimen/space_medium">
 
         <TextView
-            android:id="@+id/admin_trip_destination"
+            android:id="@+id/admin_res_trip_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.TravelPlanner.SectionTitle" />
 
         <TextView
-            android:id="@+id/admin_trip_country"
+            android:id="@+id/admin_res_user_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+        <TextView
+            android:id="@+id/admin_res_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
@@ -27,60 +34,41 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_small"
+            android:layout_marginTop="@dimen/space_xsmall"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/admin_trip_price"
+                android:id="@+id/admin_res_type"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
 
             <TextView
-                android:id="@+id/admin_trip_rating"
+                android:id="@+id/admin_res_quantity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/color_primary"
                 android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
 
             <TextView
-                android:id="@+id/admin_trip_duration"
+                android:id="@+id/admin_res_status"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
+                android:textColor="@color/color_primary"
                 android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
 
         </LinearLayout>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/admin_res_additional_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_small"
-            android:orientation="horizontal">
-
-            <!-- edit button -->
-            <Button
-                android:id="@+id/admin_trip_edit_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Edit" />
-
-            <!-- delete button placeholder - implemented in B20 -->
-            <Button
-                android:id="@+id/admin_trip_delete_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="@dimen/space_small"
-                android:text="Delete"
-                android:enabled="false" />
-
-        </LinearLayout>
+            android:layout_marginTop="2dp"
+            android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
 
     </LinearLayout>
 
