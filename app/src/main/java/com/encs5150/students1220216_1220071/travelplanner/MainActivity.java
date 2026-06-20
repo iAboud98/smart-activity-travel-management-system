@@ -21,7 +21,9 @@ import com.encs5150.students1220216_1220071.travelplanner.fragments.FavoritesFra
 import com.encs5150.students1220216_1220071.travelplanner.fragments.HomeFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.MyReservationsFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.ProfileManagementFragment;
+import com.encs5150.students1220216_1220071.travelplanner.fragments.ReservationFormFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.SpecialSectionFragment;
+import com.encs5150.students1220216_1220071.travelplanner.fragments.TripDetailsFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.TripsFragment;
 import com.encs5150.students1220216_1220071.travelplanner.models.User;
 import com.encs5150.students1220216_1220071.travelplanner.repositories.UserRepository;
@@ -32,6 +34,7 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private static final String KEY_SELECTED_DRAWER_ITEM = "selected_drawer_item";
+    private static final String FEATURE_BACK_STACK = "feature_navigation";
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -65,12 +68,30 @@ public class MainActivity extends AppCompatActivity {
 
         setupDrawer();
         setupBackBehavior();
+        getSupportFragmentManager().addOnBackStackChangedListener(this::updateToolbarForVisibleFragment);
 
         if (savedInstanceState == null) {
             navigateToDrawerDestination(R.id.nav_home);
         } else {
             selectedDrawerItemId = savedInstanceState.getInt(KEY_SELECTED_DRAWER_ITEM, R.id.nav_home);
             navigationView.setCheckedItem(selectedDrawerItemId);
+            updateToolbarForVisibleFragment();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (isFinishing()) {
+            return;
+        }
+
+        if (SessionManager.isAdmin(this)) {
+            routeToAdminHome();
+        } else if (!SessionManager.hasActiveSession(this) || !SessionManager.isUser(this)) {
+            SessionManager.clearSession(this);
+            routeToLogin();
         }
     }
 
@@ -115,6 +136,11 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    getSupportFragmentManager().popBackStack();
+                    return;
+                }
+
                 if (selectedDrawerItemId != R.id.nav_home) {
                     navigateToDrawerDestination(R.id.nav_home);
                     return;
@@ -133,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
 
-        if (itemId == selectedDrawerItemId) {
+        if (itemId == selectedDrawerItemId && isShowingDrawerRoot(itemId)) {
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         }
@@ -162,7 +188,13 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
-    private boolean navigateToDrawerDestination(int itemId) {
+    public boolean navigateToDrawerDestination(int itemId) {
+        if (!SessionManager.hasActiveSession(this) || !SessionManager.isUser(this)) {
+            SessionManager.clearSession(this);
+            routeToLogin();
+            return false;
+        }
+
         Fragment fragment = createFragmentForItem(itemId);
         if (fragment == null) {
             Toast.makeText(this, R.string.navigation_unavailable_toast, Toast.LENGTH_SHORT).show();
@@ -181,13 +213,104 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showDrawerDestination(int itemId, Fragment fragment) {
+        getSupportFragmentManager().popBackStackImmediate(
+                null,
+                androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
+        );
         selectedDrawerItemId = itemId;
         navigationView.setCheckedItem(itemId);
+        toolbar.setTitle(getTitleForDrawerItem(itemId));
         getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.drawer_fragment_enter, R.anim.drawer_fragment_exit)
                 .replace(R.id.main_fragment_container, fragment)
                 .commit();
+    }
+
+    public void openTripDetails(int tripId, String source) {
+        if (!hasValidUserSession()) {
+            return;
+        }
+
+        toolbar.setTitle(R.string.trip_details_title);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.drawer_fragment_enter, R.anim.drawer_fragment_exit)
+                .replace(
+                        R.id.main_fragment_container,
+                        TripDetailsFragment.newInstance(tripId, source)
+                )
+                .addToBackStack(FEATURE_BACK_STACK)
+                .commit();
+    }
+
+    public void openReservationForm(int tripId, String destination) {
+        if (!hasValidUserSession()) {
+            return;
+        }
+
+        toolbar.setTitle(R.string.reserve_trip_title);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.drawer_fragment_enter, R.anim.drawer_fragment_exit)
+                .replace(
+                        R.id.main_fragment_container,
+                        ReservationFormFragment.newInstance(tripId, destination)
+                )
+                .addToBackStack(FEATURE_BACK_STACK)
+                .commit();
+    }
+
+    public void navigateBack() {
+        getOnBackPressedDispatcher().onBackPressed();
+    }
+
+    private boolean hasValidUserSession() {
+        if (SessionManager.hasActiveSession(this) && SessionManager.isUser(this)) {
+            return true;
+        }
+
+        SessionManager.clearSession(this);
+        routeToLogin();
+        return false;
+    }
+
+    private boolean isShowingDrawerRoot(int itemId) {
+        Fragment visibleFragment = getSupportFragmentManager()
+                .findFragmentById(R.id.main_fragment_container);
+        Fragment expectedFragment = createFragmentForItem(itemId);
+        return visibleFragment != null
+                && expectedFragment != null
+                && visibleFragment.getClass().equals(expectedFragment.getClass());
+    }
+
+    private int getTitleForDrawerItem(int itemId) {
+        if (itemId == R.id.nav_trips) {
+            return R.string.trips_title;
+        } else if (itemId == R.id.nav_my_reservations) {
+            return R.string.my_reservations_title;
+        } else if (itemId == R.id.nav_favorites) {
+            return R.string.favorites_title;
+        } else if (itemId == R.id.nav_special_section) {
+            return R.string.special_section_title;
+        } else if (itemId == R.id.nav_profile_management) {
+            return R.string.profile_management_title;
+        } else if (itemId == R.id.nav_contact_us) {
+            return R.string.contact_us_title;
+        }
+        return R.string.travel_planner_title;
+    }
+
+    private void updateToolbarForVisibleFragment() {
+        Fragment fragment = getSupportFragmentManager()
+                .findFragmentById(R.id.main_fragment_container);
+        if (fragment instanceof TripDetailsFragment) {
+            toolbar.setTitle(R.string.trip_details_title);
+        } else if (fragment instanceof ReservationFormFragment) {
+            toolbar.setTitle(R.string.reserve_trip_title);
+        } else {
+            toolbar.setTitle(getTitleForDrawerItem(selectedDrawerItemId));
+        }
     }
 
     private void logout() {

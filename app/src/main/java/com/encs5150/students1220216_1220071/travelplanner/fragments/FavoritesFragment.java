@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.encs5150.students1220216_1220071.travelplanner.MainActivity;
 import com.encs5150.students1220216_1220071.travelplanner.R;
 import com.encs5150.students1220216_1220071.travelplanner.adapters.FavoriteAdapter;
 import com.encs5150.students1220216_1220071.travelplanner.models.Trip;
@@ -63,12 +64,10 @@ public class FavoritesFragment extends Fragment implements FavoriteAdapter.OnFav
     // opens trip details
     @Override
     public void onTripClick(Trip trip) {
-        TripDetailsFragment detailsFragment = TripDetailsFragment.newInstance(trip.getID(), TripDetailsFragment.SOURCE_FAVORITES);
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_fragment_container, detailsFragment)
-                .addToBackStack(null)
-                .commit();
+        ((MainActivity) requireActivity()).openTripDetails(
+                trip.getID(),
+                TripDetailsFragment.SOURCE_FAVORITES
+        );
     }
 
     // removes trip from favorites and refreshes list
@@ -81,11 +80,9 @@ public class FavoritesFragment extends Fragment implements FavoriteAdapter.OnFav
     // opens reservation form directly from favorites
     @Override
     public void onReserveClick(Trip trip) {
-        ReservationFormFragment reservationForm = ReservationFormFragment.newInstance(trip.getID(), trip.getDestination());
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_fragment_container, reservationForm)
-                .addToBackStack(null)
-                .commit();
+        ((MainActivity) requireActivity()).openReservationForm(
+                trip.getID(),
+                trip.getDestination()
+        );
     }
 }

@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.encs5150.students1220216_1220071.travelplanner.MainActivity;
 import com.encs5150.students1220216_1220071.travelplanner.R;
 import com.encs5150.students1220216_1220071.travelplanner.adapters.TripAdapter;
 import com.encs5150.students1220216_1220071.travelplanner.models.Trip;
@@ -201,11 +202,9 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
     // opens trip details fragment when a trip is tapped
     @Override
     public void onTripClick(Trip trip) {
-        TripDetailsFragment detailsFragment = TripDetailsFragment.newInstance(trip.getID(), TripDetailsFragment.SOURCE_TRIPS);
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_fragment_container, detailsFragment)
-                .addToBackStack(null)
-                .commit();
+        ((MainActivity) requireActivity()).openTripDetails(
+                trip.getID(),
+                TripDetailsFragment.SOURCE_TRIPS
+        );
     }
 }

@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.encs5150.students1220216_1220071.travelplanner.MainActivity;
 import com.encs5150.students1220216_1220071.travelplanner.R;
 import com.encs5150.students1220216_1220071.travelplanner.models.Reservation;
 import com.encs5150.students1220216_1220071.travelplanner.models.Trip;
@@ -64,11 +65,12 @@ public class ReservationFormFragment extends Fragment {
         // check user session
         int currentUserId = SessionManager.getCurrentUserId(getActivity());
         if (currentUserId == -1) {
-            Toast.makeText(getActivity(), "Please login to make a reservation.", Toast.LENGTH_LONG).show();
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.main_fragment_container, new TripsFragment())
-                    .commit();
+            Toast.makeText(
+                    requireContext(),
+                    R.string.reservation_login_required,
+                    Toast.LENGTH_LONG
+            ).show();
+            ((MainActivity) requireActivity()).navigateToDrawerDestination(R.id.nav_trips);
             return;
         }
 
@@ -76,11 +78,8 @@ public class ReservationFormFragment extends Fragment {
         TripRepository tripRepository = new TripRepository(getActivity());
         Trip trip = tripRepository.getTripById(tripId);
         if (trip == null) {
-            Toast.makeText(getActivity(), "Trip not found.", Toast.LENGTH_LONG).show();
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.main_fragment_container, new TripsFragment())
-                    .commit();
+            Toast.makeText(requireContext(), R.string.trip_not_found, Toast.LENGTH_LONG).show();
+            ((MainActivity) requireActivity()).navigateBack();
             return;
         }
 
@@ -118,13 +117,19 @@ public class ReservationFormFragment extends Fragment {
 
                 // validate quantity
                 if (quantityStr.isEmpty()) {
-                    quantityInput.setError("Please enter number of travelers.");
+                    quantityInput.setError(getString(R.string.reservation_quantity_required));
                     return;
                 }
 
-                int quantity = Integer.parseInt(quantityStr);
+                int quantity;
+                try {
+                    quantity = Integer.parseInt(quantityStr);
+                } catch (NumberFormatException exception) {
+                    quantityInput.setError(getString(R.string.reservation_quantity_invalid));
+                    return;
+                }
                 if (quantity <= 0) {
-                    quantityInput.setError("Number of travelers must be at least 1.");
+                    quantityInput.setError(getString(R.string.reservation_quantity_minimum));
                     return;
                 }
 
@@ -153,14 +158,21 @@ public class ReservationFormFragment extends Fragment {
                 boolean success = reservationRepository.createReservation(reservation);
 
                 if (success) {
-                    Toast.makeText(getActivity(), "Reservation confirmed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(
+                            requireContext(),
+                            R.string.reservation_confirmed,
+                            Toast.LENGTH_SHORT
+                    ).show();
                     // navigate to my reservations
-                    getActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.main_fragment_container, new MyReservationsFragment())
-                            .commit();
+                    ((MainActivity) requireActivity()).navigateToDrawerDestination(
+                            R.id.nav_my_reservations
+                    );
                 } else {
-                    Toast.makeText(getActivity(), "Reservation failed. Please try again.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(
+                            requireContext(),
+                            R.string.reservation_failed,
+                            Toast.LENGTH_LONG
+                    ).show();
                 }
             }
         });

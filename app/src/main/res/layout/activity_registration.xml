@@ -194,7 +194,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_xsmall"
                 android:maxWidth="@dimen/content_max_width"
-                android:text="@string/registration_spinner_error_placeholder"
                 android:textColor="@color/color_error"
                 android:visibility="gone" />
 
@@ -225,7 +224,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_xsmall"
                 android:maxWidth="@dimen/content_max_width"
-                android:text="@string/registration_spinner_error_placeholder"
                 android:textColor="@color/color_error"
                 android:visibility="gone" />
 

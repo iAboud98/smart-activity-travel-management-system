@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="My Reservations"
+        android:text="@string/my_reservations_title"
         android:textAppearance="@style/TextAppearance.TravelPlanner.Headline" />
 
     <TextView
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_large"
         android:gravity="center"
-        android:text="You have no reservations yet."
+        android:text="@string/reservations_empty_state"
         android:textAppearance="@style/TextAppearance.TravelPlanner.Body"
         android:visibility="gone" />
 

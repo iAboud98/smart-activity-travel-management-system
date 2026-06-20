@@ -3,14 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="@dimen/space_small">
 
     <EditText
         android:id="@+id/trips_search_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search trips..."
-        android:padding="8dp"
+        android:layout_marginStart="@dimen/screen_margin"
+        android:layout_marginEnd="@dimen/screen_margin"
+        android:hint="@string/trips_search_hint"
+        android:padding="@dimen/space_small"
         android:inputType="text"
         android:background="@color/color_surface" />
 
@@ -18,7 +21,9 @@
         android:id="@+id/trips_search_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search" />
+        android:layout_marginStart="@dimen/screen_margin"
+        android:layout_marginEnd="@dimen/screen_margin"
+        android:text="@string/action_search" />
 
     <!-- duration filters row -->
     <HorizontalScrollView
@@ -38,28 +43,28 @@
                 android:id="@+id/filter_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="All" />
+                android:text="@string/filter_all" />
 
             <Button
                 android:id="@+id/filter_duration_short"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="1-3 Days" />
+                android:text="@string/filter_duration_short" />
 
             <Button
                 android:id="@+id/filter_duration_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="4-7 Days" />
+                android:text="@string/filter_duration_medium" />
 
             <Button
                 android:id="@+id/filter_duration_long"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="8+ Days" />
+                android:text="@string/filter_duration_long" />
 
         </LinearLayout>
     </HorizontalScrollView>
@@ -82,42 +87,42 @@
                 android:id="@+id/filter_price_low"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Under $500" />
+                android:text="@string/filter_price_low" />
 
             <Button
                 android:id="@+id/filter_price_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Under $1000" />
+                android:text="@string/filter_price_medium" />
 
             <Button
                 android:id="@+id/filter_price_high"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Under $2000" />
+                android:text="@string/filter_price_high" />
 
             <Button
                 android:id="@+id/filter_rating_high"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="4.5+ Rating" />
+                android:text="@string/filter_rating_high" />
 
             <Button
                 android:id="@+id/filter_rating_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="4.0+ Rating" />
+                android:text="@string/filter_rating_medium" />
 
             <Button
                 android:id="@+id/filter_rating_low"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="3.5+ Rating" />
+                android:text="@string/filter_rating_low" />
 
         </LinearLayout>
     </HorizontalScrollView>
@@ -128,7 +133,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="@dimen/screen_margin"
-        android:text="No trips found. Press Connect on the introduction screen to import trips."
+        android:text="@string/trips_empty_state"
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView

@@ -65,9 +65,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
 
         holder.destination.setText(trip.getDestination());
         holder.country.setText(trip.getCountry());
-        holder.duration.setText(trip.getDurationDays() + " days");
-        holder.price.setText("$" + (int) trip.getPrice());
-        holder.rating.setText("★ " + trip.getRating());
+        holder.duration.setText(context.getString(
+                R.string.trip_duration_value,
+                trip.getDurationDays()
+        ));
+        holder.price.setText(context.getString(R.string.trip_price_value, trip.getPrice()));
+        holder.rating.setText(context.getString(R.string.trip_rating_value, trip.getRating()));
 
         // load image from URL using Glide, show placeholder if URL fails
         Glide.with(context)

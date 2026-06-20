@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.encs5150.students1220216_1220071.travelplanner.MainActivity;
 import com.encs5150.students1220216_1220071.travelplanner.R;
 import com.encs5150.students1220216_1220071.travelplanner.models.Trip;
 import com.encs5150.students1220216_1220071.travelplanner.repositories.FavoriteRepository;
@@ -84,15 +85,12 @@ public class TripDetailsFragment extends Fragment {
             getActivity().findViewById(R.id.details_error).setVisibility(View.VISIBLE);
 
             Button backButton = getActivity().findViewById(R.id.details_back_button);
-            backButton.setText("Back to Trips");
+            backButton.setText(R.string.back_to_trips);
             backButton.setVisibility(View.VISIBLE);
             backButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.main_fragment_container, new TripsFragment())
-                            .commit();
+                    ((MainActivity) requireActivity()).navigateBack();
                 }
             });
             return;
@@ -111,9 +109,9 @@ public class TripDetailsFragment extends Fragment {
 
         destination.setText(trip.getDestination());
         country.setText(trip.getCountry());
-        duration.setText(trip.getDurationDays() + " days");
-        price.setText("$" + (int) trip.getPrice());
-        rating.setText("★ " + trip.getRating());
+        duration.setText(getString(R.string.trip_duration_value, trip.getDurationDays()));
+        price.setText(getString(R.string.trip_price_value, trip.getPrice()));
+        rating.setText(getString(R.string.trip_rating_value, trip.getRating()));
         description.setText(trip.getDescription());
 
         // load image using Glide
@@ -132,10 +130,18 @@ public class TripDetailsFragment extends Fragment {
             public void onClick(View v) {
                 if (favoriteRepository.isFavorite(currentUserId, tripId)) {
                     favoriteRepository.removeFavorite(currentUserId, tripId);
-                    Toast.makeText(getActivity(), "Removed from favorites", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(
+                            requireContext(),
+                            R.string.favorite_removed_toast,
+                            Toast.LENGTH_SHORT
+                    ).show();
                 } else {
                     favoriteRepository.addFavorite(currentUserId, tripId);
-                    Toast.makeText(getActivity(), "Added to favorites", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(
+                            requireContext(),
+                            R.string.favorite_added_toast,
+                            Toast.LENGTH_SHORT
+                    ).show();
                 }
                 updateFavoriteButton(favoriteButton);
             }
@@ -145,12 +151,10 @@ public class TripDetailsFragment extends Fragment {
         reserveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ReservationFormFragment reservationForm = ReservationFormFragment.newInstance(tripId, trip.getDestination());
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.main_fragment_container, reservationForm)
-                        .addToBackStack(null)
-                        .commit();
+                ((MainActivity) requireActivity()).openReservationForm(
+                        tripId,
+                        trip.getDestination()
+                );
             }
         });
 
@@ -167,33 +171,19 @@ public class TripDetailsFragment extends Fragment {
 
         // change back button text based on where the user came from
         if (source.equals(SOURCE_FAVORITES)) {
-            backButton.setText("Back to Favorites");
+            backButton.setText(R.string.back_to_favorites);
         } else if (source.equals(SOURCE_RESERVATIONS)) {
-            backButton.setText("Back to Reservations");
+            backButton.setText(R.string.back_to_reservations);
         } else if (source.equals(SOURCE_SPECIAL)) {
-            backButton.setText("Back to Special Section");
+            backButton.setText(R.string.back_to_special_section);
         } else {
-            backButton.setText("Back to Trips");
+            backButton.setText(R.string.back_to_trips);
         }
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // go back to the correct fragment based on source
-                Fragment destination;
-                if (source.equals(SOURCE_FAVORITES)) {
-                    destination = new FavoritesFragment();
-                } else if (source.equals(SOURCE_RESERVATIONS)) {
-                    destination = new MyReservationsFragment();
-                } else if (source.equals(SOURCE_SPECIAL)) {
-                    destination = new SpecialSectionFragment();
-                } else {
-                    destination = new TripsFragment();
-                }
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.main_fragment_container, destination)
-                        .commit();
+                ((MainActivity) requireActivity()).navigateBack();
             }
         });
     }
@@ -201,9 +191,9 @@ public class TripDetailsFragment extends Fragment {
     // updates the favorite button text based on whether the trip is currently favorited
     private void updateFavoriteButton(Button favoriteButton) {
         if (favoriteRepository.isFavorite(currentUserId, tripId)) {
-            favoriteButton.setText("Remove from Favorites");
+            favoriteButton.setText(R.string.action_remove_favorite);
         } else {
-            favoriteButton.setText("Add to Favorites");
+            favoriteButton.setText(R.string.action_add_favorite);
         }
     }
 }
