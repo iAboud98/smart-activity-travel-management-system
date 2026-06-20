@@ -19,41 +19,81 @@ public class TripRepository {
         dbHelper = new DatabaseHelper(context, "travel_planner.db", null, 1);
     }
 
-    // insert a trip imported from the API
-    // skip if a trip with the same api_id already exists to prevent duplicates
+    // insert or refresh a trip imported from the API
     public boolean insertTrip(Trip trip) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
+        ContentValues values = createTripValues(trip);
         values.put("api_id", trip.getApiID());
-        values.put("destination", trip.getDestination());
-        values.put("country", trip.getCountry());
-        values.put("duration_days", trip.getDurationDays());
-        values.put("price", trip.getPrice());
-        values.put("rating", trip.getRating());
-        values.put("description", trip.getDescription());
-        values.put("image_url", trip.getImageUrl());
         values.put("is_active", 1);
         long result = db.insertWithOnConflict("trips", null, values, SQLiteDatabase.CONFLICT_IGNORE);
         if (result == -1) {
-            updateTripByApiId(trip);
+            return updateTripByApiId(trip);
         }
-        // insert returns -1 if the trip already exists by api_id
-        return result != -1;
+        return true;
+    }
+
+    // create a local trip added by an admin; local trips do not have an API id
+    public boolean createTrip(Trip trip) {
+        if (trip == null || activeDestinationExists(trip.getDestination(), -1)) {
+            return false;
+        }
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = createTripValues(trip);
+        values.putNull("api_id");
+        values.put("is_active", 1);
+        return db.insert("trips", null, values) != -1;
     }
 
     // update an existing trip (for admin)
     public boolean updateTrip(Trip trip) {
+        if (trip == null || activeDestinationExists(trip.getDestination(), trip.getID())) {
+            return false;
+        }
+
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = createTripValues(trip);
+        int rows = db.update(
+                "trips",
+                values,
+                "id = ?",
+                new String[]{String.valueOf(trip.getID())}
+        );
+        return rows > 0;
+    }
+
+    // active destinations must be unique for trips managed by an admin
+    public boolean activeDestinationExists(String destination, int excludedTripId) {
+        if (destination == null || destination.trim().isEmpty()) {
+            return false;
+        }
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String sql = "select id from trips " +
+                "where is_active = 1 and trim(destination) = ? collate nocase";
+        List<String> args = new ArrayList<>();
+        args.add(destination.trim());
+        if (excludedTripId >= 0) {
+            sql += " and id <> ?";
+            args.add(String.valueOf(excludedTripId));
+        }
+
+        Cursor cursor = db.rawQuery(sql, args.toArray(new String[0]));
+        boolean exists = cursor.moveToFirst();
+        cursor.close();
+        return exists;
+    }
+
+    private ContentValues createTripValues(Trip trip) {
         ContentValues values = new ContentValues();
-        values.put("destination", trip.getDestination());
+        values.put("destination", trip.getDestination().trim());
         values.put("country", trip.getCountry());
         values.put("duration_days", trip.getDurationDays());
         values.put("price", trip.getPrice());
         values.put("rating", trip.getRating());
         values.put("description", trip.getDescription());
         values.put("image_url", trip.getImageUrl());
-        int rows = db.update("trips", values, "id = " + trip.getID(), null);
-        return rows > 0;
+        return values;
     }
 
     private boolean updateTripByApiId(Trip trip) {
@@ -266,7 +306,7 @@ public class TripRepository {
     }
 
     // imports a list of trips from the API into the database
-    // skips duplicates using api_id, returns number of successfully inserted trips
+    // inserts or refreshes each trip by api_id and returns the successful count
     public int importTrips(List<Trip> trips) {
         int insertedCount = 0;
         for (int i = 0; i < trips.size(); i++) {

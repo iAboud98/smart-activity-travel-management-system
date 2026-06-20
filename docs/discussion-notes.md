@@ -63,7 +63,7 @@ Repositories isolate database access from activities/fragments: `UserRepository`
 - Gender and travel category: the prompt/default spinner row is not accepted.
 - Phone: 7–15 digits with an optional leading `+`; spaces, parentheses, and hyphens are normalized away.
 - Reservation: traveler quantity must parse as an integer greater than zero, and a reservation type is required.
-- Admin trip form: required destination/country/description/image, duration at least 1, positive price, and rating from 0 to 5.
+- Admin trip form: required destination/country/description/image, valid numeric input, duration at least 1, positive price, rating from 0 to 5, and a unique active destination after trimming and case-insensitive comparison.
 - API trip: nonblank text/image fields, duration and price above zero, and rating from 0 to 5.
 
 Duplicate emails and duplicate favorites are also prevented by SQLite unique constraints.
@@ -107,7 +107,7 @@ Special Section rules use reservation and rating data:
 The role split is explicit and safer: traveler navigation cannot expose admin destinations, while admin login opens a separate protected activity/menu.
 
 **Why store both `id` and `api_id` for trips?**  
-`id` is the stable local key used by favorites/reservations. `api_id` identifies the remote record and prevents duplicates during reconnect/import.
+`id` is the stable local key used by favorites/reservations. `api_id` identifies a remote record and prevents duplicates during reconnect/import; it is null for admin-created trips so local creation cannot trigger the remote upsert path.
 
 **Why soft delete?**  
 It removes a user/trip from active lists without destroying history that reservations still reference.
@@ -119,4 +119,4 @@ Only the session identity—local ID, email, and role—is in private SharedPref
 No. SQLite contains SHA-256 hashes. For a production system we would use a salted adaptive password hash and server-side authentication.
 
 **How was the app tested?**  
-Unit tests, Android lint, and ten emulator instrumentation tests cover the traveler flow, major failures, and the protected Add New Admin role path. The final suite passes on Pixel 3a XL API 28.
+Unit tests, Android lint, and eleven emulator instrumentation tests cover the traveler flow, major failures, protected Add New Admin role handling, and admin-trip creation/duplicate protection. The final suite passes on Pixel 3a XL API 28.

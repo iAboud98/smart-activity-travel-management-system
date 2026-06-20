@@ -47,6 +47,7 @@ import com.encs5150.students1220216_1220071.travelplanner.fragments.SpecialSecti
 import com.encs5150.students1220216_1220071.travelplanner.fragments.TripDetailsFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.TripsFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminAddAdminFragment;
+import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminTripFormFragment;
 import com.encs5150.students1220216_1220071.travelplanner.models.Reservation;
 import com.encs5150.students1220216_1220071.travelplanner.models.Trip;
 import com.encs5150.students1220216_1220071.travelplanner.models.User;
@@ -280,6 +281,46 @@ public class UserJourneyInstrumentedTest {
     }
 
     @Test
+    public void adminTripCreationSucceedsAndDuplicateDestinationCannotOverwriteIt() {
+        User signedInAdmin = createUser();
+        signedInAdmin.setEmail("trip-admin@example.com");
+        UserRepository userRepository = new UserRepository(context);
+        assertTrue(userRepository.registerAdmin(signedInAdmin));
+        SessionManager.saveSession(context, userRepository.findUserByEmail(signedInAdmin.getEmail()));
+
+        try (ActivityScenario<AdminHomeActivity> scenario =
+                     ActivityScenario.launch(AdminHomeActivity.class)) {
+            scenario.onActivity(activity -> {
+                activity.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.admin_fragment_container, AdminTripFormFragment.newInstance(-1))
+                        .commitNow();
+
+                fillAdminTripForm(activity, "Ramallah", "Palestine");
+                activity.findViewById(R.id.trip_form_save_button).performClick();
+
+                TripRepository repository = new TripRepository(activity);
+                assertEquals(1, repository.getAllTrips().size());
+                assertEquals("Palestine", repository.getAllTrips().get(0).getCountry());
+
+                fillAdminTripForm(activity, "  ramallah  ", "Overwritten country");
+                activity.findViewById(R.id.trip_form_save_button).performClick();
+
+                EditText destination = activity.findViewById(R.id.trip_form_destination);
+                assertEquals(
+                        activity.getString(R.string.admin_trip_duplicate_destination),
+                        destination.getError().toString()
+                );
+                assertEquals(1, repository.getAllTrips().size());
+                assertEquals("Palestine", repository.getAllTrips().get(0).getCountry());
+
+                assertTrue(repository.createTrip(createTrip(0, "Jericho")));
+                assertEquals(2, repository.getAllTrips().size());
+            });
+        }
+    }
+
+    @Test
     public void registrationAndLoginUiHandleDuplicateAndWrongPassword() {
         try (ActivityScenario<RegistrationActivity> scenario =
                      ActivityScenario.launch(RegistrationActivity.class)) {
@@ -506,6 +547,16 @@ public class UserJourneyInstrumentedTest {
 
     private void setText(android.app.Activity activity, int viewId, String value) {
         ((EditText) activity.findViewById(viewId)).setText(value);
+    }
+
+    private void fillAdminTripForm(Activity activity, String destination, String country) {
+        setText(activity, R.id.trip_form_destination, destination);
+        setText(activity, R.id.trip_form_country, country);
+        setText(activity, R.id.trip_form_duration, "3");
+        setText(activity, R.id.trip_form_price, "250");
+        setText(activity, R.id.trip_form_rating, "4.5");
+        setText(activity, R.id.trip_form_description, "A local admin-created trip");
+        setText(activity, R.id.trip_form_image_url, "https://example.com/trip.jpg");
     }
 
     private void resetAppState() {

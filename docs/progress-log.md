@@ -30,7 +30,7 @@
 - Audited password writes: registration/profile/admin seed values are hashed before SQLite storage; Remember Me stores only email. The documented demo admin credential remains intentionally visible for assessment.
 - Confirmed no APK, build folder, local IDE/cache, `local.properties`, `.DS_Store`, or unrelated screenshot is tracked; removed one obsolete zero-byte step marker.
 - Final APK: `app/build/outputs/apk/debug/app-debug.apk`.
-- APK SHA-256: `b3838c0a2116d88d934f63928afab1ba6cccb5fa0a51f43927dd1a14e4196c63`.
+- APK SHA-256: `6e5c21834426f0bd45eb806f9f1ec2d3664396770f17e3879a81cfaea65420fa`.
 - External handoff directory: `/private/tmp/travel-planner-a20/` (APK copy, `Project.zip`, checksums, and verification captures).
 
 ## 2026-06-20 — Critical admin-role hotfix
@@ -43,3 +43,13 @@
 - Reproduced `admin2@admin.com` as user → delete → Add New Admin; verified the local ID is preserved, the old password stops working, and the new account authenticates as admin.
 - Re-ran compilation, JVM tests, lint, and APK assembly successfully.
 - Rebuilt the final APK and source ZIP and refreshed external handoff checksums.
+
+## 2026-06-20 — Admin-trip creation hotfix
+
+- Separated admin-created trips from remote API upserts: local trips now store a null `api_id`, so creating another local trip cannot conflict with or overwrite the first one.
+- Corrected repository success semantics so a successful remote refresh reports success instead of a false failure.
+- Added case-insensitive, trimmed duplicate-active-destination validation to both the admin form and repository create/update paths.
+- Added safe numeric parsing for duration, price, and rating.
+- Reproduced the reported `Ramallah` sequence and verified the first create succeeds, a second `ramallah` is rejected, the original data remains unchanged, and a different local trip can still be created.
+- Passed compilation, JVM tests, lint, APK assembly, and the expanded 11/11 instrumentation suite on Pixel 3a XL API 28.
+- Refreshed the final APK and source ZIP handoff artifacts with the hotfix.

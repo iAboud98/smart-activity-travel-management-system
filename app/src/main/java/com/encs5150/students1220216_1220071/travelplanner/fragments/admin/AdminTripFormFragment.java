@@ -129,10 +129,34 @@ public class AdminTripFormFragment extends Fragment {
                     return;
                 }
 
+                if (tripRepository.activeDestinationExists(destination, tripId)) {
+                    destinationInput.setError(getString(R.string.admin_trip_duplicate_destination));
+                    destinationInput.requestFocus();
+                    return;
+                }
+
                 // parse numeric values
-                int duration = Integer.parseInt(durationStr);
-                double price = Double.parseDouble(priceStr);
-                double rating = Double.parseDouble(ratingStr);
+                int duration;
+                double price;
+                double rating;
+                try {
+                    duration = Integer.parseInt(durationStr);
+                } catch (NumberFormatException exception) {
+                    durationInput.setError(getString(R.string.admin_trip_invalid_duration));
+                    return;
+                }
+                try {
+                    price = Double.parseDouble(priceStr);
+                } catch (NumberFormatException exception) {
+                    priceInput.setError(getString(R.string.admin_trip_invalid_price));
+                    return;
+                }
+                try {
+                    rating = Double.parseDouble(ratingStr);
+                } catch (NumberFormatException exception) {
+                    ratingInput.setError(getString(R.string.admin_trip_invalid_rating));
+                    return;
+                }
 
                 // validate numeric ranges
                 if (duration <= 0) {
@@ -162,9 +186,7 @@ public class AdminTripFormFragment extends Fragment {
                 boolean success;
                 if (tripId == -1) {
                     // add mode — insert new trip
-                    // api_id set to 0 since this trip was created by admin not imported from API
-                    trip.setApiID(0);
-                    success = tripRepository.insertTrip(trip);
+                    success = tripRepository.createTrip(trip);
                 } else {
                     // edit mode — update existing trip
                     trip.setID(tripId);

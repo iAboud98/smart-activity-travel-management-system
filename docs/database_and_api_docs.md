@@ -25,7 +25,7 @@
 | Column | Type | Notes |
 |---|---|---|
 | id | INTEGER | Primary key, auto-incremented by SQLite |
-| api_id | INTEGER | Unique ID from the REST API, prevents duplicate imports |
+| api_id | INTEGER | Nullable unique ID from the REST API; admin-created trips leave it null |
 | destination | TEXT | Trip destination name |
 | country | TEXT | Country of destination |
 | duration_days | INTEGER | Number of days for the trip |
@@ -136,6 +136,8 @@ Passwords are hashed using **SHA-256** before being stored in the database.
 9. `insertTrip()` uses `api_id` as a unique key — if the same remote trip already exists, its stored values are refreshed rather than duplicated
 10. After import succeeds, user is navigated to the Login screen
 
+Admin creation uses a separate `createTrip()` path. It stores a null `api_id`, returns success only after a real insert, and rejects an active destination that already exists after trimming and case-insensitive comparison. This keeps local creation separate from remote API upserts and prevents one admin-created trip from overwriting another.
+
 ---
 
 ## 7. Special Section Rules
@@ -172,6 +174,6 @@ The Special Section shows trips based on automatic rules — no manual flagging 
 | Repository | Purpose |
 |---|---|
 | UserRepository | Register, login, update profile, delete users, list users |
-| TripRepository | Insert/update/delete trips, search, filter, special section queries |
+| TripRepository | Import/upsert remote trips, create/update/delete admin trips, validate destinations, search, filter, special section queries |
 | FavoriteRepository | Add/remove favorites, check favorite state, list favorites |
 | ReservationRepository | Create reservations, list by user, list all for admin |

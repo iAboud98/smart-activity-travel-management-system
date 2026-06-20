@@ -38,7 +38,7 @@ git ls-files
 
 - [x] Run `./gradlew testDebugUnitTest` successfully.
 - [x] Run `./gradlew lintDebug` successfully and review the report.
-- [x] Run `./gradlew connectedDebugAndroidTest` successfully on the final emulator (10/10 passed, including Add New Admin role regression).
+- [x] Run `./gradlew connectedDebugAndroidTest` successfully on the final emulator (11/11 passed, including Add New Admin and admin-trip duplicate regressions).
 - [x] Run `./gradlew assembleDebug` successfully.
 
 ## APK Handoff
@@ -50,7 +50,7 @@ git ls-files
 
 APK build date: `2026-06-20`
 
-APK SHA-256: `b3838c0a2116d88d934f63928afab1ba6cccb5fa0a51f43927dd1a14e4196c63`
+APK SHA-256: `6e5c21834426f0bd45eb806f9f1ec2d3664396770f17e3879a81cfaea65420fa`
 
 ## Project ZIP Handoff
 
