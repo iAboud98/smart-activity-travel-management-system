@@ -188,4 +188,16 @@ public class UserRepository {
         user.setIsActive(cursor.getInt(10));
         return user;
     }
+
+    // count active admin accounts, used to prevent deleting the last admin
+    public int countAdmins() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select count(*) from users where role = 'admin' and is_active = 1", null);
+        int count = 0;
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+        cursor.close();
+        return count;
+    }
 }

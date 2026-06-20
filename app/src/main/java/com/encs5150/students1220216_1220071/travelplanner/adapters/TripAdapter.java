@@ -30,11 +30,20 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     private List<Trip> trips;
     private Context context;
     private OnTripClickListener listener;
+    private boolean isAdminMode = false;
 
     public TripAdapter(Context context, OnTripClickListener listener) {
         this.context = context;
         this.listener = listener;
         this.trips = new ArrayList<>();
+    }
+
+    // used for admin mode
+    public TripAdapter(Context context, OnTripClickListener listener, boolean isAdminMode) {
+        this.context = context;
+        this.listener = listener;
+        this.trips = new ArrayList<>();
+        this.isAdminMode = isAdminMode;
     }
 
     // update the list and refresh the RecyclerView
@@ -79,25 +88,33 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         FavoriteRepository favoriteRepository = new FavoriteRepository(context);
         int currentUserId = SessionManager.getCurrentUserId(context);
 
-        // set initial tint based on favorite state
-        if (favoriteRepository.isFavorite(currentUserId, trip.getID())) {
-            favoriteButton.setColorFilter(context.getResources().getColor(R.color.color_primary));
+        if (isAdminMode) {
+            // hide favorite button in admin mode
+            favoriteButton.setVisibility(View.GONE);
         } else {
-            favoriteButton.setColorFilter(context.getResources().getColor(android.R.color.white));
-        }
+            favoriteButton.setVisibility(View.VISIBLE);
 
-        favoriteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (favoriteRepository.isFavorite(currentUserId, trip.getID())) {
-                    favoriteRepository.removeFavorite(currentUserId, trip.getID());
-                    favoriteButton.setColorFilter(context.getResources().getColor(android.R.color.white));
-                } else {
-                    favoriteRepository.addFavorite(currentUserId, trip.getID());
-                    favoriteButton.setColorFilter(context.getResources().getColor(R.color.color_primary));
-                }
+            // set initial tint based on favorite state
+            if (favoriteRepository.isFavorite(currentUserId, trip.getID())) {
+                favoriteButton.setColorFilter(context.getResources().getColor(R.color.color_primary));
+            } else {
+                favoriteButton.setColorFilter(context.getResources().getColor(android.R.color.white));
             }
-        });
+
+            // toggle favorite on click
+            favoriteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (favoriteRepository.isFavorite(currentUserId, trip.getID())) {
+                        favoriteRepository.removeFavorite(currentUserId, trip.getID());
+                        favoriteButton.setColorFilter(context.getResources().getColor(android.R.color.white));
+                    } else {
+                        favoriteRepository.addFavorite(currentUserId, trip.getID());
+                        favoriteButton.setColorFilter(context.getResources().getColor(R.color.color_primary));
+                    }
+                }
+            });
+        }
     }
 
     @Override

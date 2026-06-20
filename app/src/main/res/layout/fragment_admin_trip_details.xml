@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/admin_details_image"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:contentDescription="@string/label_trip"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/screen_margin">
+
+            <TextView
+                android:id="@+id/admin_details_destination"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Headline" />
+
+            <TextView
+                android:id="@+id/admin_details_country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Eyebrow" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_medium"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/admin_details_duration"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+                <TextView
+                    android:id="@+id/admin_details_price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+                <TextView
+                    android:id="@+id/admin_details_rating"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:textColor="@color/color_primary"
+                    android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/admin_details_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_medium"
+                android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+
+            <!-- edit button opens pre-filled form -->
+            <Button
+                android:id="@+id/admin_details_edit_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_large"
+                android:text="Edit Trip" />
+
+            <!-- delete button changes text to confirm on first click -->
+            <Button
+                android:id="@+id/admin_details_delete_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_small"
+                android:text="Delete Trip" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

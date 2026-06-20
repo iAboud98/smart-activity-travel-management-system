@@ -10,6 +10,7 @@ public class Reservation {
     private String status;
     private String additionalInfo;
     private String tripName; // for display only (not stored in database, fetched with join)
+    private String userEmail; // for display only (not stored in database, fetched with join)
 
     public Reservation(int id, int userId, int tripId, int quantity, String reservationType,
                        String reservationDate, String status, String additionalInfo) {
@@ -59,6 +60,8 @@ public class Reservation {
 
     public String getTripName() { return tripName; }
 
+    public String getUserEmail() { return userEmail; }
+
     public void setUserId(int userId) {
         this.userID = userId;
     }
@@ -88,4 +91,6 @@ public class Reservation {
     }
 
     public void setTripName(String tripName) { this.tripName = tripName; }
+
+    public void setUserEmail(String userEmail) { this.userEmail = userEmail; }
 }
