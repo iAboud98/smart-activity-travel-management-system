@@ -63,7 +63,7 @@ public class FavoritesFragment extends Fragment implements FavoriteAdapter.OnFav
     // opens trip details
     @Override
     public void onTripClick(Trip trip) {
-        TripDetailsFragment detailsFragment = TripDetailsFragment.newInstance(trip.getID());
+        TripDetailsFragment detailsFragment = TripDetailsFragment.newInstance(trip.getID(), TripDetailsFragment.SOURCE_FAVORITES);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_fragment_container, detailsFragment)

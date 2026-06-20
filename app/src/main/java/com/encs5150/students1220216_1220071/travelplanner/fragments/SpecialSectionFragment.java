@@ -76,7 +76,7 @@ public class SpecialSectionFragment extends Fragment implements TripAdapter.OnTr
     // opens trip details when a trip is tapped
     @Override
     public void onTripClick(Trip trip) {
-        TripDetailsFragment detailsFragment = TripDetailsFragment.newInstance(trip.getID());
+        TripDetailsFragment detailsFragment = TripDetailsFragment.newInstance(trip.getID(), TripDetailsFragment.SOURCE_SPECIAL);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_fragment_container, detailsFragment)
