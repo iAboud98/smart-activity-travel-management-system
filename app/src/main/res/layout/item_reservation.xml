@@ -64,6 +64,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_xsmall"
             android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
+        <Button
+            android:id="@+id/reservation_cancel_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_small"
+            android:text="Cancel Reservation" />
 
     </LinearLayout>
 

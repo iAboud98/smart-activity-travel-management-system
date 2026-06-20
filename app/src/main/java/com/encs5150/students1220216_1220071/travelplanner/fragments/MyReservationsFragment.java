@@ -58,7 +58,7 @@ public class MyReservationsFragment extends Fragment implements ReservationAdapt
     // opens trip details when a reservation row is tapped
     @Override
     public void onReservationClick(Reservation reservation) {
-        TripDetailsFragment detailsFragment = TripDetailsFragment.newInstance(reservation.getTripId());
+        TripDetailsFragment detailsFragment = TripDetailsFragment.newInstance(reservation.getTripId(), TripDetailsFragment.SOURCE_RESERVATIONS);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_fragment_container, detailsFragment)

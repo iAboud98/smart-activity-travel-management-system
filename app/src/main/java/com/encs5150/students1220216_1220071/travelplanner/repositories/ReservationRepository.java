@@ -94,4 +94,13 @@ public class ReservationRepository {
         reservation.setTripName(cursor.getString(8)); // from join with trips
         return reservation;
     }
+
+    // cancel a reservation by setting status to cancelled
+    public boolean cancelReservation(int reservationId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("status", "Cancelled");
+        int rows = db.update("reservations", values, "id = " + reservationId, null);
+        return rows > 0;
+    }
 }

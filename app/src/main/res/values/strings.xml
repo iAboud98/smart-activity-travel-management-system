@@ -94,7 +94,7 @@
     <string name="home_left_theme_body">The app keeps navigation and visual weight on the left with a drawer, start-aligned content, and a clear accent rail across the main traveler screens.</string>
     <string name="home_sections_label">Main Trip Areas</string>
     <string name="home_feature_trips">Trips: browse imported destinations with country, duration, price, and rating details.</string>
-    <string name="home_feature_reservations">My Reservations: review reserved trips after Student B connects the reservation workflow.</string>
+    <string name="home_feature_reservations">My Reservations: review all your reserved trips and booking details.</string>
     <string name="home_feature_favorites">Favorites: save preferred destinations and return to them quickly from the drawer.</string>
     <string name="logout_success_toast">Logged out successfully.</string>
     <string name="navigation_unavailable_toast">This screen is not available yet.</string>
@@ -150,7 +150,7 @@
     <string name="admin_access_denied_toast">Admin access requires an admin session.</string>
     <string name="admin_home_eyebrow">Admin Area</string>
     <string name="admin_home_title">Admin Home</string>
-    <string name="admin_home_description">Temporary admin destination until Student B connects the admin drawer and management screens.</string>
+    <string name="admin_home_description">Manage users, trips, and reservations from the admin panel.</string>
     <string name="admin_home_session_summary">Signed in as %1$s.</string>
 
     <string name="validation_email_required">Email is required.</string>

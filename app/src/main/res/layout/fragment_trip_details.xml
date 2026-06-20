@@ -112,8 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_medium"
-                android:text="Go Back"
-                android:visibility="gone" />
+                android:text="Go Back" />
 
         </LinearLayout>
     </LinearLayout>

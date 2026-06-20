@@ -30,11 +30,19 @@ public class TripDetailsFragment extends Fragment {
     private FavoriteRepository favoriteRepository;
     private int currentUserId;
 
-    // creates a new instance of this fragment with the trip id as argument
-    public static TripDetailsFragment newInstance(int tripId) {
+    // used to go back to previous fragment
+    private static final String ARG_SOURCE = "source";
+    public static final String SOURCE_TRIPS = "trips";
+    public static final String SOURCE_FAVORITES = "favorites";
+    public static final String SOURCE_RESERVATIONS = "reservations";
+    public static final String SOURCE_SPECIAL = "special";
+
+    // creates a new instance of this fragment with the trip id and source fragment as arguments
+    public static TripDetailsFragment newInstance(int tripId, String source) {
         TripDetailsFragment fragment = new TripDetailsFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_TRIP_ID, tripId);
+        args.putString(ARG_SOURCE, source);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,8 +84,8 @@ public class TripDetailsFragment extends Fragment {
             getActivity().findViewById(R.id.details_error).setVisibility(View.VISIBLE);
 
             Button backButton = getActivity().findViewById(R.id.details_back_button);
+            backButton.setText("Back to Trips");
             backButton.setVisibility(View.VISIBLE);
-            getActivity().findViewById(R.id.details_error).setVisibility(View.VISIBLE);
             backButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -142,6 +150,49 @@ public class TripDetailsFragment extends Fragment {
                         .beginTransaction()
                         .replace(R.id.main_fragment_container, reservationForm)
                         .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        // get where the user came from so the back button returns to the correct screen
+        String source;
+        if (getArguments() != null) {
+            source = getArguments().getString(ARG_SOURCE, SOURCE_TRIPS);
+        } else {
+            source = SOURCE_TRIPS;  // default to trips if no source was passed
+        }
+
+        Button backButton = getActivity().findViewById(R.id.details_back_button);
+        backButton.setVisibility(View.VISIBLE);
+
+        // change back button text based on where the user came from
+        if (source.equals(SOURCE_FAVORITES)) {
+            backButton.setText("Back to Favorites");
+        } else if (source.equals(SOURCE_RESERVATIONS)) {
+            backButton.setText("Back to Reservations");
+        } else if (source.equals(SOURCE_SPECIAL)) {
+            backButton.setText("Back to Special Section");
+        } else {
+            backButton.setText("Back to Trips");
+        }
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // go back to the correct fragment based on source
+                Fragment destination;
+                if (source.equals(SOURCE_FAVORITES)) {
+                    destination = new FavoritesFragment();
+                } else if (source.equals(SOURCE_RESERVATIONS)) {
+                    destination = new MyReservationsFragment();
+                } else if (source.equals(SOURCE_SPECIAL)) {
+                    destination = new SpecialSectionFragment();
+                } else {
+                    destination = new TripsFragment();
+                }
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.main_fragment_container, destination)
                         .commit();
             }
         });
