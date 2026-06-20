@@ -15,7 +15,7 @@
 | gender | TEXT | Selected from spinner (Male/Female) |
 | category | TEXT | Travel preference selected from spinner |
 | phone | TEXT | Validated phone number |
-| profile_picture | TEXT | File path to profile image |
+| profile_picture | TEXT | Persisted profile image path or document URI |
 | role | TEXT | "user" or "admin" |
 | is_active | INTEGER | 1 = active, 0 = soft deleted |
 
@@ -130,10 +130,10 @@ Passwords are hashed using **SHA-256** before being stored in the database.
 3. `ConnectionAsyncTask.doInBackground()` runs on a background thread and calls `HttpManager.getData()` to fetch the API URL
 4. `HttpManager` opens an `HttpURLConnection`, reads the response as a string
 5. `TripJsonParser.getTripsFromJson()` parses the JSON string into a `List<Trip>`
-6. Each trip object is validated — if any required field is missing, the trip is skipped
+6. Each trip object is validated for required fields and sensible duration, price, and rating values; one invalid item is skipped without discarding later valid items
 7. `ConnectionAsyncTask.onPostExecute()` runs on the main thread and calls `onTripsFetched()` in `IntroductionActivity`
 8. `TripRepository.importTrips()` loops through the list and calls `insertTrip()` for each trip
-9. `insertTrip()` uses `api_id` as a unique key — if a trip with the same `api_id` already exists it is skipped (prevents duplicates on repeat Connect)
+9. `insertTrip()` uses `api_id` as a unique key — if the same remote trip already exists, its stored values are refreshed rather than duplicated
 10. After import succeeds, user is navigated to the Login screen
 
 ---
@@ -144,9 +144,9 @@ The Special Section shows trips based on automatic rules — no manual flagging 
 
 | Section | Rule |
 |---|---|
-| Top Rated Trips | rating >= 4.5 |
+| Travel Offers | rating >= 4.5 |
 | Popular Destinations | trips with 5 or more total reservations |
-| Trending This Week | trips with 2 or more reservations in the last 7 days |
+| Recommended Trips | trips with 2 or more reservations in the last 7 days |
 
 ---
 
