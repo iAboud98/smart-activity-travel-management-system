@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.encs5150.students1220216_1220071.travelplanner.database.DatabaseHelper;
 import com.encs5150.students1220216_1220071.travelplanner.models.User;
+import com.encs5150.students1220216_1220071.travelplanner.utils.SessionManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +18,17 @@ public class UserRepository {
         dbHelper = new DatabaseHelper(context, "travel_planner.db", null, 1);
     }
 
-    // register a new user
+    // Public registration must never be able to create an administrator.
     public boolean registerUser(User user) {
+        return registerAccount(user, SessionManager.ROLE_USER);
+    }
+
+    // Called only from the protected admin flow.
+    public boolean registerAdmin(User admin) {
+        return registerAccount(admin, SessionManager.ROLE_ADMIN);
+    }
+
+    private boolean registerAccount(User user, String role) {
         try {
             SQLiteDatabase db = dbHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
@@ -30,11 +40,23 @@ public class UserRepository {
             values.put("category", user.getCategory());
             values.put("phone", user.getPhone());
             values.put("profile_picture", user.getProfilePicturePath());
-            values.put("role", "user");
+            values.put("role", role);
             values.put("is_active", 1);
-            long result = db.insert("users", null, values);  // result = -1 if it fails
-            // returns true if successful and false if email already exists
-            return result != -1;  // converting result to boolean value
+
+            // A deleted account keeps its row so reservations and favorites remain linked.
+            // Reusing that email restores the same row with the new account details and role.
+            int restoredRows = db.update(
+                    "users",
+                    values,
+                    "email = ? and is_active = 0",
+                    new String[]{user.getEmail()}
+            );
+            if (restoredRows > 0) {
+                return true;
+            }
+
+            // Active duplicate emails still fail through the unique email constraint.
+            return db.insert("users", null, values) != -1;
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -42,12 +64,13 @@ public class UserRepository {
         }
     }
 
+    // Inactive accounts can be restored, so only active emails block registration.
     public boolean emailExists(String email) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(
                 "users",
                 new String[]{"id"},
-                "email = ?",
+                "email = ? and is_active = 1",
                 new String[]{email},
                 null,
                 null,

@@ -105,7 +105,7 @@ The resulting APK is written to `app/build/outputs/apk/debug/app-debug.apk`.
 ./gradlew connectedDebugAndroidTest
 ```
 
-The A18 QA pass completed all three checks successfully, including nine emulator instrumentation tests covering API outcomes, registration/login failures, protected navigation, trips, favorites, reservations, profile updates, contact intents, and logout. A20 repeated the clean build and all nine instrumentation tests successfully on the required Pixel 3a XL API 28 AVD with SwiftShader software graphics, then verified cold launch, the live API import, and seeded admin routing.
+The A18 QA pass completed all three checks successfully, including nine emulator instrumentation tests covering API outcomes, registration/login failures, protected navigation, trips, favorites, reservations, profile updates, contact intents, and logout. The final release suite now contains ten tests, including an end-to-end Add New Admin role regression; all ten pass on the required Pixel 3a XL API 28 AVD with SwiftShader software graphics.
 
 ## Known Limitations
 

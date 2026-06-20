@@ -43,7 +43,7 @@ users 1 ──< favorites >── 1 trips
 users 1 ──< reservations >── 1 trips
 ```
 
-Repositories isolate database access from activities/fragments: `UserRepository`, `TripRepository`, `FavoriteRepository`, and `ReservationRepository`. Users and trips are soft deleted by setting `is_active = 0`, which preserves historical reservation/favorite rows.
+Repositories isolate database access from activities/fragments: `UserRepository`, `TripRepository`, `FavoriteRepository`, and `ReservationRepository`. Users and trips are soft deleted by setting `is_active = 0`, which preserves historical reservation/favorite rows. Reusing a deleted email restores that inactive user row with the new credentials and requested role instead of attempting a conflicting insert.
 
 ## 4. API Integration Flow
 
@@ -83,6 +83,7 @@ Special Section rules use reservation and rating data:
 ## 7. Authentication and Admin Protection
 
 - Registration hashes the password before inserting the account.
+- Public `registerUser()` always persists the `user` role; only the protected admin screen calls `registerAdmin()`, which persists `admin`. The repository owns this decision instead of trusting a mutable model role.
 - Login hashes the entered password and compares hashes in SQLite.
 - Remember Me stores only the email, never the password.
 - `SessionManager` stores user ID, email, and role in private SharedPreferences.
@@ -118,4 +119,4 @@ Only the session identity—local ID, email, and role—is in private SharedPref
 No. SQLite contains SHA-256 hashes. For a production system we would use a salted adaptive password hash and server-side authentication.
 
 **How was the app tested?**  
-Unit tests, Android lint, and nine emulator instrumentation tests cover the full traveler flow and major failures. A20 repeats final verification on Pixel 3a XL API 28 and produces the handoff files.
+Unit tests, Android lint, and ten emulator instrumentation tests cover the traveler flow, major failures, and the protected Add New Admin role path. The final suite passes on Pixel 3a XL API 28.

@@ -156,6 +156,7 @@ The Special Section shows trips based on automatic rules — no manual flagging 
 - Uses **soft delete** — sets `is_active = 0`
 - User data, reservations, and favorites are kept in the database
 - Deleted user cannot log in
+- Re-registering the same email restores and updates the inactive row, preserving its ID and relationships while applying the new password and requested user/admin role
 - Admin cannot delete their own account
 
 ### Trip Deletion (Admin)

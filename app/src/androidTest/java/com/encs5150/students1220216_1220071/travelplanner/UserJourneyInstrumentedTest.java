@@ -32,6 +32,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.encs5150.students1220216_1220071.travelplanner.activities.IntroductionActivity;
+import com.encs5150.students1220216_1220071.travelplanner.activities.AdminHomeActivity;
 import com.encs5150.students1220216_1220071.travelplanner.activities.LoginActivity;
 import com.encs5150.students1220216_1220071.travelplanner.activities.RegistrationActivity;
 import com.encs5150.students1220216_1220071.travelplanner.activities.SplashActivity;
@@ -45,6 +46,7 @@ import com.encs5150.students1220216_1220071.travelplanner.fragments.ReservationF
 import com.encs5150.students1220216_1220071.travelplanner.fragments.SpecialSectionFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.TripDetailsFragment;
 import com.encs5150.students1220216_1220071.travelplanner.fragments.TripsFragment;
+import com.encs5150.students1220216_1220071.travelplanner.fragments.admin.AdminAddAdminFragment;
 import com.encs5150.students1220216_1220071.travelplanner.models.Reservation;
 import com.encs5150.students1220216_1220071.travelplanner.models.Trip;
 import com.encs5150.students1220216_1220071.travelplanner.models.User;
@@ -155,15 +157,28 @@ public class UserJourneyInstrumentedTest {
     public void repositoriesSupportNormalJourneyAndExpectedFailures() {
         UserRepository userRepository = new UserRepository(context);
         User registeredUser = createUser();
+        // Even a manipulated public-registration model cannot escalate its role.
+        registeredUser.setRole(SessionManager.ROLE_ADMIN);
         assertTrue(userRepository.registerUser(registeredUser));
         assertFalse(userRepository.registerUser(registeredUser));
         assertNull(userRepository.loginUser(registeredUser.getEmail(), "Wrong123"));
 
         User storedUser = userRepository.loginUser(registeredUser.getEmail(), registeredUser.getPassword());
         assertNotNull(storedUser);
+        assertEquals(SessionManager.ROLE_USER, storedUser.getRole());
         SessionManager.saveSession(context, storedUser);
         assertTrue(SessionManager.hasActiveSession(context));
         assertTrue(SessionManager.isUser(context));
+
+        User newAdmin = createUser();
+        newAdmin.setEmail("new-admin@example.com");
+        // registerAdmin owns the role decision instead of trusting the model.
+        newAdmin.setRole(SessionManager.ROLE_USER);
+        assertTrue(userRepository.registerAdmin(newAdmin));
+        User storedAdmin = userRepository.loginUser(newAdmin.getEmail(), newAdmin.getPassword());
+        assertNotNull(storedAdmin);
+        assertEquals(SessionManager.ROLE_ADMIN, storedAdmin.getRole());
+        assertEquals(1, userRepository.countAdmins());
 
         TripRepository tripRepository = new TripRepository(context);
         assertTrue(tripRepository.insertTrip(createTrip(21, "Traveler's Haven")));
@@ -207,6 +222,60 @@ public class UserJourneyInstrumentedTest {
         SessionManager.clearSession(context);
         try (ActivityScenario<MainActivity> ignored = ActivityScenario.launch(MainActivity.class)) {
             onView(withId(R.id.login_title)).check(matches(isDisplayed()));
+        }
+    }
+
+    @Test
+    public void addAdminScreenPersistsAdminRoleAndAdminLogin() {
+        UserRepository userRepository = new UserRepository(context);
+
+        // Reproduce the reported sequence: create as user, delete, then reuse as admin.
+        User deletedUser = createUser();
+        deletedUser.setEmail("admin2@admin.com");
+        deletedUser.setPassword("OldUser123");
+        assertTrue(userRepository.registerUser(deletedUser));
+        User storedDeletedUser = userRepository.findUserByEmail(deletedUser.getEmail());
+        assertNotNull(storedDeletedUser);
+        int deletedUserId = storedDeletedUser.getId();
+        assertTrue(userRepository.deleteUser(deletedUserId));
+        assertFalse(userRepository.emailExists(deletedUser.getEmail()));
+
+        User signedInAdmin = createUser();
+        signedInAdmin.setEmail("signed-in-admin@example.com");
+        assertTrue(userRepository.registerAdmin(signedInAdmin));
+        User storedSignedInAdmin = userRepository.findUserByEmail(signedInAdmin.getEmail());
+        assertNotNull(storedSignedInAdmin);
+        SessionManager.saveSession(context, storedSignedInAdmin);
+
+        try (ActivityScenario<AdminHomeActivity> scenario =
+                     ActivityScenario.launch(AdminHomeActivity.class)) {
+            scenario.onActivity(activity -> {
+                activity.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.admin_fragment_container, new AdminAddAdminFragment())
+                        .commitNow();
+
+                setText(activity, R.id.admin_email_input, "admin2@admin.com");
+                setText(activity, R.id.admin_first_name_input, "Created");
+                setText(activity, R.id.admin_last_name_input, "Admin");
+                setText(activity, R.id.admin_phone_input, "+970599777777");
+                setText(activity, R.id.admin_password_input, "Created123");
+                setText(activity, R.id.admin_confirm_password_input, "Created123");
+                activity.findViewById(R.id.admin_add_button).performClick();
+
+                User createdAdmin = new UserRepository(activity)
+                        .findUserByEmail("admin2@admin.com");
+                assertNotNull(createdAdmin);
+                assertEquals(deletedUserId, createdAdmin.getId());
+                assertEquals(SessionManager.ROLE_ADMIN, createdAdmin.getRole());
+                assertNull(new UserRepository(activity)
+                        .loginUser("admin2@admin.com", "OldUser123"));
+
+                User authenticatedAdmin = new UserRepository(activity)
+                        .loginUser("admin2@admin.com", "Created123");
+                assertNotNull(authenticatedAdmin);
+                assertEquals(SessionManager.ROLE_ADMIN, authenticatedAdmin.getRole());
+            });
         }
     }
 
