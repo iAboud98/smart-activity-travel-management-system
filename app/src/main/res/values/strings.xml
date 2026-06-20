@@ -208,6 +208,10 @@
     <string name="admin_home_title">Admin Home</string>
     <string name="admin_home_description">Manage users, trips, and reservations from the admin panel.</string>
     <string name="admin_home_session_summary">Signed in as %1$s.</string>
+    <string name="admin_trip_duplicate_destination">An active trip with this destination already exists.</string>
+    <string name="admin_trip_invalid_duration">Enter a valid whole number of days.</string>
+    <string name="admin_trip_invalid_price">Enter a valid price.</string>
+    <string name="admin_trip_invalid_rating">Enter a valid rating.</string>
 
     <string name="validation_email_required">Email is required.</string>
     <string name="validation_email_format">Enter a valid email address.</string>
