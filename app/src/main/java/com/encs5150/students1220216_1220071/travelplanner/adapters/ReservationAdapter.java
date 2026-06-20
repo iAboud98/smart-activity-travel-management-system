@@ -4,11 +4,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.encs5150.students1220216_1220071.travelplanner.R;
 import com.encs5150.students1220216_1220071.travelplanner.models.Reservation;
+import com.encs5150.students1220216_1220071.travelplanner.repositories.ReservationRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +74,43 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
                 listener.onReservationClick(reservation);
             }
         });
+
+        Button cancelButton = holder.itemView.findViewById(R.id.reservation_cancel_button);
+
+        // tracks if cancel button was already clicked once for this reservation
+        final boolean[] cancelPending = {false};
+
+        if (reservation.getStatus().equals("Cancelled")) {
+            cancelButton.setEnabled(false);
+            cancelButton.setText("Cancelled");
+        } else {
+            cancelButton.setEnabled(true);
+            cancelButton.setText("Cancel Reservation");
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!cancelPending[0]) {
+                        // first click, ask for confirmation
+                        cancelPending[0] = true;
+                        cancelButton.setText("Confirm Cancellation");
+                        Toast.makeText(context, "Tap again to confirm cancellation.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // second click, cancel the reservation
+                        ReservationRepository repo = new ReservationRepository(context);
+                        boolean success = repo.cancelReservation(reservation.getId());
+                        if (success) {
+                            reservation.setStatus("Cancelled");
+                            cancelButton.setEnabled(false);
+                            cancelButton.setText("Cancelled");
+                            holder.status.setText("Cancelled");
+                            Toast.makeText(context, "Reservation cancelled.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "Failed to cancel reservation.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -85,6 +127,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         TextView quantity;
         TextView status;
         TextView additionalInfo;
+        Button cancelButton;
 
         // finds and stores all views from item_reservation.xml
         public ReservationViewHolder(@NonNull View itemView) {
@@ -95,6 +138,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             quantity = itemView.findViewById(R.id.reservation_quantity);
             status = itemView.findViewById(R.id.reservation_status);
             additionalInfo = itemView.findViewById(R.id.reservation_additional_info);
+            cancelButton = itemView.findViewById(R.id.reservation_cancel_button);
         }
     }
 }

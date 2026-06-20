@@ -76,8 +76,8 @@ public class TripDetailsFragment extends Fragment {
             getActivity().findViewById(R.id.details_error).setVisibility(View.VISIBLE);
 
             Button backButton = getActivity().findViewById(R.id.details_back_button);
+            backButton.setText("Back to Trips");
             backButton.setVisibility(View.VISIBLE);
-            getActivity().findViewById(R.id.details_error).setVisibility(View.VISIBLE);
             backButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
