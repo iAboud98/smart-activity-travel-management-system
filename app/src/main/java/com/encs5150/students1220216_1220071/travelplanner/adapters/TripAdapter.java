@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,12 +31,14 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     private List<Trip> trips;
     private Context context;
     private OnTripClickListener listener;
+    private FavoriteRepository favoriteRepository;
     private boolean isAdminMode = false;
 
     public TripAdapter(Context context, OnTripClickListener listener) {
         this.context = context;
         this.listener = listener;
         this.trips = new ArrayList<>();
+        this.favoriteRepository = new FavoriteRepository(context);
     }
 
     // used for admin mode
@@ -43,6 +46,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         this.context = context;
         this.listener = listener;
         this.trips = new ArrayList<>();
+        this.favoriteRepository = new FavoriteRepository(context);
         this.isAdminMode = isAdminMode;
     }
 
@@ -65,9 +69,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
 
         holder.destination.setText(trip.getDestination());
         holder.country.setText(trip.getCountry());
-        holder.duration.setText(trip.getDurationDays() + " days");
-        holder.price.setText("$" + (int) trip.getPrice());
-        holder.rating.setText("★ " + trip.getRating());
+        holder.duration.setText(context.getString(
+                R.string.trip_duration_value,
+                trip.getDurationDays()
+        ));
+        holder.price.setText(context.getString(R.string.trip_price_value, trip.getPrice()));
+        holder.rating.setText(context.getString(R.string.trip_rating_value, trip.getRating()));
 
         // load image from URL using Glide, show placeholder if URL fails
         Glide.with(context)
@@ -85,7 +92,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         });
 
         ImageButton favoriteButton = holder.itemView.findViewById(R.id.trip_favorite_button);
-        FavoriteRepository favoriteRepository = new FavoriteRepository(context);
         int currentUserId = SessionManager.getCurrentUserId(context);
 
         if (isAdminMode) {
@@ -95,9 +101,13 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             favoriteButton.setVisibility(View.VISIBLE);
 
             // set initial tint based on favorite state
-            if (favoriteRepository.isFavorite(currentUserId, trip.getID())) {
-                favoriteButton.setColorFilter(context.getResources().getColor(R.color.color_primary));
-            } else {
+            try {
+                if (favoriteRepository.isFavorite(currentUserId, trip.getID())) {
+                    favoriteButton.setColorFilter(context.getColor(R.color.color_primary));
+                } else {
+                    favoriteButton.setColorFilter(context.getColor(android.R.color.white));
+                }
+            } catch (RuntimeException exception) {
                 favoriteButton.setColorFilter(context.getResources().getColor(android.R.color.white));
             }
 
@@ -105,12 +115,20 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             favoriteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (favoriteRepository.isFavorite(currentUserId, trip.getID())) {
-                        favoriteRepository.removeFavorite(currentUserId, trip.getID());
-                        favoriteButton.setColorFilter(context.getResources().getColor(android.R.color.white));
-                    } else {
-                        favoriteRepository.addFavorite(currentUserId, trip.getID());
-                        favoriteButton.setColorFilter(context.getResources().getColor(R.color.color_primary));
+                    try {
+                        if (favoriteRepository.isFavorite(currentUserId, trip.getID())) {
+                            if (favoriteRepository.removeFavorite(currentUserId, trip.getID())) {
+                                favoriteButton.setColorFilter(context.getColor(android.R.color.white));
+                            }
+                        } else if (favoriteRepository.addFavorite(currentUserId, trip.getID())) {
+                            favoriteButton.setColorFilter(context.getColor(R.color.color_primary));
+                        }
+                    } catch (RuntimeException exception) {
+                        Toast.makeText(
+                                context,
+                                R.string.favorite_update_failure,
+                                Toast.LENGTH_SHORT
+                        ).show();
                     }
                 }
             });

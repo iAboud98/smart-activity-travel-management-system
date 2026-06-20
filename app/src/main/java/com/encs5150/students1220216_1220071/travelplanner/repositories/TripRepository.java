@@ -95,7 +95,10 @@ public class TripRepository {
     // get a single trip by its database id
     public Trip getTripById(int tripId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from trips where id = " + tripId + " and is_active = 1", null);
+        Cursor cursor = db.rawQuery(
+                "select * from trips where id = ? and is_active = 1",
+                new String[]{String.valueOf(tripId)}
+        );
         if (cursor.moveToFirst()) {
             Trip trip = cursorToTrip(cursor);
             cursor.close();
@@ -109,8 +112,10 @@ public class TripRepository {
     public List<Trip> searchTrips(String query) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         List<Trip> trips = new ArrayList<>();
+        String searchPattern = "%" + (query == null ? "" : query.trim()) + "%";
         Cursor cursor = db.rawQuery("select * from trips where is_active = 1 and " +
-                "(destination like '%" + query + "%' or country like '%" + query + "%' or description like '%" + query + "%')", null);
+                        "(destination like ? or country like ? or description like ?)",
+                new String[]{searchPattern, searchPattern, searchPattern});
         while (cursor.moveToNext()) {
             trips.add(cursorToTrip(cursor));
         }
@@ -158,26 +163,35 @@ public class TripRepository {
     public List<Trip> searchWithFilter(String searchQuery, String filterType, double filterValue, int filterMin, int filterMax) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         List<Trip> trips = new ArrayList<>();
+        List<String> selectionArgs = new ArrayList<>();
 
         String sql = "select * from trips where is_active = 1";
 
         // add search condition
-        if (searchQuery != null && !searchQuery.isEmpty()) {
-            sql += " and (destination like '%" + searchQuery + "%' or country like '%" + searchQuery + "%' or description like '%" + searchQuery + "%')";
+        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+            String searchPattern = "%" + searchQuery.trim() + "%";
+            sql += " and (destination like ? or country like ? or description like ?)";
+            selectionArgs.add(searchPattern);
+            selectionArgs.add(searchPattern);
+            selectionArgs.add(searchPattern);
         }
 
         // add filter condition
         if (filterType != null) {
             if (filterType.equals("duration")) {
-                sql += " and duration_days >= " + filterMin + " and duration_days <= " + filterMax;
+                sql += " and duration_days >= ? and duration_days <= ?";
+                selectionArgs.add(String.valueOf(filterMin));
+                selectionArgs.add(String.valueOf(filterMax));
             } else if (filterType.equals("price")) {
-                sql += " and price <= " + filterValue;
+                sql += " and price <= ?";
+                selectionArgs.add(String.valueOf(filterValue));
             } else if (filterType.equals("rating")) {
-                sql += " and rating >= " + filterValue;
+                sql += " and rating >= ?";
+                selectionArgs.add(String.valueOf(filterValue));
             }
         }
 
-        Cursor cursor = db.rawQuery(sql, null);
+        Cursor cursor = db.rawQuery(sql, selectionArgs.toArray(new String[0]));
         while (cursor.moveToNext()) {
             trips.add(cursorToTrip(cursor));
         }

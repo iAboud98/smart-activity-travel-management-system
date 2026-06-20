@@ -106,7 +106,7 @@ public class AdminAddAdminFragment extends Fragment {
                 admin.setRole(SessionManager.ROLE_ADMIN);
                 admin.setIsActive(1);
 
-                boolean success = userRepository.registerUser(admin);
+                boolean success = userRepository.registerAdmin(admin);
 
                 if (success) {
                     statusView.setText("Admin added successfully.");

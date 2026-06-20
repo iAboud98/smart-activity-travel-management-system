@@ -107,8 +107,13 @@ public class LoginActivity extends AppCompatActivity {
 
         if (user == null) {
             SessionManager.clearSession(this);
-            loginStatus.setText(R.string.login_invalid_credentials_status);
-            Toast.makeText(this, R.string.login_invalid_credentials_toast, Toast.LENGTH_LONG).show();
+            if (userRepository.didLastLoginOperationFail()) {
+                loginStatus.setText(R.string.login_database_error_status);
+                Toast.makeText(this, R.string.login_database_error_toast, Toast.LENGTH_LONG).show();
+            } else {
+                loginStatus.setText(R.string.login_invalid_credentials_status);
+                Toast.makeText(this, R.string.login_invalid_credentials_toast, Toast.LENGTH_LONG).show();
+            }
             return;
         }
 

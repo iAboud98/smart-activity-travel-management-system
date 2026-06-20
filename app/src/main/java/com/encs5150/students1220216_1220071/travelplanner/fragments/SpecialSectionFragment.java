@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.encs5150.students1220216_1220071.travelplanner.MainActivity;
 import com.encs5150.students1220216_1220071.travelplanner.R;
 import com.encs5150.students1220216_1220071.travelplanner.adapters.TripAdapter;
 import com.encs5150.students1220216_1220071.travelplanner.models.Trip;
@@ -33,26 +34,27 @@ public class SpecialSectionFragment extends Fragment implements TripAdapter.OnTr
 
         tripRepository = new TripRepository(getActivity());
 
-        // setup top rated section
-        setupSection(
-                R.id.top_rated_recycler_view,
-                R.id.top_rated_empty,
-                tripRepository.getTopRatedTrips()
-        );
-
-        // setup popular section
-        setupSection(
-                R.id.popular_recycler_view,
-                R.id.popular_empty,
-                tripRepository.getPopularTrips()
-        );
-
-        // setup trending section
-        setupSection(
-                R.id.trending_recycler_view,
-                R.id.trending_empty,
-                tripRepository.getTrendingTrips()
-        );
+        try {
+            setupSection(
+                    R.id.top_rated_recycler_view,
+                    R.id.top_rated_empty,
+                    tripRepository.getTopRatedTrips()
+            );
+            setupSection(
+                    R.id.popular_recycler_view,
+                    R.id.popular_empty,
+                    tripRepository.getPopularTrips()
+            );
+            setupSection(
+                    R.id.trending_recycler_view,
+                    R.id.trending_empty,
+                    tripRepository.getTrendingTrips()
+            );
+        } catch (RuntimeException exception) {
+            showSectionError(R.id.top_rated_recycler_view, R.id.top_rated_empty);
+            showSectionError(R.id.popular_recycler_view, R.id.popular_empty);
+            showSectionError(R.id.trending_recycler_view, R.id.trending_empty);
+        }
     }
 
     // sets up a RecyclerView section with trips and handles empty state
@@ -73,14 +75,20 @@ public class SpecialSectionFragment extends Fragment implements TripAdapter.OnTr
         }
     }
 
+    private void showSectionError(int recyclerViewId, int emptyStateId) {
+        TextView emptyState = requireActivity().findViewById(emptyStateId);
+        RecyclerView recyclerView = requireActivity().findViewById(recyclerViewId);
+        emptyState.setText(R.string.data_load_error);
+        emptyState.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+    }
+
     // opens trip details when a trip is tapped
     @Override
     public void onTripClick(Trip trip) {
-        TripDetailsFragment detailsFragment = TripDetailsFragment.newInstance(trip.getID(), TripDetailsFragment.SOURCE_SPECIAL);
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_fragment_container, detailsFragment)
-                .addToBackStack(null)
-                .commit();
+        ((MainActivity) requireActivity()).openTripDetails(
+                trip.getID(),
+                TripDetailsFragment.SOURCE_SPECIAL
+        );
     }
 }

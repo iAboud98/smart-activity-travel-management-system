@@ -14,7 +14,7 @@
             android:id="@+id/reservation_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Reserve Trip"
+            android:text="@string/reserve_trip_title"
             android:textAppearance="@style/TextAppearance.TravelPlanner.Headline" />
 
         <TextView
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_large"
-            android:text="Number of Travelers"
+            android:text="@string/reservation_travelers_label"
             android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
 
         <EditText
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_xsmall"
-            android:hint="Enter number of travelers"
+            android:hint="@string/reservation_travelers_hint"
             android:inputType="number"
             android:background="@color/color_surface"
             android:padding="8dp" />
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_medium"
-            android:text="Reservation Type"
+            android:text="@string/reservation_type_label"
             android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
 
         <Spinner
@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_xsmall"
-            android:text="Please select a reservation type."
+            android:text="@string/reservation_type_error"
             android:textColor="@color/color_error"
             android:visibility="gone" />
 
@@ -72,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_medium"
-            android:text="Additional Notes (optional)"
+            android:text="@string/reservation_notes_label"
             android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
 
         <EditText
@@ -80,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_xsmall"
-            android:hint="Any special requests or notes..."
+            android:hint="@string/reservation_notes_hint"
             android:inputType="textMultiLine"
             android:lines="3"
             android:background="@color/color_surface"
@@ -91,14 +91,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_large"
-            android:text="Confirm Reservation" />
+            android:text="@string/action_confirm_reservation" />
 
         <Button
             android:id="@+id/reservation_cancel_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_small"
-            android:text="Cancel" />
+            android:text="@string/action_cancel" />
 
         <TextView
             android:id="@+id/reservation_status"

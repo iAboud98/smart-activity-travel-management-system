@@ -73,7 +73,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Remove" />
+                    android:text="@string/action_remove" />
 
                 <Button
                     android:id="@+id/favorite_reserve_button"
@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="@dimen/space_small"
-                    android:text="Reserve" />
+                    android:text="@string/label_reserve" />
 
             </LinearLayout>
 

@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.encs5150.students1220216_1220071.travelplanner.MainActivity;
 import com.encs5150.students1220216_1220071.travelplanner.R;
 import com.encs5150.students1220216_1220071.travelplanner.adapters.TripAdapter;
 import com.encs5150.students1220216_1220071.travelplanner.models.Trip;
@@ -183,9 +184,21 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
 
     // applies current search query and filter together
     private void applyFilters() {
-        List<Trip> trips = tripRepository.searchWithFilter(
-                currentQuery, currentFilterType, currentFilterValue, currentFilterMin, currentFilterMax);
-        loadTrips(trips);
+        try {
+            List<Trip> trips = tripRepository.searchWithFilter(
+                    currentQuery,
+                    currentFilterType,
+                    currentFilterValue,
+                    currentFilterMin,
+                    currentFilterMax
+            );
+            emptyState.setText(R.string.trips_empty_state);
+            loadTrips(trips);
+        } catch (RuntimeException exception) {
+            tripAdapter.setTrips(java.util.Collections.emptyList());
+            emptyState.setText(R.string.data_load_error);
+            emptyState.setVisibility(View.VISIBLE);
+        }
     }
 
     // loads trips into the adapter and handles empty state
@@ -201,11 +214,9 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
     // opens trip details fragment when a trip is tapped
     @Override
     public void onTripClick(Trip trip) {
-        TripDetailsFragment detailsFragment = TripDetailsFragment.newInstance(trip.getID(), TripDetailsFragment.SOURCE_TRIPS);
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_fragment_container, detailsFragment)
-                .addToBackStack(null)
-                .commit();
+        ((MainActivity) requireActivity()).openTripDetails(
+                trip.getID(),
+                TripDetailsFragment.SOURCE_TRIPS
+        );
     }
 }

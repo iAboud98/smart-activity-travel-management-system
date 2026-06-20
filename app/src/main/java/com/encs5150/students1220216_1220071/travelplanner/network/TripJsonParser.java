@@ -12,16 +12,20 @@ public class TripJsonParser {
 
     public static List<Trip> getTripsFromJson(String json) {
         List<Trip> trips = new ArrayList<>();
+        if (json == null || json.trim().isEmpty()) {
+            return trips;
+        }
+
         try {
-            // parse the JSON string into a JSON array
             JSONArray jsonArray = new JSONArray(json);
 
             for (int i = 0; i < jsonArray.length(); i++) {
-                // get each trip object from the array
-                JSONObject jsonObject = new JSONObject();
-                jsonObject = (JSONObject) jsonArray.get(i);
+                Object item = jsonArray.opt(i);
+                if (!(item instanceof JSONObject)) {
+                    continue;
+                }
+                JSONObject jsonObject = (JSONObject) item;
 
-                // validate that required fields exist before creating a trip object
                 if (!jsonObject.has("id") || !jsonObject.has("destination") ||
                         !jsonObject.has("country") || !jsonObject.has("duration_days") ||
                         !jsonObject.has("price") || !jsonObject.has("rating") ||
@@ -30,24 +34,39 @@ public class TripJsonParser {
                     continue;
                 }
 
-                // create a trip object and fill it with data from the JSON object
-                Trip trip = new Trip();
-                trip.setApiID(jsonObject.getInt("id"));
-                trip.setDestination(jsonObject.getString("destination"));
-                trip.setCountry(jsonObject.getString("country"));
-                trip.setDurationDays(jsonObject.getInt("duration_days"));
-                trip.setPrice(jsonObject.getDouble("price"));
-                trip.setRating(jsonObject.getDouble("rating"));
-                trip.setDescription(jsonObject.getString("description"));
-                trip.setImageUrl(jsonObject.getString("image"));
-                trip.setIsActive(1);
+                try {
+                    int apiId = jsonObject.getInt("id");
+                    String destination = jsonObject.getString("destination").trim();
+                    String country = jsonObject.getString("country").trim();
+                    int durationDays = jsonObject.getInt("duration_days");
+                    double price = jsonObject.getDouble("price");
+                    double rating = jsonObject.getDouble("rating");
+                    String description = jsonObject.getString("description").trim();
+                    String imageUrl = jsonObject.getString("image").trim();
 
-                trips.add(trip);
+                    if (apiId < 0 || destination.isEmpty() || country.isEmpty()
+                            || durationDays < 1 || price <= 0 || rating < 0 || rating > 5
+                            || description.isEmpty() || imageUrl.isEmpty()) {
+                        continue;
+                    }
+
+                    Trip trip = new Trip();
+                    trip.setApiID(apiId);
+                    trip.setDestination(destination);
+                    trip.setCountry(country);
+                    trip.setDurationDays(durationDays);
+                    trip.setPrice(price);
+                    trip.setRating(rating);
+                    trip.setDescription(description);
+                    trip.setImageUrl(imageUrl);
+                    trip.setIsActive(1);
+                    trips.add(trip);
+                } catch (Exception ignored) {
+                    // Skip only the malformed item so later valid trips can still be imported.
+                }
             }
-
-        } catch (Exception e) {
-            // return empty list if JSON is invalid or parsing fails
-            e.printStackTrace();
+        } catch (Exception ignored) {
+            // Invalid top-level JSON produces an empty, safely handled result.
         }
 
         return trips;

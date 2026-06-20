@@ -57,8 +57,8 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
 
         holder.destination.setText(trip.getDestination());
         holder.country.setText(trip.getCountry());
-        holder.price.setText("$" + (int) trip.getPrice());
-        holder.rating.setText("★ " + trip.getRating());
+        holder.price.setText(context.getString(R.string.trip_price_value, trip.getPrice()));
+        holder.rating.setText(context.getString(R.string.trip_rating_value, trip.getRating()));
 
         // load image using glide
         Glide.with(context)

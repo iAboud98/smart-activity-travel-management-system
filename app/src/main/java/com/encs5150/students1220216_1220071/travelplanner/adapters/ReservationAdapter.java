@@ -54,14 +54,23 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         Reservation reservation = reservations.get(position);
 
         holder.tripName.setText(reservation.getTripName());
-        holder.date.setText("Date: " + reservation.getReservationDate());
+        holder.date.setText(context.getString(
+                R.string.reservation_date_value,
+                reservation.getReservationDate()
+        ));
         holder.type.setText(reservation.getReservationType());
-        holder.quantity.setText(reservation.getQuantity() + " travelers");
+        holder.quantity.setText(context.getString(
+                R.string.reservation_travelers_value,
+                reservation.getQuantity()
+        ));
         holder.status.setText(reservation.getStatus());
 
         // only show additional info if not empty
         if (reservation.getAdditionalInfo() != null && !reservation.getAdditionalInfo().isEmpty()) {
-            holder.additionalInfo.setText("Notes: " + reservation.getAdditionalInfo());
+            holder.additionalInfo.setText(context.getString(
+                    R.string.reservation_notes_value,
+                    reservation.getAdditionalInfo()
+            ));
             holder.additionalInfo.setVisibility(View.VISIBLE);
         } else {
             holder.additionalInfo.setVisibility(View.GONE);
@@ -80,32 +89,44 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         // tracks if cancel button was already clicked once for this reservation
         final boolean[] cancelPending = {false};
 
-        if (reservation.getStatus().equals("Cancelled")) {
+        if (context.getString(R.string.reservation_cancelled).equals(reservation.getStatus())) {
             cancelButton.setEnabled(false);
-            cancelButton.setText("Cancelled");
+            cancelButton.setText(R.string.reservation_cancelled);
         } else {
             cancelButton.setEnabled(true);
-            cancelButton.setText("Cancel Reservation");
+            cancelButton.setText(R.string.action_cancel_reservation);
             cancelButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (!cancelPending[0]) {
                         // first click, ask for confirmation
                         cancelPending[0] = true;
-                        cancelButton.setText("Confirm Cancellation");
-                        Toast.makeText(context, "Tap again to confirm cancellation.", Toast.LENGTH_SHORT).show();
+                        cancelButton.setText(R.string.action_confirm_cancellation);
+                        Toast.makeText(
+                                context,
+                                R.string.reservation_cancel_prompt,
+                                Toast.LENGTH_SHORT
+                        ).show();
                     } else {
                         // second click, cancel the reservation
                         ReservationRepository repo = new ReservationRepository(context);
                         boolean success = repo.cancelReservation(reservation.getId());
                         if (success) {
-                            reservation.setStatus("Cancelled");
+                            reservation.setStatus(context.getString(R.string.reservation_cancelled));
                             cancelButton.setEnabled(false);
-                            cancelButton.setText("Cancelled");
-                            holder.status.setText("Cancelled");
-                            Toast.makeText(context, "Reservation cancelled.", Toast.LENGTH_SHORT).show();
+                            cancelButton.setText(R.string.reservation_cancelled);
+                            holder.status.setText(R.string.reservation_cancelled);
+                            Toast.makeText(
+                                    context,
+                                    R.string.reservation_cancel_success,
+                                    Toast.LENGTH_SHORT
+                            ).show();
                         } else {
-                            Toast.makeText(context, "Failed to cancel reservation.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(
+                                    context,
+                                    R.string.reservation_cancel_failure,
+                                    Toast.LENGTH_LONG
+                            ).show();
                         }
                     }
                 }

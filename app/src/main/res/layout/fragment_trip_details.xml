@@ -85,7 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_large"
-                android:text="Add to Favorites" />
+                android:text="@string/action_add_favorite" />
 
             <!-- reserve button -->
             <Button
@@ -93,7 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_small"
-                android:text="Reserve" />
+                android:text="@string/label_reserve" />
 
             <!-- error message shown if trip not found -->
             <TextView
@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_medium"
                 android:gravity="center"
-                android:text="Trip not found."
+                android:text="@string/trip_not_found"
                 android:textColor="@color/color_error"
                 android:visibility="gone" />
 
@@ -112,7 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_medium"
-                android:text="Go Back" />
+                android:text="@string/back_to_trips" />
 
         </LinearLayout>
     </LinearLayout>

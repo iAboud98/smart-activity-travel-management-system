@@ -101,38 +101,46 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void registerUser() {
         String email = ValidationUtils.normalizeEmail(getText(emailInput));
-        if (userRepository.emailExists(email)) {
-            emailInputLayout.setError(getString(R.string.registration_duplicate_email_error));
-            emailInput.requestFocus();
-            registrationStatus.setText(R.string.registration_validation_error_status);
-            return;
+        try {
+            if (userRepository.emailExists(email)) {
+                emailInputLayout.setError(getString(R.string.registration_duplicate_email_error));
+                emailInput.requestFocus();
+                registrationStatus.setText(R.string.registration_validation_error_status);
+                return;
+            }
+
+            User user = new User();
+            user.setEmail(email);
+            user.setFirstName(ValidationUtils.cleanInput(getText(firstNameInput)));
+            user.setLastName(ValidationUtils.cleanInput(getText(lastNameInput)));
+            user.setPassword(getText(passwordInput));
+            user.setGender(genderSpinner.getSelectedItem().toString());
+            user.setCategory(tripCategorySpinner.getSelectedItem().toString());
+            user.setPhone(ValidationUtils.normalizePhone(getText(phoneInput)));
+            user.setProfilePicturePath("");
+            user.setRole(SessionManager.ROLE_USER);
+            user.setIsActive(1);
+
+            if (!userRepository.registerUser(user)) {
+                showRegistrationFailure();
+                return;
+            }
+
+            registrationStatus.setText(R.string.registration_success_status);
+            Toast.makeText(this, R.string.registration_success_toast, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.putExtra(LoginActivity.EXTRA_PREFILL_EMAIL, email);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        } catch (RuntimeException exception) {
+            showRegistrationFailure();
         }
+    }
 
-        User user = new User();
-        user.setEmail(email);
-        user.setFirstName(ValidationUtils.cleanInput(getText(firstNameInput)));
-        user.setLastName(ValidationUtils.cleanInput(getText(lastNameInput)));
-        user.setPassword(getText(passwordInput));
-        user.setGender(genderSpinner.getSelectedItem().toString());
-        user.setCategory(tripCategorySpinner.getSelectedItem().toString());
-        user.setPhone(ValidationUtils.normalizePhone(getText(phoneInput)));
-        user.setProfilePicturePath("");
-        user.setRole(SessionManager.ROLE_USER);
-        user.setIsActive(1);
-
-        if (!userRepository.registerUser(user)) {
+    private void showRegistrationFailure() {
             registrationStatus.setText(R.string.registration_failure_status);
             Toast.makeText(this, R.string.registration_failure_toast, Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        registrationStatus.setText(R.string.registration_success_status);
-        Toast.makeText(this, R.string.registration_success_toast, Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.putExtra(LoginActivity.EXTRA_PREFILL_EMAIL, email);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
     }
 
     private boolean validateRegistrationForm() {

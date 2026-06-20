@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.encs5150.students1220216_1220071.travelplanner.MainActivity;
 import com.encs5150.students1220216_1220071.travelplanner.R;
 import com.encs5150.students1220216_1220071.travelplanner.adapters.ReservationAdapter;
 import com.encs5150.students1220216_1220071.travelplanner.models.Reservation;
@@ -45,7 +46,14 @@ public class MyReservationsFragment extends Fragment implements ReservationAdapt
 
         // load reservations for current user
         int currentUserId = SessionManager.getCurrentUserId(getActivity());
-        List<Reservation> reservations = reservationRepository.getReservationsByUser(currentUserId);
+        List<Reservation> reservations;
+        try {
+            reservations = reservationRepository.getReservationsByUser(currentUserId);
+            emptyState.setText(R.string.reservations_empty_state);
+        } catch (RuntimeException exception) {
+            reservations = java.util.Collections.emptyList();
+            emptyState.setText(R.string.data_load_error);
+        }
 
         reservationAdapter.setReservations(reservations);
         if (reservations.isEmpty()) {
@@ -58,11 +66,9 @@ public class MyReservationsFragment extends Fragment implements ReservationAdapt
     // opens trip details when a reservation row is tapped
     @Override
     public void onReservationClick(Reservation reservation) {
-        TripDetailsFragment detailsFragment = TripDetailsFragment.newInstance(reservation.getTripId(), TripDetailsFragment.SOURCE_RESERVATIONS);
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_fragment_container, detailsFragment)
-                .addToBackStack(null)
-                .commit();
+        ((MainActivity) requireActivity()).openTripDetails(
+                reservation.getTripId(),
+                TripDetailsFragment.SOURCE_RESERVATIONS
+        );
     }
 }
