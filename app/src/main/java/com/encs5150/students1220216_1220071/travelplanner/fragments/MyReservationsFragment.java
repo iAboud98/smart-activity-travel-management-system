@@ -46,7 +46,14 @@ public class MyReservationsFragment extends Fragment implements ReservationAdapt
 
         // load reservations for current user
         int currentUserId = SessionManager.getCurrentUserId(getActivity());
-        List<Reservation> reservations = reservationRepository.getReservationsByUser(currentUserId);
+        List<Reservation> reservations;
+        try {
+            reservations = reservationRepository.getReservationsByUser(currentUserId);
+            emptyState.setText(R.string.reservations_empty_state);
+        } catch (RuntimeException exception) {
+            reservations = java.util.Collections.emptyList();
+            emptyState.setText(R.string.data_load_error);
+        }
 
         reservationAdapter.setReservations(reservations);
         if (reservations.isEmpty()) {

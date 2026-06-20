@@ -76,7 +76,14 @@ public class ReservationFormFragment extends Fragment {
 
         // check trip exists
         TripRepository tripRepository = new TripRepository(getActivity());
-        Trip trip = tripRepository.getTripById(tripId);
+        Trip trip;
+        try {
+            trip = tripRepository.getTripById(tripId);
+        } catch (RuntimeException exception) {
+            Toast.makeText(requireContext(), R.string.data_load_error, Toast.LENGTH_LONG).show();
+            ((MainActivity) requireActivity()).navigateBack();
+            return;
+        }
         if (trip == null) {
             Toast.makeText(requireContext(), R.string.trip_not_found, Toast.LENGTH_LONG).show();
             ((MainActivity) requireActivity()).navigateBack();

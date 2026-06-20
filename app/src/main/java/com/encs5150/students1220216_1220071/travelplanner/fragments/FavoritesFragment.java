@@ -52,7 +52,14 @@ public class FavoritesFragment extends Fragment implements FavoriteAdapter.OnFav
 
     // loads favorites for current user
     private void loadFavorites() {
-        List<Trip> trips = favoriteRepository.getFavoriteTripsByUser(currentUserId);
+        List<Trip> trips;
+        try {
+            trips = favoriteRepository.getFavoriteTripsByUser(currentUserId);
+            emptyState.setText(R.string.favorites_empty_state);
+        } catch (RuntimeException exception) {
+            trips = java.util.Collections.emptyList();
+            emptyState.setText(R.string.data_load_error);
+        }
         favoriteAdapter.setTrips(trips);
         if (trips.isEmpty()) {
             emptyState.setVisibility(View.VISIBLE);
@@ -73,8 +80,23 @@ public class FavoritesFragment extends Fragment implements FavoriteAdapter.OnFav
     // removes trip from favorites and refreshes list
     @Override
     public void onRemoveClick(Trip trip) {
-        favoriteRepository.removeFavorite(currentUserId, trip.getID());
-        loadFavorites();
+        try {
+            if (favoriteRepository.removeFavorite(currentUserId, trip.getID())) {
+                loadFavorites();
+            } else {
+                android.widget.Toast.makeText(
+                        requireContext(),
+                        R.string.favorite_update_failure,
+                        android.widget.Toast.LENGTH_SHORT
+                ).show();
+            }
+        } catch (RuntimeException exception) {
+            android.widget.Toast.makeText(
+                    requireContext(),
+                    R.string.favorite_update_failure,
+                    android.widget.Toast.LENGTH_SHORT
+            ).show();
+        }
     }
 
     // opens reservation form directly from favorites

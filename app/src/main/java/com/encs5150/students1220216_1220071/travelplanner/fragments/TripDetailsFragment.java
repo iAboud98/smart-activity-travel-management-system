@@ -69,7 +69,11 @@ public class TripDetailsFragment extends Fragment {
         }
 
         // load trip from database by id
-        trip = tripRepository.getTripById(tripId);
+        try {
+            trip = tripRepository.getTripById(tripId);
+        } catch (RuntimeException exception) {
+            trip = null;
+        }
 
         if (trip == null) {
             // trip not found, show error and hide everything else
@@ -128,22 +132,43 @@ public class TripDetailsFragment extends Fragment {
         favoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (favoriteRepository.isFavorite(currentUserId, tripId)) {
-                    favoriteRepository.removeFavorite(currentUserId, tripId);
+                try {
+                    boolean updated;
+                    if (favoriteRepository.isFavorite(currentUserId, tripId)) {
+                        updated = favoriteRepository.removeFavorite(currentUserId, tripId);
+                        if (updated) {
+                            Toast.makeText(
+                                    requireContext(),
+                                    R.string.favorite_removed_toast,
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        }
+                    } else {
+                        updated = favoriteRepository.addFavorite(currentUserId, tripId);
+                        if (updated) {
+                            Toast.makeText(
+                                    requireContext(),
+                                    R.string.favorite_added_toast,
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        }
+                    }
+
+                    if (!updated) {
+                        Toast.makeText(
+                                requireContext(),
+                                R.string.favorite_update_failure,
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }
+                    updateFavoriteButton(favoriteButton);
+                } catch (RuntimeException exception) {
                     Toast.makeText(
                             requireContext(),
-                            R.string.favorite_removed_toast,
-                            Toast.LENGTH_SHORT
-                    ).show();
-                } else {
-                    favoriteRepository.addFavorite(currentUserId, tripId);
-                    Toast.makeText(
-                            requireContext(),
-                            R.string.favorite_added_toast,
+                            R.string.favorite_update_failure,
                             Toast.LENGTH_SHORT
                     ).show();
                 }
-                updateFavoriteButton(favoriteButton);
             }
         });
 
@@ -190,10 +215,16 @@ public class TripDetailsFragment extends Fragment {
 
     // updates the favorite button text based on whether the trip is currently favorited
     private void updateFavoriteButton(Button favoriteButton) {
-        if (favoriteRepository.isFavorite(currentUserId, tripId)) {
-            favoriteButton.setText(R.string.action_remove_favorite);
-        } else {
+        try {
+            if (favoriteRepository.isFavorite(currentUserId, tripId)) {
+                favoriteButton.setText(R.string.action_remove_favorite);
+            } else {
+                favoriteButton.setText(R.string.action_add_favorite);
+            }
+            favoriteButton.setEnabled(true);
+        } catch (RuntimeException exception) {
             favoriteButton.setText(R.string.action_add_favorite);
+            favoriteButton.setEnabled(false);
         }
     }
 }

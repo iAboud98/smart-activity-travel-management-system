@@ -34,26 +34,27 @@ public class SpecialSectionFragment extends Fragment implements TripAdapter.OnTr
 
         tripRepository = new TripRepository(getActivity());
 
-        // setup top rated section
-        setupSection(
-                R.id.top_rated_recycler_view,
-                R.id.top_rated_empty,
-                tripRepository.getTopRatedTrips()
-        );
-
-        // setup popular section
-        setupSection(
-                R.id.popular_recycler_view,
-                R.id.popular_empty,
-                tripRepository.getPopularTrips()
-        );
-
-        // setup trending section
-        setupSection(
-                R.id.trending_recycler_view,
-                R.id.trending_empty,
-                tripRepository.getTrendingTrips()
-        );
+        try {
+            setupSection(
+                    R.id.top_rated_recycler_view,
+                    R.id.top_rated_empty,
+                    tripRepository.getTopRatedTrips()
+            );
+            setupSection(
+                    R.id.popular_recycler_view,
+                    R.id.popular_empty,
+                    tripRepository.getPopularTrips()
+            );
+            setupSection(
+                    R.id.trending_recycler_view,
+                    R.id.trending_empty,
+                    tripRepository.getTrendingTrips()
+            );
+        } catch (RuntimeException exception) {
+            showSectionError(R.id.top_rated_recycler_view, R.id.top_rated_empty);
+            showSectionError(R.id.popular_recycler_view, R.id.popular_empty);
+            showSectionError(R.id.trending_recycler_view, R.id.trending_empty);
+        }
     }
 
     // sets up a RecyclerView section with trips and handles empty state
@@ -72,6 +73,14 @@ public class SpecialSectionFragment extends Fragment implements TripAdapter.OnTr
             adapter.setTrips(trips);
             recyclerView.setAdapter(adapter);
         }
+    }
+
+    private void showSectionError(int recyclerViewId, int emptyStateId) {
+        TextView emptyState = requireActivity().findViewById(emptyStateId);
+        RecyclerView recyclerView = requireActivity().findViewById(recyclerViewId);
+        emptyState.setText(R.string.data_load_error);
+        emptyState.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
     }
 
     // opens trip details when a trip is tapped

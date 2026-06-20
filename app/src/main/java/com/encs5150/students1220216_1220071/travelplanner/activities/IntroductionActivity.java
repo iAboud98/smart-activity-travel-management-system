@@ -63,8 +63,13 @@ public class IntroductionActivity extends AppCompatActivity {
     public void onTripsFetched(List<Trip> trips) {
         connectionTask = null;
 
-        if (trips == null || trips.size() < MIN_REQUIRED_IMPORTED_TRIPS) {
+        if (trips == null) {
             showConnectFailure(R.string.connect_failure_status, R.string.connect_failure_toast);
+            return;
+        }
+
+        if (trips.size() < MIN_REQUIRED_IMPORTED_TRIPS) {
+            showConnectFailure(R.string.connect_invalid_data_status, R.string.connect_invalid_data_toast);
             return;
         }
 
@@ -74,7 +79,7 @@ public class IntroductionActivity extends AppCompatActivity {
 
             int storedTripCount = tripRepository.getAllTrips().size();
             if (storedTripCount < MIN_REQUIRED_IMPORTED_TRIPS) {
-                showConnectFailure(R.string.connect_invalid_data_status, R.string.connect_failure_toast);
+                showConnectFailure(R.string.connect_invalid_data_status, R.string.connect_invalid_data_toast);
                 return;
             }
 

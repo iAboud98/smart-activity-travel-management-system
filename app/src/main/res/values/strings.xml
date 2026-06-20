@@ -13,6 +13,7 @@
     <string name="connect_failure_status">Could not import trips. Check your connection and try again.</string>
     <string name="connect_failure_toast">Failed to fetch trips. Please check your connection.</string>
     <string name="connect_invalid_data_status">The API did not return at least 10 usable trips. Please try again later.</string>
+    <string name="connect_invalid_data_toast">The trip API returned too few usable trips.</string>
 
     <string name="label_trip">Trip</string>
     <string name="label_trips">Trips</string>
@@ -43,6 +44,8 @@
     <string name="login_progress_content_description">Checking login details</string>
     <string name="login_invalid_credentials_status">Email or password is incorrect.</string>
     <string name="login_invalid_credentials_toast">Login failed. Check your email and password.</string>
+    <string name="login_database_error_status">Login is temporarily unavailable. Please try again.</string>
+    <string name="login_database_error_toast">Could not access account data. Please try again.</string>
     <string name="login_user_success_status">Login successful. Opening home...</string>
     <string name="login_user_success_toast">Welcome back.</string>
     <string name="login_admin_success_status">Admin login successful. Opening admin home...</string>
@@ -113,6 +116,7 @@
     <string name="filter_rating_medium">4.0+ Rating</string>
     <string name="filter_rating_low">3.5+ Rating</string>
     <string name="trips_empty_state">No trips found. Connect on the introduction screen to import trips.</string>
+    <string name="data_load_error">Could not load this information. Please reopen the screen and try again.</string>
     <string name="trip_duration_value">Duration: %1$d days</string>
     <string name="trip_price_value">Price: $%1$.0f</string>
     <string name="trip_rating_value">Rating: ★ %1$.1f</string>
@@ -120,6 +124,7 @@
     <string name="action_remove_favorite">Remove from Favorites</string>
     <string name="favorite_added_toast">Added to favorites.</string>
     <string name="favorite_removed_toast">Removed from favorites.</string>
+    <string name="favorite_update_failure">Could not update favorites. Please try again.</string>
     <string name="trip_not_found">Trip not found.</string>
     <string name="back_to_trips">Back to Trips</string>
     <string name="back_to_favorites">Back to Favorites</string>

@@ -36,11 +36,11 @@ public class ConnectionAsyncTask extends AsyncTask<String, Void, List<Trip>> {
     // runs on main UI thread after doInBackground finishes
     @Override
     protected void onPostExecute(List<Trip> trips) {
-        if (trips == null || trips.isEmpty()) {
-            Log.d("ConnectionAsyncTask", "import failed: trips list is null or empty");
+        if (trips == null) {
+            Log.d("ConnectionAsyncTask", "import failed: API request returned no data");
             ((IntroductionActivity) activity).onTripsFetched(null);
         } else {
-            Log.d("ConnectionAsyncTask", "import successful: " + trips.size() + " trips fetched");
+            Log.d("ConnectionAsyncTask", "API response parsed: " + trips.size() + " usable trips");
             ((IntroductionActivity) activity).onTripsFetched(trips);
         }
     }

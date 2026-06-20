@@ -184,9 +184,21 @@ public class TripsFragment extends Fragment implements TripAdapter.OnTripClickLi
 
     // applies current search query and filter together
     private void applyFilters() {
-        List<Trip> trips = tripRepository.searchWithFilter(
-                currentQuery, currentFilterType, currentFilterValue, currentFilterMin, currentFilterMax);
-        loadTrips(trips);
+        try {
+            List<Trip> trips = tripRepository.searchWithFilter(
+                    currentQuery,
+                    currentFilterType,
+                    currentFilterValue,
+                    currentFilterMin,
+                    currentFilterMax
+            );
+            emptyState.setText(R.string.trips_empty_state);
+            loadTrips(trips);
+        } catch (RuntimeException exception) {
+            tripAdapter.setTrips(java.util.Collections.emptyList());
+            emptyState.setText(R.string.data_load_error);
+            emptyState.setVisibility(View.VISIBLE);
+        }
     }
 
     // loads trips into the adapter and handles empty state

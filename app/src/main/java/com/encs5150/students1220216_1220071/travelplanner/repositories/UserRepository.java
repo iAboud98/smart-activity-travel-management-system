@@ -11,6 +11,7 @@ import java.util.List;
 
 public class UserRepository {
     private final DatabaseHelper dbHelper;
+    private boolean lastLoginOperationFailed;
 
     public UserRepository(Context context) {
         dbHelper = new DatabaseHelper(context, "travel_planner.db", null, 1);
@@ -81,6 +82,7 @@ public class UserRepository {
     // authenticate login for both users and admins
     // returns the user object if email/password match, null if not
     public User loginUser(String email, String password) {
+        lastLoginOperationFailed = false;
         try {
             SQLiteDatabase db = dbHelper.getReadableDatabase();
             String hashedPassword = DatabaseHelper.hashPassword(password);
@@ -103,8 +105,13 @@ public class UserRepository {
         }
         catch (Exception e) {
             e.printStackTrace();
+            lastLoginOperationFailed = true;
             return null;
         }
+    }
+
+    public boolean didLastLoginOperationFail() {
+        return lastLoginOperationFailed;
     }
 
     // update first name for a user, return true if successful
