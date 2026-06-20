@@ -103,4 +103,12 @@ public class ReservationRepository {
         int rows = db.update("reservations", values, "id = " + reservationId, null);
         return rows > 0;
     }
+
+    // cancel all reservations for a specific trip when it is deleted
+    public void cancelReservationsByTrip(int tripId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("status", "Cancelled");
+        db.update("reservations", values, "trip_id = " + tripId, null);
+    }
 }

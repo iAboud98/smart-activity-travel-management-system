@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.encs5150.students1220216_1220071.travelplanner.R;
 import com.encs5150.students1220216_1220071.travelplanner.models.Trip;
+import com.encs5150.students1220216_1220071.travelplanner.repositories.ReservationRepository;
 import com.encs5150.students1220216_1220071.travelplanner.repositories.TripRepository;
 
 public class AdminTripDetailsFragment extends Fragment {
@@ -108,11 +109,12 @@ public class AdminTripDetailsFragment extends Fragment {
                     deleteButton.setText("Confirm Delete");
                     Toast.makeText(getActivity(), "Tap again to confirm deletion.", Toast.LENGTH_SHORT).show();
                 } else {
-                    // second click, perform soft delete
+                    // second click, cancel all reservations for the trip then delete it
+                    ReservationRepository reservationRepository = new ReservationRepository(getActivity());
+                    reservationRepository.cancelReservationsByTrip(tripId);
                     boolean success = tripRepository.deleteTrip(tripId);
                     if (success) {
-                        Toast.makeText(getActivity(), "Trip deleted.", Toast.LENGTH_SHORT).show();
-                        // go back to trips list
+                        Toast.makeText(getActivity(), "Trip deleted and reservations cancelled.", Toast.LENGTH_SHORT).show();
                         getActivity().getSupportFragmentManager().popBackStack();
                     } else {
                         Toast.makeText(getActivity(), "Failed to delete trip.", Toast.LENGTH_LONG).show();

@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.encs5150.students1220216_1220071.travelplanner.R;
 import com.encs5150.students1220216_1220071.travelplanner.adapters.AdminUserAdapter;
+import com.encs5150.students1220216_1220071.travelplanner.models.Reservation;
 import com.encs5150.students1220216_1220071.travelplanner.models.User;
+import com.encs5150.students1220216_1220071.travelplanner.repositories.ReservationRepository;
 import com.encs5150.students1220216_1220071.travelplanner.repositories.UserRepository;
 import com.encs5150.students1220216_1220071.travelplanner.utils.SessionManager;
 import java.util.List;
@@ -70,7 +72,15 @@ public class AdminViewUsersFragment extends Fragment implements AdminUserAdapter
             return;
         }
 
-        // soft delete - sets is_active to 0, data is kept
+        // prevent deleting a user with existing reservations
+        ReservationRepository reservationRepository = new ReservationRepository(getActivity());
+        List<Reservation> userReservations = reservationRepository.getReservationsByUser(user.getId());
+        if (!userReservations.isEmpty()) {
+            Toast.makeText(getActivity(), "Cannot delete user with existing reservations.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // soft delete sets is_active to 0
         boolean success = userRepository.deleteUser(user.getId());
         if (success) {
             Toast.makeText(getActivity(), "User deleted.", Toast.LENGTH_SHORT).show();
