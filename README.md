@@ -105,7 +105,7 @@ The resulting APK is written to `app/build/outputs/apk/debug/app-debug.apk`.
 ./gradlew connectedDebugAndroidTest
 ```
 
-The A18 QA pass completed all three checks successfully, including nine emulator instrumentation tests covering API outcomes, registration/login failures, protected navigation, trips, favorites, reservations, profile updates, contact intents, and logout. Final Pixel 3a XL API 28 verification belongs to A20.
+The A18 QA pass completed all three checks successfully, including nine emulator instrumentation tests covering API outcomes, registration/login failures, protected navigation, trips, favorites, reservations, profile updates, contact intents, and logout. A20 repeated the clean build and all nine instrumentation tests successfully on the required Pixel 3a XL API 28 AVD with SwiftShader software graphics, then verified cold launch, the live API import, and seeded admin routing.
 
 ## Known Limitations
 
@@ -123,4 +123,4 @@ The A18 QA pass completed all three checks successfully, including nine emulator
 - [QA progress log](docs/progress-log.md)
 - [Final submission checklist](docs/submission-checklist.md)
 
-Screenshots are intentionally deferred until the A20 Pixel 3a XL API 28 verification so they reflect the final submission build.
+Final Pixel 3a XL verification captures are stored with the external release handoff artifacts rather than committed to the source repository.
