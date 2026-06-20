@@ -43,7 +43,7 @@ public class AdminTripsFragment extends Fragment implements TripAdapter.OnTripCl
         // reuse TripAdapter, same as user trips list
         RecyclerView recyclerView = getActivity().findViewById(R.id.admin_trips_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        tripAdapter = new TripAdapter(getActivity(), this);
+        tripAdapter = new TripAdapter(getActivity(), this, true);
         recyclerView.setAdapter(tripAdapter);
 
         loadTrips();

@@ -14,17 +14,9 @@
             android:icon="@drawable/ic_nav_profile"
             android:title="View Users" />
         <item
-            android:id="@+id/admin_nav_add_trip"
+            android:id="@+id/admin_nav_manage_trips"
             android:icon="@drawable/ic_nav_trips"
-            android:title="Add New Trip" />
-        <item
-            android:id="@+id/admin_nav_edit_trips"
-            android:icon="@drawable/ic_nav_trips"
-            android:title="Edit Trips" />
-        <item
-            android:id="@+id/admin_nav_delete_trips"
-            android:icon="@drawable/ic_nav_trips"
-            android:title="Delete Trips" />
+            android:title="Manage Trips" />
         <item
             android:id="@+id/admin_nav_view_reservations"
             android:icon="@drawable/ic_nav_reservations"

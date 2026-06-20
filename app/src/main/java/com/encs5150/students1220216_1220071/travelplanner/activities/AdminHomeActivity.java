@@ -97,12 +97,8 @@ public class AdminHomeActivity extends AppCompatActivity {
             return new AdminAddAdminFragment();
         } else if (itemId == R.id.admin_nav_view_users) {
             return new AdminViewUsersFragment();
-        } else if (itemId == R.id.admin_nav_add_trip) {
-            return new AdminTripsFragment(); // shows list with add btn at top
-        } else if (itemId == R.id.admin_nav_edit_trips) {
-            return new AdminTripsFragment(); // same list with edit btns
-        } else if (itemId == R.id.admin_nav_delete_trips) {
-            return new AdminTripsFragment(); // same list, delete enabled in B20
+        } else if (itemId == R.id.admin_nav_manage_trips) {
+            return new AdminTripsFragment();
         } else if (itemId == R.id.admin_nav_view_reservations) {
             return new AdminViewReservationsFragment();
         }
