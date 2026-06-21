@@ -23,7 +23,7 @@ public class AdminTripFormFragment extends Fragment {
     private int tripId = -1;
     private TripRepository tripRepository;
 
-    // creates instance, pass -1 for add mode, trip id for edit mode
+    // creates instance — pass -1 for add mode, trip id for edit mode
     public static AdminTripFormFragment newInstance(int tripId) {
         AdminTripFormFragment fragment = new AdminTripFormFragment();
         Bundle args = new Bundle();
@@ -62,10 +62,10 @@ public class AdminTripFormFragment extends Fragment {
         Button cancelButton = getActivity().findViewById(R.id.trip_form_cancel_button);
 
         if (tripId == -1) {
-            // add mode, empty form
+            // add mode — empty form
             formTitle.setText("Add New Trip");
         } else {
-            // edit mode, pre fill form with existing trip data
+            // edit mode — pre-fill form with existing trip data
             formTitle.setText("Edit Trip");
             Trip trip = tripRepository.getTripById(tripId);
             if (trip != null) {
@@ -101,36 +101,37 @@ public class AdminTripFormFragment extends Fragment {
 
                 // validate all required fields
                 if (destination.isEmpty()) {
-                    Toast.makeText(getActivity(), "Destination is required.", Toast.LENGTH_SHORT).show();
+                    destinationInput.setError("Destination is required.");
                     return;
                 }
                 if (country.isEmpty()) {
-                    Toast.makeText(getActivity(), "Country is required.", Toast.LENGTH_SHORT).show();
+                    countryInput.setError("Country is required.");
                     return;
                 }
                 if (durationStr.isEmpty()) {
-                    Toast.makeText(getActivity(), "Duration is required.", Toast.LENGTH_SHORT).show();
+                    durationInput.setError("Duration is required.");
                     return;
                 }
                 if (priceStr.isEmpty()) {
-                    Toast.makeText(getActivity(), "Price is required.", Toast.LENGTH_SHORT).show();
+                    priceInput.setError("Price is required.");
                     return;
                 }
                 if (ratingStr.isEmpty()) {
-                    Toast.makeText(getActivity(), "Rating is required.", Toast.LENGTH_SHORT).show();
+                    ratingInput.setError("Rating is required.");
                     return;
                 }
                 if (description.isEmpty()) {
-                    Toast.makeText(getActivity(), "Description is required.", Toast.LENGTH_SHORT).show();
+                    descriptionInput.setError("Description is required.");
                     return;
                 }
                 if (imageUrl.isEmpty()) {
-                    Toast.makeText(getActivity(), "Image URL is required.", Toast.LENGTH_SHORT).show();
+                    imageUrlInput.setError("Image URL is required.");
                     return;
                 }
 
                 if (tripRepository.activeDestinationExists(destination, tripId)) {
-                    Toast.makeText(getActivity(), getString(R.string.admin_trip_duplicate_destination), Toast.LENGTH_SHORT).show();
+                    destinationInput.setError(getString(R.string.admin_trip_duplicate_destination));
+                    destinationInput.requestFocus();
                     return;
                 }
 
@@ -141,33 +142,33 @@ public class AdminTripFormFragment extends Fragment {
                 try {
                     duration = Integer.parseInt(durationStr);
                 } catch (NumberFormatException exception) {
-                    Toast.makeText(getActivity(), getString(R.string.admin_trip_invalid_duration), Toast.LENGTH_SHORT).show();
+                    durationInput.setError(getString(R.string.admin_trip_invalid_duration));
                     return;
                 }
                 try {
                     price = Double.parseDouble(priceStr);
                 } catch (NumberFormatException exception) {
-                    Toast.makeText(getActivity(), getString(R.string.admin_trip_invalid_price), Toast.LENGTH_SHORT).show();
+                    priceInput.setError(getString(R.string.admin_trip_invalid_price));
                     return;
                 }
                 try {
                     rating = Double.parseDouble(ratingStr);
                 } catch (NumberFormatException exception) {
-                    Toast.makeText(getActivity(), getString(R.string.admin_trip_invalid_rating), Toast.LENGTH_SHORT).show();
+                    ratingInput.setError(getString(R.string.admin_trip_invalid_rating));
                     return;
                 }
 
                 // validate numeric ranges
                 if (duration <= 0) {
-                    Toast.makeText(getActivity(), "Duration must be at least 1 day.", Toast.LENGTH_SHORT).show();
+                    durationInput.setError("Duration must be at least 1 day.");
                     return;
                 }
                 if (price <= 0) {
-                    Toast.makeText(getActivity(), "Price must be greater than 0.", Toast.LENGTH_SHORT).show();
+                    priceInput.setError("Price must be greater than 0.");
                     return;
                 }
                 if (rating < 0 || rating > 5) {
-                    Toast.makeText(getActivity(), "Rating must be between 0 and 5.", Toast.LENGTH_SHORT).show();
+                    ratingInput.setError("Rating must be between 0 and 5.");
                     return;
                 }
 
@@ -184,10 +185,10 @@ public class AdminTripFormFragment extends Fragment {
 
                 boolean success;
                 if (tripId == -1) {
-                    // add mode, insert new trip
+                    // add mode — insert new trip
                     success = tripRepository.createTrip(trip);
                 } else {
-                    // edit mode, update existing trip
+                    // edit mode — update existing trip
                     trip.setID(tripId);
                     success = tripRepository.updateTrip(trip);
                 }

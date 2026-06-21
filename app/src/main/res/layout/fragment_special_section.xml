@@ -69,7 +69,7 @@
             android:layout_marginTop="@dimen/space_small"
             android:nestedScrollingEnabled="false" />
 
-        <!-- trending this week section - trips with 3+ reservations in last 7 days -->
+        <!-- trending this week section - trips with reservations in last 7 days -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Trips that received 3 or more reservations in the last 7 days."
+            android:text="Trips that received more reservations in the last 7 days."
             android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
 
         <TextView

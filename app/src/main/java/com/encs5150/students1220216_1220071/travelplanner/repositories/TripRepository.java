@@ -163,42 +163,6 @@ public class TripRepository {
         return trips;
     }
 
-    // filter trips by duration days range
-    public List<Trip> filterByDuration(int minDays, int maxDays) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        List<Trip> trips = new ArrayList<>();
-        Cursor cursor = db.rawQuery("select * from trips where duration_days >= " + minDays + " and duration_days <= " + maxDays + " and is_active = 1", null);
-        while (cursor.moveToNext()) {
-            trips.add(cursorToTrip(cursor));
-        }
-        cursor.close();
-        return trips;
-    }
-
-    // filter trips by minimum rating
-    public List<Trip> filterByRating(double minRating) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        List<Trip> trips = new ArrayList<>();
-        Cursor cursor = db.rawQuery("select * from trips where rating >= " + minRating + " and is_active = 1", null);
-        while (cursor.moveToNext()) {
-            trips.add(cursorToTrip(cursor));
-        }
-        cursor.close();
-        return trips;
-    }
-
-    // filter trips by maximum price
-    public List<Trip> filterByPrice(double maxPrice) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        List<Trip> trips = new ArrayList<>();
-        Cursor cursor = db.rawQuery("select * from trips where price <= " + maxPrice + " and is_active = 1", null);
-        while (cursor.moveToNext()) {
-            trips.add(cursorToTrip(cursor));
-        }
-        cursor.close();
-        return trips;
-    }
-
     // search with optional combined filters
     // each category filter is independent 0 means no filter for that category
     public List<Trip> searchWithFilter(String searchQuery, int durationMin, int durationMax, double maxPrice, double minRating) {
