@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -15,7 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.encs5150.students1220216_1220071.travelplanner.R;
 import com.encs5150.students1220216_1220071.travelplanner.adapters.AdminUserAdapter;
+import com.encs5150.students1220216_1220071.travelplanner.models.Reservation;
 import com.encs5150.students1220216_1220071.travelplanner.models.User;
+import com.encs5150.students1220216_1220071.travelplanner.repositories.ReservationRepository;
 import com.encs5150.students1220216_1220071.travelplanner.repositories.UserRepository;
 import com.encs5150.students1220216_1220071.travelplanner.utils.SessionManager;
 import java.util.List;
@@ -47,6 +51,27 @@ public class AdminViewUsersFragment extends Fragment implements AdminUserAdapter
         recyclerView.setAdapter(adapter);
 
         loadUsers();
+
+        // search button searches users by name, email or phone
+        EditText searchInput = getActivity().findViewById(R.id.admin_users_search_input);
+        Button searchButton = getActivity().findViewById(R.id.admin_users_search_button);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query = searchInput.getText().toString().trim();
+                if (query.isEmpty()) {
+                    loadUsers();
+                } else {
+                    List<User> users = userRepository.searchUsers(query);
+                    adapter.setUsers(users);
+                    if (users.isEmpty()) {
+                        emptyState.setVisibility(View.VISIBLE);
+                    } else {
+                        emptyState.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
     }
 
     // loads all active regular users
@@ -70,24 +95,21 @@ public class AdminViewUsersFragment extends Fragment implements AdminUserAdapter
             return;
         }
 
-        // show confirmation dialog before deleting
-        new AlertDialog.Builder(getActivity())
-                .setTitle("Delete User")
-                .setMessage("Are you sure you want to delete " + user.getFirstName() + " " + user.getLastName() + "?")
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // delete sets is_active to 0, data is kept
-                        boolean success = userRepository.deleteUser(user.getId());
-                        if (success) {
-                            Toast.makeText(getActivity(), "User deleted.", Toast.LENGTH_SHORT).show();
-                            loadUsers();
-                        } else {
-                            Toast.makeText(getActivity(), "Failed to delete user.", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
+        // prevent deleting a user with existing reservations
+        ReservationRepository reservationRepository = new ReservationRepository(getActivity());
+        List<Reservation> userReservations = reservationRepository.getReservationsByUser(user.getId());
+        if (!userReservations.isEmpty()) {
+            Toast.makeText(getActivity(), "Cannot delete user with existing reservations.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // soft delete sets is_active to 0
+        boolean success = userRepository.deleteUser(user.getId());
+        if (success) {
+            Toast.makeText(getActivity(), "User deleted.", Toast.LENGTH_SHORT).show();
+            loadUsers();
+        } else {
+            Toast.makeText(getActivity(), "Failed to delete user.", Toast.LENGTH_LONG).show();
+        }
     }
 }

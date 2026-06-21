@@ -163,75 +163,38 @@ public class TripRepository {
         return trips;
     }
 
-    // filter trips by duration days range
-    public List<Trip> filterByDuration(int minDays, int maxDays) {
+    // search with optional combined filters
+    // each category filter is independent 0 means no filter for that category
+    public List<Trip> searchWithFilter(String searchQuery, int durationMin, int durationMax, double maxPrice, double minRating) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         List<Trip> trips = new ArrayList<>();
-        Cursor cursor = db.rawQuery("select * from trips where duration_days >= " + minDays + " and duration_days <= " + maxDays + " and is_active = 1", null);
-        while (cursor.moveToNext()) {
-            trips.add(cursorToTrip(cursor));
-        }
-        cursor.close();
-        return trips;
-    }
-
-    // filter trips by minimum rating
-    public List<Trip> filterByRating(double minRating) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        List<Trip> trips = new ArrayList<>();
-        Cursor cursor = db.rawQuery("select * from trips where rating >= " + minRating + " and is_active = 1", null);
-        while (cursor.moveToNext()) {
-            trips.add(cursorToTrip(cursor));
-        }
-        cursor.close();
-        return trips;
-    }
-
-    // filter trips by maximum price
-    public List<Trip> filterByPrice(double maxPrice) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        List<Trip> trips = new ArrayList<>();
-        Cursor cursor = db.rawQuery("select * from trips where price <= " + maxPrice + " and is_active = 1", null);
-        while (cursor.moveToNext()) {
-            trips.add(cursorToTrip(cursor));
-        }
-        cursor.close();
-        return trips;
-    }
-
-    // search with optional filter combined
-    public List<Trip> searchWithFilter(String searchQuery, String filterType, double filterValue, int filterMin, int filterMax) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        List<Trip> trips = new ArrayList<>();
-        List<String> selectionArgs = new ArrayList<>();
 
         String sql = "select * from trips where is_active = 1";
 
-        // add search condition
-        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-            String searchPattern = "%" + searchQuery.trim() + "%";
-            sql += " and (destination like ? or country like ? or description like ?)";
-            selectionArgs.add(searchPattern);
-            selectionArgs.add(searchPattern);
-            selectionArgs.add(searchPattern);
+        // search condition across destination, country and description
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            sql += " and (destination like '%" + searchQuery + "%' or country like '%" + searchQuery + "%' or description like '%" + searchQuery + "%')";
         }
 
-        // add filter condition
-        if (filterType != null) {
-            if (filterType.equals("duration")) {
-                sql += " and duration_days >= ? and duration_days <= ?";
-                selectionArgs.add(String.valueOf(filterMin));
-                selectionArgs.add(String.valueOf(filterMax));
-            } else if (filterType.equals("price")) {
-                sql += " and price <= ?";
-                selectionArgs.add(String.valueOf(filterValue));
-            } else if (filterType.equals("rating")) {
-                sql += " and rating >= ?";
-                selectionArgs.add(String.valueOf(filterValue));
-            }
+        // duration filter if not 0
+        if (durationMin > 0 && durationMax > 0 && durationMax < 100) {
+            sql += " and duration_days between " + durationMin + " and " + durationMax;
+        } else if (durationMin >= 8) {
+            // 8+ days case
+            sql += " and duration_days >= " + durationMin;
         }
 
-        Cursor cursor = db.rawQuery(sql, selectionArgs.toArray(new String[0]));
+        // price filter if not 0
+        if (maxPrice > 0) {
+            sql += " and price <= " + maxPrice;
+        }
+
+        // rating filter if not 0
+        if (minRating > 0) {
+            sql += " and rating >= " + minRating;
+        }
+
+        Cursor cursor = db.rawQuery(sql, null);
         while (cursor.moveToNext()) {
             trips.add(cursorToTrip(cursor));
         }
@@ -258,7 +221,7 @@ public class TripRepository {
         return trips;
     }
 
-    // list trending trips that received 2 or more reservations in the last 7 days
+    // list trending trips that received 3 or more reservations in the last 7 days
     public List<Trip> getTrendingTrips() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         List<Trip> trips = new ArrayList<>();
@@ -268,7 +231,7 @@ public class TripRepository {
                         "where trips.is_active = 1 " +
                         "and reservations.reservation_date >= date('now', '-7 days') " +
                         "group by trips.id " +
-                        "having count(reservations.id) >= 2 " +
+                        "having count(reservations.id) >= 3 " +
                         "order by count(reservations.id) desc", null);
         while (cursor.moveToNext()) {
             trips.add(cursorToTrip(cursor));

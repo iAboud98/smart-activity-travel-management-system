@@ -115,7 +115,7 @@
     <string name="filter_rating_high">4.5+ Rating</string>
     <string name="filter_rating_medium">4.0+ Rating</string>
     <string name="filter_rating_low">3.5+ Rating</string>
-    <string name="trips_empty_state">No trips found. Connect on the introduction screen to import trips.</string>
+    <string name="trips_empty_state">No trips found.</string>
     <string name="data_load_error">Could not load this information. Please reopen the screen and try again.</string>
     <string name="trip_duration_value">Duration: %1$d days</string>
     <string name="trip_price_value">Price: $%1$.0f</string>
@@ -149,7 +149,7 @@
     <string name="travel_offers_empty_state">No travel offers are available.</string>
     <string name="popular_destinations_description">Destinations with the most reservations.</string>
     <string name="popular_destinations_empty_state">No popular destinations yet.</string>
-    <string name="recommended_trips_description">Recommended trips based on recent reservation activity.</string>
+    <string name="recommended_trips_description">Trips with a rating of 4.5 and above.</string>
     <string name="recommended_trips_empty_state">No recommended trips yet.</string>
     <string name="reservation_travelers_label">Number of Travelers</string>
     <string name="reservation_travelers_hint">Enter number of travelers</string>
@@ -226,6 +226,10 @@
     <string name="validation_phone_required">Phone number is required.</string>
     <string name="validation_phone_format">Use 7 to 15 digits, with an optional + country code.</string>
 
+    <string name="label_trending_trips">Trending This Week</string>
+    <string name="trending_trips_description">Trips that received more reservations in the last 7 days.</string>
+    <string name="trending_trips_empty_state">No trending trips this week.</string>
+
     <string-array name="gender_options">
         <item>Select gender</item>
         <item>Female</item>
@@ -241,6 +245,7 @@
         <item>Family travel</item>
         <item>Budget travel</item>
         <item>Luxury travel</item>
+        <item>No preference</item>
     </string-array>
 
     <string-array name="reservation_type_options">

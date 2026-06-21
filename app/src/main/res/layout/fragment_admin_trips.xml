@@ -20,6 +20,23 @@
         android:layout_marginTop="@dimen/space_medium"
         android:text="Add New Trip" />
 
+    <EditText
+        android:id="@+id/admin_trips_search_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_medium"
+        android:hint="Search trips by destination, country, or description"
+        android:inputType="text"
+        android:padding="8dp"
+        android:background="@color/color_surface" />
+
+    <Button
+        android:id="@+id/admin_trips_search_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_small"
+        android:text="Search" />
+
     <TextView
         android:id="@+id/admin_trips_empty_state"
         android:layout_width="match_parent"

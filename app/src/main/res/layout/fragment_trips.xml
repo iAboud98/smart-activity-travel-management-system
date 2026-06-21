@@ -69,7 +69,7 @@
         </LinearLayout>
     </HorizontalScrollView>
 
-    <!-- price and rating filters row -->
+    <!-- price filters row -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -103,26 +103,43 @@
                 android:layout_marginStart="8dp"
                 android:text="@string/filter_price_high" />
 
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- rating filters row -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/screen_margin"
+        android:paddingEnd="@dimen/screen_margin"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
             <Button
                 android:id="@+id/filter_rating_high"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@string/filter_rating_high" />
+                android:text="4.5+ Rating" />
 
             <Button
                 android:id="@+id/filter_rating_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@string/filter_rating_medium" />
+                android:text="4.0+ Rating" />
 
             <Button
                 android:id="@+id/filter_rating_low"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@string/filter_rating_low" />
+                android:text="3.5+ Rating" />
 
         </LinearLayout>
     </HorizontalScrollView>

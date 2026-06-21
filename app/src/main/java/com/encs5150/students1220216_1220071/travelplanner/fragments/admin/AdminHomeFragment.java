@@ -19,10 +19,15 @@ public class AdminHomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        TextView textView = new TextView(getActivity());
-        textView.setText(getString(R.string.admin_home_description) + "\n\nSigned in as: " + SessionManager.getCurrentUserEmail(getActivity()));
-        textView.setPadding(32, 32, 32, 32);
-        textView.setTextSize(16);
-        return textView;
+        return inflater.inflate(R.layout.fragment_admin_home, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // show the current admin email
+        TextView signedIn = getActivity().findViewById(R.id.admin_home_signed_in);
+        signedIn.setText("Signed in as: " + SessionManager.getCurrentUserEmail(getActivity()));
     }
 }

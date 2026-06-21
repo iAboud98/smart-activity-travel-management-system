@@ -10,17 +10,17 @@
         android:orientation="vertical"
         android:padding="@dimen/screen_margin">
 
-        <!-- top rated section -->
+        <!-- recommended trips section - trips with rating >= 4.5 -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_travel_offers"
+            android:text="@string/label_recommended_trips"
             android:textAppearance="@style/TextAppearance.TravelPlanner.SectionTitle" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/travel_offers_description"
+            android:text="Trips with a rating of 4.5 and above."
             android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
 
         <TextView
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_small"
-            android:text="@string/travel_offers_empty_state"
+            android:text="No recommended trips available."
             android:textAppearance="@style/TextAppearance.TravelPlanner.Body"
             android:visibility="gone" />
 
@@ -39,7 +39,7 @@
             android:layout_marginTop="@dimen/space_small"
             android:nestedScrollingEnabled="false" />
 
-        <!-- popular section -->
+        <!-- popular destinations section - trips with most reservations -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,18 +69,18 @@
             android:layout_marginTop="@dimen/space_small"
             android:nestedScrollingEnabled="false" />
 
-        <!-- trending section -->
+        <!-- trending this week section - trips with reservations in last 7 days -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_large"
-            android:text="@string/label_recommended_trips"
+            android:text="Trending This Week"
             android:textAppearance="@style/TextAppearance.TravelPlanner.SectionTitle" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/recommended_trips_description"
+            android:text="Trips that received more reservations in the last 7 days."
             android:textAppearance="@style/TextAppearance.TravelPlanner.Body" />
 
         <TextView
@@ -88,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_small"
-            android:text="@string/recommended_trips_empty_state"
+            android:text="No trending trips this week."
             android:textAppearance="@style/TextAppearance.TravelPlanner.Body"
             android:visibility="gone" />
 
