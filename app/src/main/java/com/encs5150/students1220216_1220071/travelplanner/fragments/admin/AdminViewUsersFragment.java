@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -49,6 +51,27 @@ public class AdminViewUsersFragment extends Fragment implements AdminUserAdapter
         recyclerView.setAdapter(adapter);
 
         loadUsers();
+
+        // search button searches users by name, email or phone
+        EditText searchInput = getActivity().findViewById(R.id.admin_users_search_input);
+        Button searchButton = getActivity().findViewById(R.id.admin_users_search_button);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query = searchInput.getText().toString().trim();
+                if (query.isEmpty()) {
+                    loadUsers();
+                } else {
+                    List<User> users = userRepository.searchUsers(query);
+                    adapter.setUsers(users);
+                    if (users.isEmpty()) {
+                        emptyState.setVisibility(View.VISIBLE);
+                    } else {
+                        emptyState.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
     }
 
     // loads all active regular users

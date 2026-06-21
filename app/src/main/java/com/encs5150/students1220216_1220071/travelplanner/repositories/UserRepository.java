@@ -230,4 +230,21 @@ public class UserRepository {
         cursor.close();
         return count;
     }
+
+    // search users by name, email or phone
+    public List<User> searchUsers(String query) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        List<User> users = new ArrayList<>();
+        Cursor cursor = db.rawQuery(
+                "select * from users where role = 'user' and is_active = 1 " +
+                        "and (email like '%" + query + "%' " +
+                        "or first_name like '%" + query + "%' " +
+                        "or last_name like '%" + query + "%' " +
+                        "or phone like '%" + query + "%')", null);
+        while (cursor.moveToNext()) {
+            users.add(cursorToUser(cursor));
+        }
+        cursor.close();
+        return users;
+    }
 }

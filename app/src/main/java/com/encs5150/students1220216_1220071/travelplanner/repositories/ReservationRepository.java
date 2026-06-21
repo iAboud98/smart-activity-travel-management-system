@@ -111,4 +111,33 @@ public class ReservationRepository {
         values.put("status", "Cancelled");
         db.update("reservations", values, "trip_id = " + tripId, null);
     }
+
+    // search all reservations by trip destination, country or user email
+    public List<Reservation> searchReservations(String query) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        List<Reservation> reservations = new ArrayList<>();
+        Cursor cursor = db.rawQuery(
+                "select reservations.*, trips.destination, users.email from reservations " +
+                        "join trips on reservations.trip_id = trips.id " +
+                        "join users on reservations.user_id = users.id " +
+                        "where trips.destination like '%" + query + "%' " +
+                        "or trips.country like '%" + query + "%' " +
+                        "or users.email like '%" + query + "%'", null);
+        while (cursor.moveToNext()) {
+            Reservation reservation = new Reservation();
+            reservation.setId(cursor.getInt(0));
+            reservation.setUserId(cursor.getInt(1));
+            reservation.setTripId(cursor.getInt(2));
+            reservation.setQuantity(cursor.getInt(3));
+            reservation.setReservationType(cursor.getString(4));
+            reservation.setReservationDate(cursor.getString(5));
+            reservation.setStatus(cursor.getString(6));
+            reservation.setAdditionalInfo(cursor.getString(7));
+            reservation.setTripName(cursor.getString(8));
+            reservation.setUserEmail(cursor.getString(9));
+            reservations.add(reservation);
+        }
+        cursor.close();
+        return reservations;
+    }
 }

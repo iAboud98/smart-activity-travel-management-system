@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +23,10 @@ import java.util.List;
 
 public class AdminViewReservationsFragment extends Fragment {
 
+    private ReservationRepository reservationRepository;
+    private TextView emptyState;
+    private AdminReservationAdapter adapter;
+
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -32,19 +38,50 @@ public class AdminViewReservationsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ReservationRepository reservationRepository = new ReservationRepository(getActivity());
-        TextView emptyState = getActivity().findViewById(R.id.admin_reservations_empty_state);
+        reservationRepository = new ReservationRepository(getActivity());
+        emptyState = getActivity().findViewById(R.id.admin_reservations_empty_state);
+        adapter = new AdminReservationAdapter(getActivity());
 
         // setup RecyclerView
         RecyclerView recyclerView = getActivity().findViewById(R.id.admin_reservations_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        AdminReservationAdapter adapter = new AdminReservationAdapter(getActivity());
         recyclerView.setAdapter(adapter);
 
         // load all reservations across all users
         List<Reservation> reservations = reservationRepository.getAllReservations();
         adapter.setReservations(reservations);
 
+        if (reservations.isEmpty()) {
+            emptyState.setVisibility(View.VISIBLE);
+        } else {
+            emptyState.setVisibility(View.GONE);
+        }
+
+        // search button filters reservations by destination, country or user email
+        EditText searchInput = getActivity().findViewById(R.id.admin_reservations_search_input);
+        Button searchButton = getActivity().findViewById(R.id.admin_reservations_search_button);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query = searchInput.getText().toString().trim();
+                if (query.isEmpty()) {
+                    loadReservations();
+                } else {
+                    List<Reservation> reservations = reservationRepository.searchReservations(query);
+                    adapter.setReservations(reservations);
+                    if (reservations.isEmpty()) {
+                        emptyState.setVisibility(View.VISIBLE);
+                    } else {
+                        emptyState.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+    }
+
+    private void loadReservations() {
+        List<Reservation> reservations = reservationRepository.getAllReservations();
+        adapter.setReservations(reservations);
         if (reservations.isEmpty()) {
             emptyState.setVisibility(View.VISIBLE);
         } else {
