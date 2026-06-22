@@ -35,21 +35,12 @@ public class SpecialSectionFragment extends Fragment implements TripAdapter.OnTr
         tripRepository = new TripRepository(getActivity());
 
         try {
-            setupSection(
-                    R.id.top_rated_recycler_view,
-                    R.id.top_rated_empty,
-                    tripRepository.getTopRatedTrips()
-            );
-            setupSection(
-                    R.id.popular_recycler_view,
-                    R.id.popular_empty,
-                    tripRepository.getPopularTrips()
-            );
-            setupSection(
-                    R.id.trending_recycler_view,
-                    R.id.trending_empty,
-                    tripRepository.getTrendingTrips()
-            );
+            setupSection(R.id.top_rated_recycler_view, R.id.top_rated_empty, tripRepository.getTopRatedTrips());
+
+            setupSection(R.id.popular_recycler_view, R.id.popular_empty, tripRepository.getPopularTrips());
+
+            setupSection(R.id.trending_recycler_view, R.id.trending_empty, tripRepository.getTrendingTrips());
+
         } catch (RuntimeException exception) {
             showSectionError(R.id.top_rated_recycler_view, R.id.top_rated_empty);
             showSectionError(R.id.popular_recycler_view, R.id.popular_empty);
@@ -68,7 +59,7 @@ public class SpecialSectionFragment extends Fragment implements TripAdapter.OnTr
         } else {
             emptyState.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
             TripAdapter adapter = new TripAdapter(getActivity(), this);
             adapter.setTrips(trips);
             recyclerView.setAdapter(adapter);

@@ -3,23 +3,23 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="color_primary">#006D77</color>
-    <color name="color_primary_dark">#004C55</color>
-    <color name="color_primary_container">#D7F4F1</color>
-    <color name="color_secondary">#2A9D8F</color>
-    <color name="color_secondary_container">#DFF8F3</color>
+    <color name="color_primary">#0D530E</color>
+    <color name="color_primary_dark">#093A0A</color>
+    <color name="color_primary_container">#FBF5DD</color>
+    <color name="color_secondary">#306D29</color>
+    <color name="color_secondary_container">#FBF5DD</color>
     <color name="color_accent">#E76F51</color>
-    <color name="color_background">#F7FBFA</color>
+    <color name="color_background">#FFFFFF</color>
     <color name="color_surface">#FFFFFF</color>
-    <color name="color_surface_variant">#E7EFED</color>
+    <color name="color_surface_variant">#FBF5DD</color>
     <color name="color_error">#BA1A1A</color>
     <color name="color_text_primary">#163235</color>
     <color name="color_text_secondary">#4E6668</color>
     <color name="color_text_inverse">#FFFFFF</color>
-    <color name="color_selected_item">#D7F4F1</color>
+    <color name="color_selected_item">#FBF5DD</color>
     <color name="color_disabled">#96A8AA</color>
     <color name="color_disabled_container">#E0E7E6</color>
-    <color name="color_divider">#C7D8D6</color>
-    <color name="color_left_theme_rail">#006D77</color>
+    <color name="color_divider">#E7E1B1</color>
+    <color name="color_left_theme_rail">#0D530E</color>
     <color name="color_overlay_scrim">#66001F23</color>
 </resources>

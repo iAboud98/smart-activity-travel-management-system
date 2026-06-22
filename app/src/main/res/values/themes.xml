@@ -23,6 +23,7 @@
         <item name="materialButtonStyle">@style/Widget.TravelPlanner.Button.Primary</item>
         <item name="textInputStyle">@style/Widget.TravelPlanner.TextInputLayout</item>
         <item name="toolbarStyle">@style/Widget.TravelPlanner.Toolbar</item>
+        <item name="colorControlNormal">@color/color_primary_container</item>
     </style>
 
     <style name="Theme._1220216_1220071_CourseProject" parent="Base.Theme._1220216_1220071_CourseProject" />
